@@ -1,0 +1,72 @@
+{{- $label := .Values.label }}
+{{- $refresh := .Values.requeueAfterSeconds }}
+{{- $owner := .Values.owner }}
+{{- $path := .Values.path | squote }}
+{{- $namespace := .Values.namespace }}
+{{- $secretName := .Values.secretName }}
+{{- $secretKey := .Values.secretKey }}
+{{- $dqf := "{{" }}
+{{- $dqb := "}}" }}
+{{- $server := .Values.server | squote }}
+{{- $kustomizeEnabled := .Values.kustomize.enabled | default false }}
+{{- $kustomizeImages := .Values.kustomize.images }}
+
+{{- range $repo := .Values.repos }}
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ $repo }}-github
+  namespace: {{ $namespace }}
+  annotations:
+    app.kubernetes.io/name: {{ $repo }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/managed-by: {{ $.Release.Service }}
+    app.kubernetes.io/part-of: {{ $label }}
+    helm.sh/chart: {{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_" }}
+spec:
+  generators:
+  - pullRequest:
+      github:
+        owner: {{ $owner }}
+        repo: {{ $repo }}
+        labels:
+        - {{ $label | quote }}
+        {{- if and ($secretName) ($secretKey) }}
+        tokenRef:
+          secretName: {{ $secretName }}
+          key: {{ $secretKey }}
+        {{- end }}
+      requeueAfterSeconds: {{ $refresh }}
+  template:
+    metadata:
+      name: '{{ $repo }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
+      annotations:
+        argocd.argoproj.io/head: '{{ $dqf }}head_sha{{ $dqb }}'
+    spec:
+      source:
+        repoURL: 'https://github.com/{{ $owner }}/{{ $repo }}.git'
+        targetRevision: '{{ $dqf }}head_sha{{ $dqb }}'
+        {{- if $kustomizeEnabled }}
+        kustomize:
+          commonAnnotations:
+            app.kubernetes.io/instance: {{ $repo }}
+            app.kubernetes.io/past-of: {{ $label }}
+            argocd.argoproj.io/head_sha: '{{ $dqf }}head_sha{{ $dqb }}'
+          {{- range $kustomizeImages }}
+          images:
+          - {{ . | indent 0 }}
+          {{- end }}
+        {{- end }}
+        path: {{ $path }}
+      project: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - PruneLast=true
+      destination:
+        server: {{ $server }}
+        namespace: '{{ $repo }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
+{{- end }}
