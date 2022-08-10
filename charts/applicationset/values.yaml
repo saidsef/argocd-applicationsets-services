@@ -1,0 +1,20 @@
+name: pr-review
+namespace: argocd
+owner: saidsef
+label: preview
+path: 'deployment'
+repos:
+  - node-webserver
+  - alpine-jenkins-dockerfile
+  - aws-kinesis-local
+secretName: ""
+secretKey: ""
+server: 'https://kubernetes.default.svc'
+requeueAfterSeconds: 180
+
+kustomize:
+  enabled: true
+  images: []
+
+helm:
+  enabled: false
