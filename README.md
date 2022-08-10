@@ -1,4 +1,4 @@
-# ArgoCD ApplicationSet Services
+# ArgoCD ApplicationSet Services [![Chart](https://github.com/saidsef/argocd-applicationsets-services/actions/workflows/charts.yml/badge.svg)]
 
 [ApplicationSets](https://argocd-applicationset.readthedocs.io/en/stable/) interact with ArgoCD by creating, updating, managing, and deleting ArgoCD Applications. The ApplicationSets job is to make sure that the ArgoCD Application remains consistent with the declared ApplicationSet resource. ApplicationSets can be thought of as sort of an “Application factory”. It takes an ApplicationSet and outputs one or more ArgoCD Applications.
 
@@ -15,6 +15,7 @@ This helm chart implements Pull Request generator of ApplicationSet, it uses API
 ### HELM
 
 ```shell
-helm repo add argocd-applicationsets-services https://saidsef.github.io/argocd-applicationsets-services/
+helm repo add applicationsets-services https://saidsef.github.io/argocd-applicationsets-services/
 helm repo update
+helm upgrade --install pr-services applicationsets-services/argocd-applicationsets-services --namespace argocd
 ```
