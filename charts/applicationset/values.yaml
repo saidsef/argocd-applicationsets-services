@@ -3,18 +3,34 @@ namespace: argocd
 owner: saidsef
 label: preview
 path: 'deployment'
+# to pass name of the branch of the pull request head dynamically use '{{branch}}' variable
+# see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template
 repos:
-  - node-webserver
-  - alpine-jenkins-dockerfile
-  - aws-kinesis-local
+  - name: node-webserver
+    images:
+    - 'docker.io/saidsef/node-webserver:{{branch}}'
+  - name: alpine-jenkins-dockerfile
+    images:
+    - 'docker.io/saidsef/alpine-jenkins-dockerfile:{{branch}}'
+  - name: aws-kinesis-local
+    images:
+    - 'docker.io/saidsef/aws-kinesis-local:{{branch}}'
+  - name: aws-dynamodb-local
+    image:
+    - 'docker.io/saidsef/aws-dynamodb-local:{{branch}}'
+  - name: tika-document-to-text
+    images:
+    - 'ghcr.io/saidsef/tika-document-to-text:ui-{{branch}}'
+    - 'ghcr.io/saidsef/tika-document-to-text:server-{{branch}}'
 secretName: ""
 secretKey: ""
 server: 'https://kubernetes.default.svc'
-requeueAfterSeconds: 180
+requeueAfterSeconds: 300
 
 kustomize:
   enabled: true
   images: []
 
+# TODO
 helm:
   enabled: false
