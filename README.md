@@ -4,7 +4,9 @@
 
 This helm chart implements Pull Request generator of ApplicationSet, it uses API of an SCMaaS provider (eg GitHub) to automatically discover open pull requests within an repository via **label**. This fits well with the style of building a test environment when you create a pull request.
 
-## Prerequisit
+## Prerequisite
+
+Services that should already be installed and/or running.
 
 - Kubernetes Cluster
 - ArgoCD
@@ -19,3 +21,13 @@ helm repo add applicationsets-services https://saidsef.github.io/argocd-applicat
 helm repo update
 helm upgrade --install pr-services applicationsets-services/argocd-applicationsets-services --namespace argocd
 ```
+
+## Source
+
+Our latest and greatest source of `argocd-applicationsets-services` can be found on [GitHub](#deployment). Fork us!
+
+## Contributing
+
+We would :heart: you to contribute by making a [pull request](https://github.com/saidsef/argocd-applicationsets-services/pulls).
+
+Please read the official [Contribution Guide](./CONTRIBUTING.md) for more information on how you can contribute.
