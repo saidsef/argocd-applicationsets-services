@@ -1,25 +1,24 @@
-{{- $label := .Values.label | squote }}
-{{- $refresh := .Values.requeueAfterSeconds }}
-{{- $owner := .Values.owner }}
-{{- $path := .Values.path | squote }}
-{{- $namespace := .Values.namespace }}
-{{- $secretName := .Values.secretName }}
-{{- $secretKey := .Values.secretKey }}
-{{- $dqf := "{{" }}
-{{- $dqb := "}}" }}
-{{- $server := .Values.server | squote }}
-{{- $kustomizeEnabled := .Values.kustomize.enabled | default false }}
-{{- $kustomizeImages := .Values.kustomize.images }}
+{{- $label := .Values.label | squote -}}
+{{- $refresh := .Values.requeueAfterSeconds -}}
+{{- $owner := .Values.owner -}}
+{{- $path := .Values.path | squote -}}
+{{- $namespace := .Values.namespace -}}
+{{- $secretName := .Values.secretName -}}
+{{- $secretKey := .Values.secretKey -}}
+{{- $dqf := "{{" -}}
+{{- $dqb := "}}" -}}
+{{- $server := .Values.server | squote -}}
+{{- $kustomizeEnabled := .Values.kustomize.enabled | default false -}}
 
 {{- range $repo := .Values.repos }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: {{ $repo }}-github
+  name: {{ $repo.name }}-github
   namespace: {{ $namespace }}
   annotations:
-    app.kubernetes.io/name: {{ $repo }}
+    app.kubernetes.io/name: {{ $repo.name }}
     app.kubernetes.io/managed-by: {{ $.Release.Service }}
     helm.sh/chart: {{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_" }}
 spec:
@@ -27,7 +26,7 @@ spec:
   - pullRequest:
       github:
         owner: {{ $owner }}
-        repo: {{ $repo }}
+        repo: {{ $repo.name }}
         labels:
         - {{ $label }}
         {{- if and ($secretName) ($secretKey) }}
@@ -38,22 +37,24 @@ spec:
       requeueAfterSeconds: {{ $refresh }}
   template:
     metadata:
-      name: '{{ $repo }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
+      name: '{{ $repo.name }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
       annotations:
         argocd.argoproj.io/head: '{{ $dqf }}head_sha{{ $dqb }}'
     spec:
       source:
-        repoURL: 'https://github.com/{{ $owner }}/{{ $repo }}.git'
+        repoURL: 'https://github.com/{{ $owner }}/{{ $repo.name }}.git'
         targetRevision: '{{ $dqf }}head_sha{{ $dqb }}'
         {{- if $kustomizeEnabled }}
         kustomize:
           commonAnnotations:
-            app.kubernetes.io/instance: {{ $repo }}
+            app.kubernetes.io/instance: {{ $repo.name }}
             app.kubernetes.io/past-of: {{ $label }}
             argocd.argoproj.io/head_sha: '{{ $dqf }}head_sha{{ $dqb }}'
-          {{- range $kustomizeImages }}
+          {{- range $i, $r := $repo.images }}
+          {{- if eq $i 0 }}
           images:
-          - {{ . | indent 0 }}
+          {{- end }}
+          - {{ $r | indent 0 | squote }}
           {{- end }}
         {{- end }}
         path: {{ $path }}
@@ -67,5 +68,5 @@ spec:
           - PruneLast=true
       destination:
         server: {{ $server }}
-        namespace: '{{ $repo }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
+        namespace: '{{ $repo.name }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
 {{- end }}
