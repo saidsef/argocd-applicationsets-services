@@ -15,18 +15,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: {{ $repo.name }}-github
-  namespace: {{ $namespace }}
+  name: '{{ $repo.name }}-github'
+  namespace: '{{ $namespace }}'
   annotations:
-    app.kubernetes.io/name: {{ $repo.name }}
-    app.kubernetes.io/managed-by: {{ $.Release.Service }}
-    helm.sh/chart: {{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/name: '{{ $repo.name }}'
+    app.kubernetes.io/managed-by: '{{ $.Release.Service }}'
+    helm.sh/chart: '{{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_" }}'
 spec:
   generators:
   - pullRequest:
       github:
-        owner: {{ $owner }}
-        repo: {{ $repo.name }}
+        owner: '{{ $owner }}'
+        repo: '{{ $repo.name }}'
         labels:
         - {{ $label }}
         {{- if and ($secretName) ($secretKey) }}
@@ -47,7 +47,7 @@ spec:
         {{- if $kustomizeEnabled }}
         kustomize:
           commonAnnotations:
-            app.kubernetes.io/instance: {{ $repo.name }}
+            app.kubernetes.io/instance: '{{ $repo.name }}'
             app.kubernetes.io/past-of: {{ $label }}
             argocd.argoproj.io/head_sha: '{{ $dqf }}head_sha{{ $dqb }}'
           {{- range $i, $r := $repo.images }}
@@ -58,7 +58,7 @@ spec:
           {{- end }}
         {{- end }}
         path: {{ $path }}
-      project: default
+      project: 'default'
       syncPolicy:
         automated:
           prune: true
