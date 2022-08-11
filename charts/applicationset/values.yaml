@@ -29,7 +29,6 @@ requeueAfterSeconds: 300
 
 kustomize:
   enabled: true
-  images: []
 
 # TODO
 helm:
