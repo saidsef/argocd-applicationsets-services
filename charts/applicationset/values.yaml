@@ -1,7 +1,7 @@
-name: pr-review
-namespace: argocd
-owner: saidsef
-label: preview
+name: 'pr-review'
+namespace: 'argocd'
+owner: 'saidsef'
+label: 'preview'
 path: 'deployment'
 # to pass name of the branch of the pull request head dynamically use '{{branch}}' variable
 # see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template
@@ -22,8 +22,8 @@ repos:
     images:
     - 'ghcr.io/saidsef/tika-document-to-text:ui-{{branch}}'
     - 'ghcr.io/saidsef/tika-document-to-text:server-{{branch}}'
-secretName: ""
-secretKey: ""
+secretName: ''
+secretKey: ''
 server: 'https://kubernetes.default.svc'
 requeueAfterSeconds: 300
 
