@@ -16,7 +16,7 @@ repos:
     images:
     - 'docker.io/saidsef/aws-kinesis-local:{{branch}}'
   - name: aws-dynamodb-local
-    image:
+    images:
     - 'docker.io/saidsef/aws-dynamodb-local:{{branch}}'
   - name: tika-document-to-text
     images:
