@@ -35,6 +35,10 @@ jobs:
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      - name: Copy Readme and License
+        if: ${{ contains(github.ref, 'main') }}
+        run: |
+          cp -v *.md charts/applicationset/
       - name: Run chart-releaser
         if: ${{ contains(github.ref, 'main') }}
         uses: helm/chart-releaser-action@v1.4.0
