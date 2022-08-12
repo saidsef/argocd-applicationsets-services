@@ -57,7 +57,7 @@ spec:
           - {{ $r | indent 0 | squote }}
           {{- end }}
         {{- end }}
-        path: {{ $path }}
+        path: {{ or $repo.path $path }}
       project: 'default'
       syncPolicy:
         automated:
