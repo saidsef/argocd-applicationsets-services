@@ -19,9 +19,7 @@ repos:
     images:
     - 'docker.io/saidsef/aws-dynamodb-local:{{branch}}'
   - name: tika-document-to-text
-    images:
-    - 'ghcr.io/saidsef/tika-document-to-text:ui-{{branch}}'
-    - 'ghcr.io/saidsef/tika-document-to-text:server-{{branch}}'
+    path: 'deployment/preview'
 secretName: ''
 secretKey: ''
 server: 'https://kubernetes.default.svc'
