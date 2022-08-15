@@ -10,8 +10,7 @@ repos:
     images:
     - 'docker.io/saidsef/node-webserver:{{branch}}'
   - name: alpine-jenkins-dockerfile
-    images:
-    - 'docker.io/saidsef/alpine-jenkins-dockerfile:{{branch}}'
+    path: 'deployment/preview'
   - name: aws-kinesis-local
     images:
     - 'docker.io/saidsef/aws-kinesis-local:{{branch}}'

@@ -4,6 +4,7 @@
 
 This helm chart implements Pull Request generator of ApplicationSet, it uses API of an SCMaaS provider (eg GitHub) to automatically discover open pull requests within an repository via **label**. This fits well with the style of building a test environment when you create a pull request.
 
+> Branch name(s) must be [RFC 1123](https://www.rfc-editor.org/rfc/rfc1123) subdomain must consist of lower case alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character
 ## Prerequisite
 
 Services that should already be installed and/or running.
