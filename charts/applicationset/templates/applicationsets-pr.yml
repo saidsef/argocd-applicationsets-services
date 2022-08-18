@@ -22,6 +22,8 @@ metadata:
     app.kubernetes.io/managed-by: '{{ $.Release.Service }}'
     helm.sh/chart: '{{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_" }}'
 spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: false
   generators:
   - pullRequest:
       github:
