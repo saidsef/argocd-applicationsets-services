@@ -1,9 +1,20 @@
+# -- ApplicationSet name
 name: 'pr-review'
+
+# -- Namespace of ArgoCD controller is deployed
 namespace: 'argocd'
+
+# -- GitHub repo Organization / username
 owner: 'saidsef'
+
+# -- GitHub label to filter PRs that you want to target
 label: 'preview'
+
+# -- Repository path where deployment files are located
 path: 'deployment'
-# to pass name of the branch of the pull request head dynamically use '{{branch}}' variable
+
+# -- List of repo names and override images for preview environment
+# to dynamically pass the branch of the pull request head use '{{branch}}' variable
 # see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template
 repos:
   - name: node-webserver
@@ -19,14 +30,21 @@ repos:
     - 'docker.io/saidsef/aws-dynamodb-local:{{branch}}'
   - name: tika-document-to-text
     path: 'deployment/preview'
+
+# -- GitHub secrets to use for API polling
 secretName: ''
 secretKey: ''
-server: 'https://kubernetes.default.svc'
+
+# -- GitHub polling rate (seconds)
 requeueAfterSeconds: 300
 
+# -- ArgoCD server address
+server: 'https://kubernetes.default.svc'
+
+# -- Should kustomize be enabled
 kustomize:
   enabled: true
 
-# TODO
+# -- TODO: Implement
 helm:
   enabled: false
