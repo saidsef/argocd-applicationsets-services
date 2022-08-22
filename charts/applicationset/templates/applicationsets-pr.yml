@@ -42,6 +42,8 @@ spec:
       name: '{{ $repo.name }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
       annotations:
         argocd.argoproj.io/head: '{{ $dqf }}head_sha{{ $dqb }}'
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
     spec:
       source:
         repoURL: 'https://github.com/{{ $owner }}/{{ $repo.name }}.git'
