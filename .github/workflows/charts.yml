@@ -47,9 +47,25 @@ jobs:
           config: charts/cr.yml
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-  auto-approve:
+
+  k8s-test:
     runs-on: ubuntu-latest
     needs: [chart]
+    if: ${{ ! contains(github.ref, 'main') }}
+    steps:
+      - name: Create k8s Kind Cluster
+        uses: helm/kind-action@v1.3.0
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run K8s test
+        run: |
+          kubectl create ns argocd
+          kubectl apply -k https://github.com/argoproj/argo-cd/manifests/crds\?ref\=stable
+          helm upgrade -i appsets charts/applicationset --namespace argocd --create-namespace
+
+  auto-approve:
+    runs-on: ubuntu-latest
+    needs: [chart, k8s-test]
     if: ${{ github.event_name == 'pull_request' }}
     steps:
     - name: Check out repository code
