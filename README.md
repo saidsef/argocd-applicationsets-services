@@ -1,4 +1,4 @@
-# ArgoCD ApplicationSet Services [![Chart](https://github.com/saidsef/argocd-applicationsets-services/actions/workflows/charts.yml/badge.svg)](#deployment)
+# ArgoCD ApplicationSet Services [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE.md) [![Chart](https://github.com/saidsef/argocd-applicationsets-services/actions/workflows/charts.yml/badge.svg)](#deployment)
 
 A [Helm chart for ArgoCD ApplicationSet](./charts/applicationset/README.md), this uses a pull request generator to automatically discover open pull requests within an repository.
 
