@@ -36,7 +36,7 @@ secretName: ''
 secretKey: ''
 
 # -- GitHub polling rate (seconds)
-requeueAfterSeconds: 300
+requeueAfterSeconds: 500
 
 # -- ArgoCD server address
 server: 'https://kubernetes.default.svc'
