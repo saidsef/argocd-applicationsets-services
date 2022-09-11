@@ -1,4 +1,5 @@
 {{- $label := .Values.label | squote -}}
+{{- $project := .Values.project | squote -}}
 {{- $refresh := .Values.requeueAfterSeconds -}}
 {{- $owner := .Values.owner -}}
 {{- $path := .Values.path | squote -}}
@@ -15,8 +16,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: '{{ $repo.name }}-github'
-  namespace: '{{ $namespace }}'
+  name: '{{ required "A valid repo name is required" $repo.name }}-github'
+  namespace: '{{ required "A valied namespace is required" $namespace }}'
   annotations:
     app.kubernetes.io/name: '{{ $repo.name }}'
     app.kubernetes.io/managed-by: '{{ $.Release.Service }}'
@@ -29,16 +30,16 @@ spec:
   generators:
   - pullRequest:
       github:
-        owner: '{{ $owner }}'
-        repo: '{{ $repo.name }}'
+        owner: '{{ required "A valid repo organization / owner is required" $owner }}'
+        repo: '{{ required "A valid repo name is required" $repo.name }}'
         labels:
-        - {{ $label }}
+        - {{ required "A valied label(s) for PRs is required" $label }}
         {{- if and ($secretName) ($secretKey) }}
         tokenRef:
           secretName: {{ $secretName }}
           key: {{ $secretKey }}
         {{- end }}
-      requeueAfterSeconds: {{ $refresh }}
+      requeueAfterSeconds: {{ $refresh | default 500 }}
   template:
     metadata:
       name: '{{ $repo.name }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
@@ -64,7 +65,7 @@ spec:
           {{- end }}
         {{- end }}
         path: {{ or $repo.path $path }}
-      project: 'default'
+      project: {{ $project | default "default" }}
       syncPolicy:
         automated:
           prune: true
