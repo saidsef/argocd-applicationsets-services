@@ -41,6 +41,9 @@ requeueAfterSeconds: 500
 # -- ArgoCD server address
 server: 'https://kubernetes.default.svc'
 
+# -- ArgoCD Slack notification channel
+notificationChannel: 'argocd'
+
 # -- Should kustomize be enabled
 kustomize:
   enabled: true
