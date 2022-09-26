@@ -10,6 +10,7 @@
 {{- $dqb := "}}" -}}
 {{- $server := .Values.server | squote -}}
 {{- $kustomizeEnabled := .Values.kustomize.enabled | default false -}}
+{{- $notificationChannel := .Values.notificationChannel -}}
 
 {{- range $repo := .Values.repos }}
 ---
@@ -44,7 +45,12 @@ spec:
     metadata:
       name: '{{ $repo.name }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
       annotations:
+        argocd.argoproj.io/application-set-refresh: "true"
         argocd.argoproj.io/head: '{{ $dqf }}head_sha{{ $dqb }}'
+        notifications.argoproj.io/subscribe.on-deleted.slack: '{{ $notificationChannel }}'
+        notifications.argoproj.io/subscribe.on-deployed.slack: '{{ $notificationChannel }}'
+        notifications.argoproj.io/subscribe.on-health-degraded.slack: '{{ $notificationChannel }}'
+        notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
