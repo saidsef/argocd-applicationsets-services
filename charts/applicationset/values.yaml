@@ -31,7 +31,7 @@ repos:
   - name: tika-document-to-text
     path: 'deployment/preview'
 
-# -- GitHub secrets to use for API polling
+# -- GitHub secrets name and key to use for API polling
 secretName: ''
 secretKey: ''
 
