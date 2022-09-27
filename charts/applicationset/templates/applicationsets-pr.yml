@@ -82,5 +82,5 @@ spec:
           - PruneLast=true
       destination:
         server: {{ $server }}
-        namespace: '{{ $repo.name }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
+        namespace: '{{ $repo.name }}-{{ $dqf }}branch | replace "." "-"{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
 {{- end }}
