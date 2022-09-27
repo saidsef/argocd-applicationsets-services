@@ -1,6 +1,6 @@
 # argocd-applicationsets-services
 
-![Version: 0.2.10](https://img.shields.io/badge/Version-0.2.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.2.10](https://img.shields.io/badge/AppVersion-0.2.10-informational?style=flat-square)
+![Version: 0.2.12](https://img.shields.io/badge/Version-0.2.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.2.12](https://img.shields.io/badge/AppVersion-0.2.12-informational?style=flat-square)
 
 A HELM Chart for ArgoCD ApplicationSets for Kubernetes
 
@@ -35,7 +35,7 @@ Kubernetes: `>= 1.23`
 | repos | list | `[{"images":["docker.io/saidsef/node-webserver:{{branch}}"],"name":"node-webserver"},{"name":"alpine-jenkins-dockerfile","path":"deployment/preview"},{"images":["docker.io/saidsef/aws-kinesis-local:{{branch}}"],"name":"aws-kinesis-local"},{"images":["docker.io/saidsef/aws-dynamodb-local:{{branch}}"],"name":"aws-dynamodb-local"},{"name":"tika-document-to-text","path":"deployment/preview"}]` | List of repo names and override images for preview environment to dynamically pass the branch of the pull request head use '{{branch}}' variable see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template |
 | requeueAfterSeconds | int | `500` | GitHub polling rate (seconds) |
 | secretKey | string | `""` |  |
-| secretName | string | `""` | GitHub secrets to use for API polling |
+| secretName | string | `""` | GitHub secrets name and key to use for API polling |
 | server | string | `"https://kubernetes.default.svc"` | ArgoCD server address |
 
 ----------------------------------------------

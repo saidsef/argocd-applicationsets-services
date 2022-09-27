@@ -3,7 +3,7 @@
 {{- $refresh := .Values.requeueAfterSeconds -}}
 {{- $owner := .Values.owner -}}
 {{- $path := .Values.path | squote -}}
-{{- $namespace := .Values.namespace -}}
+{{- $namespace := .Values.namespace | replace "." "-" -}}
 {{- $secretName := .Values.secretName -}}
 {{- $secretKey := .Values.secretKey -}}
 {{- $dqf := "{{" -}}
@@ -82,5 +82,5 @@ spec:
           - PruneLast=true
       destination:
         server: {{ $server }}
-        namespace: '{{ $repo.name }}-{{ $dqf }}branch | replace "." "-"{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
+        namespace: '{{ $repo.name }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
 {{- end }}
