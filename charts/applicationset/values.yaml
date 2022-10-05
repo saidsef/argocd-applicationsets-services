@@ -33,6 +33,7 @@ repos:
 
 # -- GitHub secrets name and key to use for API polling
 secretName: ''
+# -- GitHub secrets key to use for API polling
 secretKey: ''
 
 # -- GitHub polling rate (seconds)
@@ -48,6 +49,6 @@ notificationChannel: 'argocd'
 kustomize:
   enabled: true
 
-# -- TODO: Implement
+# -- Should helm be enabled
 helm:
   enabled: false
