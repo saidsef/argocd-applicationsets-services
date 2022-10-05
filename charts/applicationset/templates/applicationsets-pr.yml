@@ -10,6 +10,7 @@
 {{- $dqb := "}}" -}}
 {{- $server := .Values.server | squote -}}
 {{- $kustomizeEnabled := .Values.kustomize.enabled | default false -}}
+{{- $helmEnabled := .Values.helm.enabled | default false -}}
 {{- $notificationChannel := .Values.notificationChannel -}}
 
 {{- range $repo := .Values.repos }}
@@ -70,6 +71,11 @@ spec:
           {{- end }}
           - {{ $r | indent 0 | squote }}
           {{- end }}
+        {{- end }}
+        {{- if $helmEnabled }}
+        helm:
+          parameters:
+            {{ toJson $.Values.repos | indent 0}}
         {{- end }}
         path: {{ or $repo.path $path }}
       project: {{ $project | default "default" }}

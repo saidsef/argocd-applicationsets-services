@@ -14,10 +14,11 @@ Services that should already be installed and/or running.
 
 - Kubernetes Cluster
 - ArgoCD ApplicationSet Controller
-- [HELM](https://helm.sh/docs/intro/install/) v3.0.0+
+- [HELM](https://helm.sh/docs/intro/install/) v3.9.0+
 
 ## Deployment
 
+> Use `repo:` in values to inject or override values in `kustomize` or `helm` 
 ### HELM
 
 ```shell
