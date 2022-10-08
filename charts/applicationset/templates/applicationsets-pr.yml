@@ -53,8 +53,6 @@ spec:
         notifications.argoproj.io/subscribe.on-health-degraded.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-running.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
-      finalizers:
-        - resources-finalizer.argocd.argoproj.io
     spec:
       source:
         repoURL: 'https://github.com/{{ $owner }}/{{ $repo.name }}.git'
@@ -86,6 +84,7 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
+          - Prune=true
           - PruneLast=true
       destination:
         server: {{ $server }}
