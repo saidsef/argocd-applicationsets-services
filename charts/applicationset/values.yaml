@@ -30,16 +30,21 @@ repos:
     - 'docker.io/saidsef/aws-dynamodb-local:{{branch}}'
   - name: tika-document-to-text
     path: 'deployment/preview'
+  - name: scapy-containerised
+    path: 'charts/scapy'
+    values:
+      image:
+        tag: '{{branch}}'
   - name: faas-reverse-geocoding
     path: 'charts/reverse-geocoding'
-    values: |-
-      ingress:
-        enabled: true
-        hosts:
-          - host: {{branch}}
-            paths:
-              - path: /
-                pathType: Prefix
+    repoUrl: 'https://saidsef.github.io/faas-reverse-geocoding'
+    parameters:
+      - name: "image.tag"
+        value: "{{branch}}"
+      - name: "ingress.enabled"
+        value: "true"
+      - name: "ingress.hosts[0].host"
+        value: "{{branch}}"
 
 # -- GitHub secrets name and key to use for API polling
 secretName: ''

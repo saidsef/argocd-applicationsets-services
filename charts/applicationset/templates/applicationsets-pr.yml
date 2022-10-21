@@ -51,16 +51,17 @@ spec:
         notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
     spec:
       source:
-        repoURL: 'https://github.com/{{ $owner }}/{{ $repo.name }}.git'
+        {{- $localRepoUrl := printf "https://github.com/%s/%s.git" $owner $repo.name }}
+        repoURL: {{ or $repo.repoURL $localRepoUrl }}
         targetRevision: '{{ $dqf }}head_sha{{ $dqb }}'
         {{- if and $repo $repo.parameters }}
         helm:
           parameters:
-            {{ toJson $repo.parameters | trim | indent 0 }}
+            {{ toJson $repo.parameters | indent 0 }}
         {{- else if and $repo $repo.values }}
         helm:
-          values: |-
-            {{ toJson $repo.values | trim | trim }}
+          values: |
+            {{ toJson $repo.values | indent 0 }}
         {{- else }}
         kustomize:
           commonAnnotations:
