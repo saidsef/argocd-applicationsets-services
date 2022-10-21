@@ -9,8 +9,6 @@
 {{- $dqf := "{{" -}}
 {{- $dqb := "}}" -}}
 {{- $server := .Values.server | squote -}}
-{{- $kustomizeEnabled := .Values.kustomize.enabled | default false -}}
-{{- $helmEnabled := .Values.helm.enabled | default false -}}
 {{- $notificationChannel := .Values.notificationChannel -}}
 
 {{- range $repo := .Values.repos }}
@@ -55,7 +53,15 @@ spec:
       source:
         repoURL: 'https://github.com/{{ $owner }}/{{ $repo.name }}.git'
         targetRevision: '{{ $dqf }}head_sha{{ $dqb }}'
-        {{- if $kustomizeEnabled }}
+        {{- if and $repo $repo.parameters }}
+        helm:
+          parameters:
+            {{ toJson $repo.parameters | trim | indent 0 }}
+        {{- else if and $repo $repo.values }}
+        helm:
+          values: |-
+            {{ toJson $repo.values | trim | trim }}
+        {{- else }}
         kustomize:
           commonAnnotations:
             app.kubernetes.io/instance: '{{ $repo.name }}'
@@ -67,11 +73,6 @@ spec:
           {{- end }}
           - {{ $r | indent 0 | squote }}
           {{- end }}
-        {{- end }}
-        {{- if $helmEnabled }}
-        helm:
-          parameters:
-            {{ toJson $.Values.repos | indent 0}}
         {{- end }}
         path: {{ or $repo.path $path }}
       project: {{ $project | default "default" }}

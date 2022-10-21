@@ -30,6 +30,16 @@ repos:
     - 'docker.io/saidsef/aws-dynamodb-local:{{branch}}'
   - name: tika-document-to-text
     path: 'deployment/preview'
+  - name: faas-reverse-geocoding
+    path: 'charts/reverse-geocoding'
+    values: |-
+      ingress:
+        enabled: true
+        hosts:
+          - host: {{branch}}
+            paths:
+              - path: /
+                pathType: Prefix
 
 # -- GitHub secrets name and key to use for API polling
 secretName: ''
@@ -44,11 +54,3 @@ server: 'https://kubernetes.default.svc'
 
 # -- ArgoCD Slack notification channel
 notificationChannel: 'argocd'
-
-# -- Should kustomize be enabled
-kustomize:
-  enabled: true
-
-# -- Should helm be enabled
-helm:
-  enabled: false
