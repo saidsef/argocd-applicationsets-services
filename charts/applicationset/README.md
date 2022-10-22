@@ -1,6 +1,6 @@
 # argocd-applicationsets-services
 
-![Version: 0.3.4](https://img.shields.io/badge/Version-0.3.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.3.4](https://img.shields.io/badge/AppVersion-0.3.4-informational?style=flat-square)
+![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.4.0](https://img.shields.io/badge/AppVersion-0.4.0-informational?style=flat-square)
 
 A HELM Chart for ArgoCD ApplicationSets for Kubernetes
 
@@ -24,15 +24,13 @@ Kubernetes: `>= 1.23`
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| helm | object | `{"enabled":false}` | Should helm be enabled |
-| kustomize | object | `{"enabled":true}` | Should kustomize be enabled |
 | label | string | `"preview"` | GitHub label to filter PRs that you want to target |
 | name | string | `"pr-review"` | ApplicationSet name |
 | namespace | string | `"argocd"` | Namespace of ArgoCD controller is deployed |
 | notificationChannel | string | `"argocd"` | ArgoCD Slack notification channel |
 | owner | string | `"saidsef"` | GitHub repo Organization / username |
 | path | string | `"deployment"` | Repository path where deployment files are located |
-| repos | list | `[{"images":["docker.io/saidsef/node-webserver:{{branch}}"],"name":"node-webserver"},{"name":"alpine-jenkins-dockerfile","path":"deployment/preview"},{"images":["docker.io/saidsef/aws-kinesis-local:{{branch}}"],"name":"aws-kinesis-local"},{"images":["docker.io/saidsef/aws-dynamodb-local:{{branch}}"],"name":"aws-dynamodb-local"},{"name":"tika-document-to-text","path":"deployment/preview"}]` | List of repo names and override images for preview environment to dynamically pass the branch of the pull request head use '{{branch}}' variable see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template |
+| repos | list | `[{"images":["docker.io/saidsef/node-webserver:{{branch}}"],"name":"node-webserver"},{"name":"alpine-jenkins-dockerfile","path":"deployment/preview"},{"images":["docker.io/saidsef/aws-kinesis-local:{{branch}}"],"name":"aws-kinesis-local"},{"images":["docker.io/saidsef/aws-dynamodb-local:{{branch}}"],"name":"aws-dynamodb-local"},{"name":"tika-document-to-text","path":"deployment/preview"},{"name":"scapy-containerised","path":"charts/scapy","values":{"image":{"tag":"{{branch}}"}}},{"name":"faas-reverse-geocoding","parameters":[{"name":"image.tag","value":"{{branch}}"},{"name":"ingress.enabled","value":"true"},{"name":"ingress.hosts[0].host","value":"{{branch}}"}],"path":"charts/reverse-geocoding","repoUrl":"https://saidsef.github.io/faas-reverse-geocoding"}]` | List of repo names and override images for preview environment to dynamically pass the branch of the pull request head use '{{branch}}' variable see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template |
 | requeueAfterSeconds | int | `500` | GitHub polling rate (seconds) |
 | secretKey | string | `""` | GitHub secrets key to use for API polling |
 | secretName | string | `""` | GitHub secrets name and key to use for API polling |

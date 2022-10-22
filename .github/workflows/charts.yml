@@ -64,6 +64,8 @@ jobs:
           helm upgrade -i appsets charts/applicationset --namespace argocd --create-namespace
           helm list -A
           kubectl get all -A
+          kubectl get applications -A -o wide
+          kubectl get applicationsets -A -o wide
 
   auto-approve:
     runs-on: ubuntu-latest
