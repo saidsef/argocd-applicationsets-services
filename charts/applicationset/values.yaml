@@ -20,39 +20,40 @@ repos:
   - name: node-webserver
     images:
     - 'docker.io/saidsef/node-webserver:{{branch}}'
-    patches:
-      - target:
-          kind: Ingress
-          name: geocode
-        patch: |-
-          - op: replace
-            path: /spec/rules/0/host
-            value: {{branch}}
-  - name: alpine-jenkins-dockerfile
-    path: 'deployment/preview'
-  - name: aws-kinesis-local
-    images:
-    - 'docker.io/saidsef/aws-kinesis-local:{{branch}}'
-  - name: aws-dynamodb-local
-    images:
-    - 'docker.io/saidsef/aws-dynamodb-local:{{branch}}'
-  - name: tika-document-to-text
-    path: 'deployment/preview'
-  - name: scapy-containerised
-    path: 'charts/scapy'
-    values:
-      image:
-        tag: '{{branch}}'
-  - name: faas-reverse-geocoding
-    path: 'charts/reverse-geocoding'
-    repoUrl: 'https://saidsef.github.io/faas-reverse-geocoding'
-    parameters:
-      - name: "image.tag"
-        value: "{{branch}}"
-      - name: "ingress.enabled"
-        value: "true"
-      - name: "ingress.hosts[0].host"
-        value: "{{branch}}"
+    patchesJson6902:
+    - target:
+        kind: Ingress
+        name: geocode
+        version: networking.k8s.io/v1
+      patch: |-
+        - op: replace
+          path: /spec/rules/0/host
+          value: {{branch}}
+  # - name: alpine-jenkins-dockerfile
+  #   path: 'deployment/preview'
+  # - name: aws-kinesis-local
+  #   images:
+  #   - 'docker.io/saidsef/aws-kinesis-local:{{branch}}'
+  # - name: aws-dynamodb-local
+  #   images:
+  #   - 'docker.io/saidsef/aws-dynamodb-local:{{branch}}'
+  # - name: tika-document-to-text
+  #   path: 'deployment/preview'
+  # - name: scapy-containerised
+  #   path: 'charts/scapy'
+  #   values:
+  #     image:
+  #       tag: '{{branch}}'
+  # - name: faas-reverse-geocoding
+  #   path: 'charts/reverse-geocoding'
+  #   repoUrl: 'https://saidsef.github.io/faas-reverse-geocoding'
+  #   parameters:
+  #     - name: "image.tag"
+  #       value: "{{branch}}"
+  #     - name: "ingress.enabled"
+  #       value: "true"
+  #     - name: "ingress.hosts[0].host"
+  #       value: "{{branch}}"
 
 # -- GitHub secrets name and key to use for API polling
 secretName: ''
