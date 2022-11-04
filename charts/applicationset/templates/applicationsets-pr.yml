@@ -74,6 +74,10 @@ spec:
           {{- end }}
           - {{ $r | indent 0 | squote }}
           {{- end }}
+          {{- if and $repo $repo.patches }}
+          patches:
+            {{ $repo.patches | toJson }}
+          {{- end }}
         {{- end }}
         path: {{ or $repo.path $path }}
       project: {{ $project | default "default" }}
