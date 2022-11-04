@@ -74,10 +74,6 @@ spec:
           {{- end }}
           - {{ $r | indent 0 | squote }}
           {{- end }}
-          {{- if and $repo (or $repo.patches $repo.patchesJson6902) }}
-          patchesJson6902:
-            {{ or $repo.patches $repo.patchesJson6902 | toJson }}
-          {{- end }}
         {{- end }}
         path: {{ or $repo.path $path }}
       project: {{ $project | default "default" }}
