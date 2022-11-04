@@ -2,7 +2,7 @@ apiVersion: v2
 name: argocd-applicationsets-services
 description: A HELM Chart for ArgoCD ApplicationSets for Kubernetes
 type: application
-version: &version "0.4.0"
+version: &version "0.4.1"
 appVersion: *version
 kubeVersion: ">= 1.23"
 home: https://github.com/saidsef/argocd-applicationsets-services
@@ -22,8 +22,7 @@ sources:
 annotations:
   artifacthub.io/license: "Apache-2.0"
   artifacthub.io/changes: |
-    - "Add repo sections for helm values and parameters"
-    - "Refactored repo section to accommodate helm"
+    - "Add kustomize patches section"
   artifacthub.io/links: |
     - name: README
       url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md

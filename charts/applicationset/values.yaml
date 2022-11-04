@@ -20,6 +20,14 @@ repos:
   - name: node-webserver
     images:
     - 'docker.io/saidsef/node-webserver:{{branch}}'
+    patches:
+      - target:
+          kind: Ingress
+          name: geocode
+        patch: |-
+          - op: replace
+            path: /spec/rules/0/host
+            value: {{branch}}
   - name: alpine-jenkins-dockerfile
     path: 'deployment/preview'
   - name: aws-kinesis-local
