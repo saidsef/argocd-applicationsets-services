@@ -4,52 +4,62 @@ name: 'pr-review'
 # -- Namespace of ArgoCD controller is deployed
 namespace: 'argocd'
 
-# -- GitHub repo Organization / username
-owner: 'saidsef'
+# -- GitHub repo configuration parameters
+github:
+  api: https://api.github.com/
+  label: 'preview'
+  owner: 'saidsef'
+  path: 'deployment'
+  secretName: ''
+  secretKey: ''
+
+# -- GitLab repo configuration parameters
+gitlab:
+  api: https://gitlab.com
+  label: 'preview'
+  path: 'deployment'
+  project: saidsef
+  secretName: ''
+  secretKey: ''
 
 # -- GitHub label to filter PRs that you want to target
 label: 'preview'
-
-# -- Repository path where deployment files are located
-path: 'deployment'
 
 # -- List of repo names and override images for preview environment
 # to dynamically pass the branch of the pull request head use '{{branch}}' variable
 # see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template
 repos:
+  gitlab:
+  - name: node-webserver
+  github:
   - name: node-webserver
     images:
     - 'docker.io/saidsef/node-webserver:{{branch}}'
-  - name: alpine-jenkins-dockerfile
-    path: 'deployment/preview'
-  - name: aws-kinesis-local
-    images:
-    - 'docker.io/saidsef/aws-kinesis-local:{{branch}}'
-  - name: aws-dynamodb-local
-    images:
-    - 'docker.io/saidsef/aws-dynamodb-local:{{branch}}'
-  - name: tika-document-to-text
-    path: 'deployment/preview'
-  - name: scapy-containerised
-    path: 'charts/scapy'
-    values:
-      image:
-        tag: '{{branch}}'
-  - name: faas-reverse-geocoding
-    path: 'charts/reverse-geocoding'
-    repoUrl: 'https://saidsef.github.io/faas-reverse-geocoding'
-    parameters:
-      - name: "image.tag"
-        value: "{{branch}}"
-      - name: "ingress.enabled"
-        value: "true"
-      - name: "ingress.hosts[0].host"
-        value: "{{branch}}"
-
-# -- GitHub secrets name and key to use for API polling
-secretName: ''
-# -- GitHub secrets key to use for API polling
-secretKey: ''
+  # - name: alpine-jenkins-dockerfile
+  #   path: 'deployment/preview'
+  # - name: aws-kinesis-local
+  #   images:
+  #   - 'docker.io/saidsef/aws-kinesis-local:{{branch}}'
+  # - name: aws-dynamodb-local
+  #   images:
+  #   - 'docker.io/saidsef/aws-dynamodb-local:{{branch}}'
+  # - name: tika-document-to-text
+  #   path: 'deployment/preview'
+  # - name: scapy-containerised
+  #   path: 'charts/scapy'
+  #   values:
+  #     image:
+  #       tag: '{{branch}}'
+  # - name: faas-reverse-geocoding
+  #   path: 'charts/reverse-geocoding'
+  #   repoUrl: 'https://saidsef.github.io/faas-reverse-geocoding'
+  #   parameters:
+  #     - name: "image.tag"
+  #       value: "{{branch}}"
+  #     - name: "ingress.enabled"
+  #       value: "true"
+  #     - name: "ingress.hosts[0].host"
+  #       value: "{{branch}}"
 
 # -- GitHub polling rate (seconds)
 requeueAfterSeconds: 500

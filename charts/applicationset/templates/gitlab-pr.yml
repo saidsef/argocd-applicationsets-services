@@ -1,22 +1,18 @@
-{{- $label := .Values.label | squote -}}
-{{- $project := .Values.project | squote -}}
+{{- if and .Values.repos .Values.repos.gitlab }}
+{{- $gitlab := .Values.gitlab -}}
 {{- $refresh := .Values.requeueAfterSeconds -}}
-{{- $owner := .Values.owner -}}
-{{- $path := .Values.path | squote -}}
 {{- $namespace := .Values.namespace | replace "." "-" -}}
-{{- $secretName := .Values.secretName -}}
-{{- $secretKey := .Values.secretKey -}}
 {{- $dqf := "{{" -}}
 {{- $dqb := "}}" -}}
 {{- $server := .Values.server | squote -}}
 {{- $notificationChannel := .Values.notificationChannel -}}
 
-{{- range $key, $repo := .Values.repos }}
+{{- range $key, $repo := .Values.repos.gitlab }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: '{{ required "A valid repo name is required" $repo.name }}-github'
+  name: '{{ required "A valid repo name is required" $repo.name }}-gitlab'
   namespace: '{{ required "A valied namespace is required" $namespace | replace "." "-" }}'
   annotations:
     app.kubernetes.io/name: '{{ $repo.name }}'
@@ -27,15 +23,15 @@ spec:
     preserveResourcesOnDeletion: false
   generators:
   - pullRequest:
-      github:
-        owner: '{{ required "A valid repo organization / owner is required" $owner }}'
-        repo: '{{ required "A valid repo name is required" $repo.name }}'
+      gitlab:
+        project: '{{ required "A valid repo project / group is required" $gitlab.project }}'
+        pullRequestState: 'opened'
         labels:
-        - {{ required "A valied label(s) for PRs is required" $label }}
-        {{- if and ($secretName) ($secretKey) }}
+        - {{ required "A valied label(s) for PRs is required" $gitlab.label }}
+        {{- if and ($gitlab.secretName) ($gitlab.secretKey) }}
         tokenRef:
-          secretName: {{ $secretName }}
-          key: {{ $secretKey }}
+          secretName: {{ $gitlab.secretName }}
+          key: {{ $gitlab.secretKey }}
         {{- end }}
       requeueAfterSeconds: {{ $refresh | default 500 }}
   template:
@@ -51,7 +47,7 @@ spec:
         notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
     spec:
       source:
-        {{- $localRepoUrl := printf "https://github.com/%s/%s.git" $owner $repo.name }}
+        {{- $localRepoUrl := printf "https://gitlab.com/%s/%s.git" $gitlab.project $repo.name }}
         repoURL: {{ or $repo.repoURL $localRepoUrl }}
         targetRevision: '{{ $dqf }}head_sha{{ $dqb }}'
         {{- if and $repo $repo.parameters }}
@@ -66,7 +62,7 @@ spec:
         kustomize:
           commonAnnotations:
             app.kubernetes.io/instance: '{{ $repo.name }}'
-            app.kubernetes.io/past-of: {{ $label }}
+            app.kubernetes.io/past-of: {{ $gitlab.label }}
             argocd.argoproj.io/head_sha: '{{ $dqf }}head_sha{{ $dqb }}'
           {{- range $i, $r := $repo.images }}
           {{- if eq $i 0 }}
@@ -75,8 +71,8 @@ spec:
           - {{ $r | indent 0 | squote }}
           {{- end }}
         {{- end }}
-        path: {{ or $repo.path $path }}
-      project: {{ $project | default "default" }}
+        path: {{ or $repo.path $gitlab.path }}
+      project: {{ $gitlab.project | default "default" }}
       syncPolicy:
         automated:
           allowEmpty: true
@@ -89,4 +85,5 @@ spec:
       destination:
         server: {{ $server }}
         namespace: '{{ $repo.name }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
+{{- end }}
 {{- end }}
