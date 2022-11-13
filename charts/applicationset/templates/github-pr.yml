@@ -1,17 +1,13 @@
-{{- $label := .Values.label | squote -}}
-{{- $project := .Values.project | squote -}}
+{{- if and .Values.repos .Values.repos.github }}
+{{- $github := .Values.github -}}
 {{- $refresh := .Values.requeueAfterSeconds -}}
-{{- $owner := .Values.owner -}}
-{{- $path := .Values.path | squote -}}
 {{- $namespace := .Values.namespace | replace "." "-" -}}
-{{- $secretName := .Values.secretName -}}
-{{- $secretKey := .Values.secretKey -}}
 {{- $dqf := "{{" -}}
 {{- $dqb := "}}" -}}
 {{- $server := .Values.server | squote -}}
 {{- $notificationChannel := .Values.notificationChannel -}}
 
-{{- range $key, $repo := .Values.repos }}
+{{- range $key, $repo := .Values.repos.github }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
@@ -28,14 +24,15 @@ spec:
   generators:
   - pullRequest:
       github:
-        owner: '{{ required "A valid repo organization / owner is required" $owner }}'
+        api: '{{ $github.api }}'
+        owner: '{{ required "A valid repo organization / owner is required" $github.owner }}'
         repo: '{{ required "A valid repo name is required" $repo.name }}'
         labels:
-        - {{ required "A valied label(s) for PRs is required" $label }}
-        {{- if and ($secretName) ($secretKey) }}
+        - {{ required "A valied label(s) for PRs is required" $github.label }}
+        {{- if and ($github.secretName) ($github.secretKey) }}
         tokenRef:
-          secretName: {{ $secretName }}
-          key: {{ $secretKey }}
+          secretName: {{ $github.secretName }}
+          key: {{ $github.secretKey }}
         {{- end }}
       requeueAfterSeconds: {{ $refresh | default 500 }}
   template:
@@ -51,8 +48,8 @@ spec:
         notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
     spec:
       source:
-        {{- $localRepoUrl := printf "https://github.com/%s/%s.git" $owner $repo.name }}
-        repoURL: {{ or $repo.repoURL $localRepoUrl }}
+        {{- $localRepoUrl := printf "https://github.com/%s/%s.git" $github.owner $repo.name }}
+        repoURL: {{ coalesce $repo.repoURL $localRepoUrl }}
         targetRevision: '{{ $dqf }}head_sha{{ $dqb }}'
         {{- if and $repo $repo.parameters }}
         helm:
@@ -66,7 +63,7 @@ spec:
         kustomize:
           commonAnnotations:
             app.kubernetes.io/instance: '{{ $repo.name }}'
-            app.kubernetes.io/past-of: {{ $label }}
+            app.kubernetes.io/past-of: {{ $github.label }}
             argocd.argoproj.io/head_sha: '{{ $dqf }}head_sha{{ $dqb }}'
           {{- range $i, $r := $repo.images }}
           {{- if eq $i 0 }}
@@ -75,8 +72,8 @@ spec:
           - {{ $r | indent 0 | squote }}
           {{- end }}
         {{- end }}
-        path: {{ or $repo.path $path }}
-      project: {{ $project | default "default" }}
+        path: {{ coalesce $repo.path $github.path }}
+      project: {{ $github.project | default "default" }}
       syncPolicy:
         automated:
           allowEmpty: true
@@ -89,4 +86,5 @@ spec:
       destination:
         server: {{ $server }}
         namespace: '{{ $repo.name }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
+{{- end }}
 {{- end }}

@@ -1,0 +1,90 @@
+{{- if and .Values.repos .Values.repos.gitlab }}
+{{- $gitlab := .Values.gitlab -}}
+{{- $refresh := .Values.requeueAfterSeconds -}}
+{{- $namespace := .Values.namespace | replace "." "-" -}}
+{{- $dqf := "{{" -}}
+{{- $dqb := "}}" -}}
+{{- $server := .Values.server | squote -}}
+{{- $notificationChannel := .Values.notificationChannel -}}
+
+{{- range $key, $repo := .Values.repos.gitlab }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: '{{ required "A valid repo name is required" $repo.name }}-gitlab'
+  namespace: '{{ required "A valied namespace is required" $namespace | replace "." "-" }}'
+  annotations:
+    app.kubernetes.io/name: '{{ $repo.name }}'
+    app.kubernetes.io/managed-by: '{{ $.Release.Service }}'
+    helm.sh/chart: '{{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_" }}'
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+  - pullRequest:
+      gitlab:
+        api: '{{ $gitlab.api }}'
+        project: '{{ required "A valid repo project / group is required" $gitlab.project }}'
+        pullRequestState: 'opened'
+        labels:
+        - {{ required "A valied label(s) for PRs is required" $gitlab.label }}
+        {{- if and ($gitlab.secretName) ($gitlab.secretKey) }}
+        tokenRef:
+          secretName: {{ $gitlab.secretName }}
+          key: {{ $gitlab.secretKey }}
+        {{- end }}
+      requeueAfterSeconds: {{ $refresh | default 500 }}
+  template:
+    metadata:
+      name: '{{ $repo.name }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
+      annotations:
+        argocd.argoproj.io/application-set-refresh: "true"
+        argocd.argoproj.io/head: '{{ $dqf }}head_sha{{ $dqb }}'
+        notifications.argoproj.io/subscribe.on-deleted.slack: '{{ $notificationChannel }}'
+        notifications.argoproj.io/subscribe.on-deployed.slack: '{{ $notificationChannel }}'
+        notifications.argoproj.io/subscribe.on-health-degraded.slack: '{{ $notificationChannel }}'
+        notifications.argoproj.io/subscribe.on-sync-running.slack: '{{ $notificationChannel }}'
+        notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
+    spec:
+      source:
+        {{- $localRepoUrl := printf "https://gitlab.com/%s/%s.git" $gitlab.project $repo.name }}
+        repoURL: {{ coalesce $repo.repoURL $localRepoUrl }}
+        targetRevision: '{{ $dqf }}head_sha{{ $dqb }}'
+        {{- if and $repo $repo.parameters }}
+        helm:
+          parameters:
+            {{ toJson $repo.parameters | indent 0 }}
+        {{- else if and $repo $repo.values }}
+        helm:
+          values: |
+            {{ toJson $repo.values | indent 0 }}
+        {{- else }}
+        kustomize:
+          commonAnnotations:
+            app.kubernetes.io/instance: '{{ $repo.name }}'
+            app.kubernetes.io/past-of: {{ $gitlab.label }}
+            argocd.argoproj.io/head_sha: '{{ $dqf }}head_sha{{ $dqb }}'
+          {{- range $i, $r := $repo.images }}
+          {{- if eq $i 0 }}
+          images:
+          {{- end }}
+          - {{ $r | indent 0 | squote }}
+          {{- end }}
+        {{- end }}
+        path: {{ coalesce $repo.path $gitlab.path }}
+      project: {{ $gitlab.project | default "default" }}
+      syncPolicy:
+        automated:
+          allowEmpty: true
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - Prune=true
+          - PruneLast=true
+      destination:
+        server: {{ $server }}
+        namespace: '{{ $repo.name }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
+{{- end }}
+{{- end }}
