@@ -24,6 +24,7 @@ annotations:
   artifacthub.io/changes: |
     - "Add generators pull request for GitLab"
     - "Refactor code to accommodate GitLab merge request"
+    - "Add GitHub/GitLab enterprise support via api parameter"
   artifacthub.io/links: |
     - name: README
       url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md

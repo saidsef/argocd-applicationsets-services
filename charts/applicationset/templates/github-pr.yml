@@ -24,6 +24,7 @@ spec:
   generators:
   - pullRequest:
       github:
+        api: '{{ $github.api }}'
         owner: '{{ required "A valid repo organization / owner is required" $github.owner }}'
         repo: '{{ required "A valid repo name is required" $repo.name }}'
         labels:
@@ -48,7 +49,7 @@ spec:
     spec:
       source:
         {{- $localRepoUrl := printf "https://github.com/%s/%s.git" $github.owner $repo.name }}
-        repoURL: {{ or $repo.repoURL $localRepoUrl }}
+        repoURL: {{ coalesce $repo.repoURL $localRepoUrl }}
         targetRevision: '{{ $dqf }}head_sha{{ $dqb }}'
         {{- if and $repo $repo.parameters }}
         helm:
@@ -71,7 +72,7 @@ spec:
           - {{ $r | indent 0 | squote }}
           {{- end }}
         {{- end }}
-        path: {{ or $repo.path $github.path }}
+        path: {{ coalesce $repo.path $github.path }}
       project: {{ $github.project | default "default" }}
       syncPolicy:
         automated:
