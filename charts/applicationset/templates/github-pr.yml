@@ -28,11 +28,11 @@ spec:
         owner: '{{ required "A valid repo organization / owner is required" $github.owner }}'
         repo: '{{ required "A valid repo name is required" $repo.name }}'
         labels:
-        - {{ required "A valied label(s) for PRs is required" $github.label }}
+        - '{{ required "A valied label(s) for PRs is required" $github.label }}'
         {{- if and ($github.secretName) ($github.secretKey) }}
         tokenRef:
-          secretName: {{ $github.secretName }}
-          key: {{ $github.secretKey }}
+          secretName: '{{ $github.secretName }}'
+          key: '{{ $github.secretKey }}'
         {{- end }}
       requeueAfterSeconds: {{ $refresh | default 500 }}
   template:

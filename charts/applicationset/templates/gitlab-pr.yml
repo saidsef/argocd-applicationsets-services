@@ -25,14 +25,14 @@ spec:
   - pullRequest:
       gitlab:
         api: '{{ $gitlab.api }}'
-        project: '{{ required "A valid repo project / group is required" $gitlab.project }}'
+        project: '{{ coalesce $repo.project $gitlab.project |  required "A valid repo project / group is required" }}'
         pullRequestState: 'opened'
         labels:
-        - {{ required "A valied label(s) for PRs is required" $gitlab.label }}
+        - '{{ required "A valied label(s) for PRs is required" $gitlab.label }}'
         {{- if and ($gitlab.secretName) ($gitlab.secretKey) }}
         tokenRef:
-          secretName: {{ $gitlab.secretName }}
-          key: {{ $gitlab.secretKey }}
+          secretName: '{{ $gitlab.secretName }}'
+          key: '{{ $gitlab.secretKey }}'
         {{- end }}
       requeueAfterSeconds: {{ $refresh | default 500 }}
   template:
