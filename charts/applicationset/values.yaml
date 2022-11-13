@@ -29,8 +29,7 @@ label: 'preview'
 # to dynamically pass the branch of the pull request head use '{{branch}}' variable
 # see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template
 repos:
-  gitlab:
-  - name: node-webserver
+  gitlab: {}
   github:
   - name: node-webserver
     images:
