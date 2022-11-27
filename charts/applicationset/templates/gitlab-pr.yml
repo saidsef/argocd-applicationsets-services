@@ -26,7 +26,7 @@ spec:
   - pullRequest:
       gitlab:
         api: '{{ $gitlab.api }}'
-        project: '{{ coalesce $repo.project $gitlab.project |  required "A valid repo project / group ID is required" }}'
+        project: '{{ coalesce $repo.project $gitlab.group |  required "A valid repo project / group ID is required" }}'
         pullRequestState: 'opened'
         labels:
         - '{{ required "A valied label(s) for PRs is required" $gitlab.label }}'
@@ -49,7 +49,7 @@ spec:
         notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
     spec:
       source:
-        {{- $localRepoUrl := printf "https://gitlab.com/%s/%s.git" $gitlab.project $repo.name }}
+        {{- $localRepoUrl := printf "https://gitlab.com/%s/%s.git" $gitlab.group $repo.name }}
         repoURL: {{ coalesce $repo.repoUrl $localRepoUrl }}
         targetRevision: '{{ $dqf }}head_sha{{ $dqb }}'
         {{- if and $repo $repo.parameters }}

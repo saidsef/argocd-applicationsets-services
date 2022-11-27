@@ -1,6 +1,6 @@
 # argocd-applicationsets-services
 
-![Version: 0.5.9](https://img.shields.io/badge/Version-0.5.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.9](https://img.shields.io/badge/AppVersion-0.5.9-informational?style=flat-square)
+![Version: 0.5.10](https://img.shields.io/badge/Version-0.5.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.10](https://img.shields.io/badge/AppVersion-0.5.10-informational?style=flat-square)
 
 A HELM Chart for ArgoCD ApplicationSets for Kubernetes
 
@@ -25,7 +25,7 @@ Kubernetes: `>= 1.23`
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | github | object | `{"api":"https://api.github.com/","label":"preview","owner":"saidsef","path":"deployment","secretKey":"","secretName":""}` | GitHub repo configuration parameters |
-| gitlab | object | `{"api":"https://gitlab.com","label":"preview","path":"deployment","project":"saidsef","secretKey":"","secretName":""}` | GitLab repo configuration parameters |
+| gitlab | object | `{"api":"https://gitlab.com","group":"saidsef","label":"preview","path":"deployment","secretKey":"","secretName":""}` | GitLab repo configuration parameters |
 | label | string | `"preview"` | GitHub label to filter PRs that you want to target |
 | name | string | `"pr-review"` | ApplicationSet name |
 | namespace | string | `"argocd"` | Namespace of ArgoCD controller is deployed |
