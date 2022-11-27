@@ -67,6 +67,9 @@ repos:
 # -- GitHub polling rate (seconds)
 requeueAfterSeconds: 500
 
+# -- Duration is the amount to back off retries of failed syncs
+retryBackoffDuration: '10s'
+
 # -- ArgoCD server address
 server: 'https://kubernetes.default.svc'
 

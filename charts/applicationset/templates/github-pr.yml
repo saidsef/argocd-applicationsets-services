@@ -1,6 +1,7 @@
 {{- if and .Values.repos .Values.repos.github }}
 {{- $github := .Values.github -}}
 {{- $refresh := .Values.requeueAfterSeconds -}}
+{{- $retryBackoffDuration := .Values.retryBackoffDuration -}}
 {{- $namespace := .Values.namespace | replace "." "-" -}}
 {{- $dqf := "{{" -}}
 {{- $dqb := "}}" -}}
@@ -83,6 +84,9 @@ spec:
           - CreateNamespace=true
           - Prune=true
           - PruneLast=true
+        retry:
+          backoff:
+            duration: {{ $retryBackoffDuration }}
       destination:
         server: {{ $server }}
         namespace: '{{ $repo.name }}-{{ $dqf }}branch{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
