@@ -16,9 +16,9 @@ github:
 # -- GitLab repo configuration parameters
 gitlab:
   api: https://gitlab.com
+  project: 'saidsef'
   label: 'preview'
   path: 'deployment'
-  project: saidsef
   secretName: ''
   secretKey: ''
 
@@ -30,6 +30,10 @@ label: 'preview'
 # see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template
 repos:
   gitlab: {}
+  # - name: service-a
+  #   path: 'deployment/preview'
+  #   project: '13'
+  #   repoUrl: 'https://saidsef.co.uk/saidsef/service-a.git'
   github:
   - name: node-webserver
     images:
