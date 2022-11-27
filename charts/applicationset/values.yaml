@@ -16,7 +16,7 @@ github:
 # -- GitLab repo configuration parameters
 gitlab:
   api: https://gitlab.com
-  project: 'saidsef'
+  group: 'saidsef'
   label: 'preview'
   path: 'deployment'
   secretName: ''
