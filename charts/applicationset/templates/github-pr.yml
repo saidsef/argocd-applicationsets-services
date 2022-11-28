@@ -55,16 +55,20 @@ spec:
       source:
         {{- $localRepoUrl := printf "https://github.com/%s/%s.git" $github.owner $repo.name }}
         repoURL: {{ coalesce $repo.repoUrl $localRepoUrl }}
-        targetRevision: '{{ $dqf }}head_short_sha{{ $dqb }}'
         {{- if and $repo $repo.parameters }}
         helm:
           parameters:
             {{ toJson $repo.parameters | indent 0 }}
+        chart: {{ or $repo.chart $repo.name }}
+        targetRevision: "*"
         {{- else if and $repo $repo.values }}
         helm:
           values: |
             {{ toJson $repo.values | indent 0 }}
+        chart: {{ or $repo.chart $repo.name }}
+        targetRevision: "*"
         {{- else }}
+        targetRevision: '{{ $dqf }}head_short_sha{{ $dqb }}'
         kustomize:
           commonAnnotations:
             app.kubernetes.io/instance: '{{ $repo.name }}'
@@ -76,8 +80,8 @@ spec:
           {{- end }}
           - {{ $r | indent 0 | squote }}
           {{- end }}
-        {{- end }}
         path: {{ coalesce $repo.path $github.path }}
+        {{- end }}
       project: {{ $github.project | default "default" }}
       syncPolicy:
         automated:
