@@ -1,6 +1,6 @@
 # argocd-applicationsets-services
 
-![Version: 0.6.1](https://img.shields.io/badge/Version-0.6.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.6.1](https://img.shields.io/badge/AppVersion-0.6.1-informational?style=flat-square)
+![Version: 0.6.2](https://img.shields.io/badge/Version-0.6.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.6.2](https://img.shields.io/badge/AppVersion-0.6.2-informational?style=flat-square)
 
 A HELM Chart for ArgoCD ApplicationSets for Kubernetes
 
@@ -30,7 +30,7 @@ Kubernetes: `>= 1.23`
 | name | string | `"pr-review"` | ApplicationSet name |
 | namespace | string | `"argocd"` | Namespace of ArgoCD controller is deployed |
 | notificationChannel | string | `"argocd"` | ArgoCD Slack notification channel |
-| repos | object | `{"github":[{"images":["docker.io/saidsef/node-webserver:{{branch_slug}}"],"name":"node-webserver"},{"name":"alpine-jenkins-dockerfile","path":"deployment/preview"},{"images":["docker.io/saidsef/aws-kinesis-local:{{branch_slug}}"],"name":"aws-kinesis-local"},{"images":["docker.io/saidsef/aws-dynamodb-local:{{branch_slug}}"],"name":"aws-dynamodb-local"},{"name":"tika-document-to-text","path":"deployment/preview"},{"name":"scapy-containerised","path":"charts/scapy","values":{"image":{"tag":"{{branch_slug}}"}}},{"chart":"reverse-geocoding","name":"faas-reverse-geocoding","parameters":[{"name":"image.tag","value":"{{branch_slug}}"},{"name":"ingress.enabled","value":"true"},{"name":"ingress.enabled","value":"true"},{"name":"ingress.hosts[0].host","value":"{{branch_slug}}"}],"repoUrl":"https://saidsef.github.io/faas-reverse-geocoding"}],"gitlab":{}}` | List of repo names and override images for preview environment to dynamically pass the branch of the pull request head use '{{branch_slug}}' variable see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template |
+| repos | object | `{"github":[{"name":"scapy-containerised","path":"charts/scapy","values":{"image":{"tag":"{{branch_slug}}"}}}],"gitlab":{}}` | List of repo names and override images for preview environment to dynamically pass the branch of the pull request head use '{{branch_slug}}' variable see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template |
 | requeueAfterSeconds | int | `500` | GitHub polling rate (seconds) |
 | retryBackoffDuration | string | `"10s"` | Duration is the amount to back off retries of failed syncs |
 | server | string | `"https://kubernetes.default.svc"` | ArgoCD server address |
