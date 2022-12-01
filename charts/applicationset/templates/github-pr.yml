@@ -65,8 +65,12 @@ spec:
         helm:
           values: |
             {{ toJson $repo.values | indent 0 }}
+        {{- if and $repo $repo.chart }}
         chart: {{ or $repo.chart $repo.name }}
-        targetRevision: "*"
+        {{- else if and $repo $repo.path }}
+        path: {{ $repo.path }}
+        {{- end }}
+        targetRevision: {{ $repo.targetRevision | default "HEAD" }}
         {{- else }}
         targetRevision: '{{ $dqf }}head_short_sha{{ $dqb }}'
         kustomize:
