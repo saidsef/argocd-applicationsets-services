@@ -48,6 +48,9 @@ repos:
     - 'docker.io/saidsef/aws-dynamodb-local:{{branch_slug}}'
   - name: tika-document-to-text
     path: 'deployment/preview'
+  - name: k8s-spot-termination-notice
+    images:
+    - 'docker.io/saidsef/k8s-spot-termination-notice:merge'
   - name: scapy-containerised
     path: 'charts/scapy'
     values:
