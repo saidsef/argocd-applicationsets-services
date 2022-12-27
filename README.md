@@ -18,7 +18,7 @@ Services that should already be installed and/or running.
 
 ## Deployment
 
-> Use `repo:` in values to inject or override values in `kustomize` or `helm` 
+> Use `repo:` in values to inject or override values in `kustomize` or `helm`
 ### HELM
 
 ```shell

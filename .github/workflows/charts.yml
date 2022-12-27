@@ -1,6 +1,17 @@
 name: Charts
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - charts/**
+  pull_request:
+    branches:
+      - main
+    paths:
+      - charts/**
+  workflow_dispatch:
 
 jobs:
   chart:
