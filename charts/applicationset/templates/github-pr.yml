@@ -44,6 +44,9 @@ spec:
         app.kubernetes.io/created-by: 'applicationset'
         app.kubernetes.io/name: '{{ $dqf }}branch_slug{{ $dqb }}'
         app.kubernetes.io/part-of: '{{ $name }}'
+        argocd-image-updater.argoproj.io/force-update: 'true'
+        argocd-image-updater.argoproj.io/update-strategy: 'latest'
+        argocd-image-updater.argoproj.io/write-back-method: 'argocd'
         argocd.argoproj.io/application-set-refresh: "true"
         argocd.argoproj.io/head: '{{ $dqf }}head_short_sha{{ $dqb }}'
         notifications.argoproj.io/subscribe.on-deleted.slack: '{{ $notificationChannel }}'
