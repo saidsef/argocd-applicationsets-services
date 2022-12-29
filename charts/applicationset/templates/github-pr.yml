@@ -65,7 +65,7 @@ spec:
           parameters:
             {{ toJson $repo.parameters | indent 0 }}
         chart: {{ or $repo.chart $repo.name }}
-        targetRevision: "*"
+        targetRevision: {{ or $repo.targetRevision "0.*" }}
         {{- else if and $repo $repo.values }}
         helm:
           values: |
@@ -75,9 +75,9 @@ spec:
         {{- else if and $repo $repo.path }}
         path: {{ $repo.path }}
         {{- end }}
-        targetRevision: {{ or $repo.targetRevision $branchSlug $headShortSha default "HEAD" }}
+        targetRevision: {{ or $repo.targetRevision $branchSlug $headShortSha "HEAD" }}
         {{- else }}
-        targetRevision: '{{ $dqf }}head_short_sha{{ $dqb }}'
+        targetRevision: {{ or $repo.targetRevision $branchSlug $headShortSha "HEAD" }}
         kustomize:
           commonAnnotations:
             app.kubernetes.io/instance: '{{ $repo.name }}'
