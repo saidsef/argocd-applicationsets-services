@@ -65,7 +65,7 @@ spec:
           parameters:
             {{ toJson $repo.parameters | indent 0 }}
         chart: {{ or $repo.chart $repo.name }}
-        targetRevision: {{ or $repo.targetRevision "0.*" }}
+        targetRevision: {{ or $repo.targetRevision ">= 0" | quote }}
         {{- else if and $repo $repo.values }}
         helm:
           values: |
