@@ -81,7 +81,7 @@ spec:
         kustomize:
           commonAnnotations:
             app.kubernetes.io/instance: '{{ $repo.name }}'
-            app.kubernetes.io/past-of: {{ $github.label }}
+            app.kubernetes.io/part-of: {{ $github.label }}
             argocd.argoproj.io/head_short_sha: '{{ $dqf }}head_short_sha{{ $dqb }}'
           {{- range $i, $r := $repo.images }}
           {{- if eq $i 0 }}
