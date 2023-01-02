@@ -1,4 +1,4 @@
-# ArgoCD ApplicationSet Services [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE.md) [![Chart](https://github.com/saidsef/argocd-applicationsets-services/actions/workflows/charts.yml/badge.svg)](#deployment)[![Commits](https://img.shields.io/github/commits-since/saidsef/argocd-applicationsets-services/latest.svg)](#Source)
+# ArgoCD ApplicationSet Services [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE.md) [![Chart](https://github.com/saidsef/argocd-applicationsets-services/actions/workflows/charts.yml/badge.svg)](#deployment) [![Artifact HUB](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/argocd-applicationsets-services)](https://artifacthub.io/packages/search?repo=argocd-applicationsets-services) [![Commits](https://img.shields.io/github/commits-since/saidsef/argocd-applicationsets-services/latest.svg)](#Source)
 
 A [Helm chart for ArgoCD ApplicationSet](./charts/applicationset/README.md) services that uses pull request generator to automatically discover open pull requests within a repository with the **label** `preview`.
 
