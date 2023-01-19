@@ -1,4 +1,5 @@
 # ArgoCD ApplicationSet Services [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE.md) [![Chart](https://github.com/saidsef/argocd-applicationsets-services/actions/workflows/charts.yml/badge.svg)](#deployment) [![Artifact HUB](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/argocd-applicationsets-services)](https://artifacthub.io/packages/search?repo=argocd-applicationsets-services) [![Commits](https://img.shields.io/github/commits-since/saidsef/argocd-applicationsets-services/latest.svg)](#Source)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsaidsef%2Fargocd-applicationsets-services.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsaidsef%2Fargocd-applicationsets-services?ref=badge_shield)
 
 A [Helm chart for ArgoCD ApplicationSet](./charts/applicationset/README.md) services that uses pull request generator to automatically discover open pull requests within a repository with the **label** `preview`.
 
@@ -36,3 +37,7 @@ Our latest and greatest source of `argocd-applicationsets-services` can be found
 We would :heart: you to contribute by making a [pull request](https://github.com/saidsef/argocd-applicationsets-services/pulls).
 
 Please read the official [Contribution Guide](./CONTRIBUTING.md) for more information on how you can contribute.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsaidsef%2Fargocd-applicationsets-services.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsaidsef%2Fargocd-applicationsets-services?ref=badge_large)
