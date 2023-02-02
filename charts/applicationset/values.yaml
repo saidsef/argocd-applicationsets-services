@@ -1,8 +1,25 @@
 # -- ApplicationSet name
-name: 'pr-review'
+name: 'pr-reviews'
 
 # -- Namespace of ArgoCD controller is deployed
 namespace: 'argocd'
+
+# -- Global default variables
+globals:
+  # -- GitHub polling rate (seconds)
+  requeueAfterSeconds: 500
+
+  # -- Duration is the amount to back off retries of failed syncs
+  retryBackoffDuration: '10s'
+
+  # -- ArgoCD server address
+  server: 'https://kubernetes.default.svc'
+
+  # -- ArgoCD Slack notification channel
+  notificationChannel: 'argocd'
+
+  # -- Kubernetes namespace to deploy previews
+  deployNamespace: previews
 
 # -- GitHub repo configuration parameters
 github:
@@ -33,7 +50,7 @@ repos:
   # - name: service-a
   #   path: 'deployment/preview'
   #   project: '13'
-  #   repoUrl: 'https://saidsef.co.uk/saidsef/service-a.git'
+  #   repoUrl: 'https://gitlab.com/project/service-a.git'
   github:
   - name: node-webserver
     images:
@@ -68,15 +85,3 @@ repos:
         value: "true"
       - name: "ingress.hosts[0].host"
         value: "{{branch_slug}}"
-
-# -- GitHub polling rate (seconds)
-requeueAfterSeconds: 500
-
-# -- Duration is the amount to back off retries of failed syncs
-retryBackoffDuration: '10s'
-
-# -- ArgoCD server address
-server: 'https://kubernetes.default.svc'
-
-# -- ArgoCD Slack notification channel
-notificationChannel: 'argocd'
