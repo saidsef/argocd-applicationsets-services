@@ -1,15 +1,15 @@
 {{- if and .Values.repos .Values.repos.gitlab }}
 {{- $gitlab := .Values.gitlab -}}
-{{- $refresh := .Values.requeueAfterSeconds -}}
-{{- $retryBackoffDuration := .Values.retryBackoffDuration -}}
+{{- $refresh := coalesce .Values.requeueAfterSeconds .Values.globals.requeueAfterSeconds -}}
+{{- $retryBackoffDuration := coalesce .Values.retryBackoffDuration .Values.globals.retryBackoffDuration -}}
 {{- $name := .Values.name -}}
 {{- $namespace := .Values.namespace | replace "." "-" -}}
 {{- $dqf := "{{" -}}
 {{- $dqb := "}}" -}}
 {{- $branchSlug := "{{branch_slug}}" | squote -}}
 {{- $headShortSha := "{{head_short_sha}}" | squote -}}
-{{- $server := .Values.server | squote -}}
-{{- $notificationChannel := .Values.notificationChannel -}}
+{{- $server := coalesce .Values.server .Values.globals.server | squote -}}
+{{- $notificationChannel := coalesce .Values.notificationChannel .Values.globals.notificationChannel -}}
 
 {{- range $key, $repo := .Values.repos.gitlab }}
 ---
@@ -106,6 +106,7 @@ spec:
             duration: {{ $retryBackoffDuration }}
       destination:
         server: {{ $server }}
-        namespace: '{{ $repo.name }}-{{ $dqf }}branch_slug{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
+        {{- $deployNamespace := printf "%s-%sbranch_slug%s-%snumber%s" $repo.name $dqf $dqb $dqf $dqb }}
+        namespace: {{ coalesce $.Values.globals.deployNamespace $deployNamespace }}
 {{- end }}
 {{- end }}

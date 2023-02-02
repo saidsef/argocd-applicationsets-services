@@ -12,9 +12,9 @@ This helm chart implements Pull Request generator of ApplicationSet, it uses API
 
 Services that should already be installed and/or running.
 
-- Kubernetes Cluster
+- Kubernetes Cluster >= 1.23
 - ArgoCD ApplicationSet Controller >= v5.8.x
-- [HELM](https://helm.sh/docs/intro/install/) >= v3.9.0
+- [HELM](https://helm.sh/docs/intro/install/) >= v3.9
 
 ## Deployment
 
