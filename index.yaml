@@ -1,0 +1,41 @@
+apiVersion: v1
+entries:
+  argocd-applicationsets-services:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: enhancement
+          description: Added ability to set/override values globally
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+    apiVersion: v2
+    appVersion: 0.7.1
+    created: "2023-02-02T20:03:23.806610455Z"
+    description: A HELM Chart for ArgoCD ApplicationSets for Kubernetes
+    digest: 26985ba4ae7b4112904e2350016b8258123b0e7270dd9fd62a88cf931fdf4b65
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - applicationsets
+    - argocd-applicationsets
+    - preview-environment
+    kubeVersion: '>= 1.23'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.7.1/argocd-applicationsets-services-0.7.1.tgz
+    version: 0.7.1
+generated: "2023-02-02T20:03:23.806614555Z"
