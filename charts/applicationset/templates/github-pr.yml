@@ -10,6 +10,7 @@
 {{- $headShortSha := "{{head_short_sha}}" | squote -}}
 {{- $server := coalesce .Values.server .Values.globals.server | squote -}}
 {{- $notificationChannel := coalesce .Values.notificationChannel .Values.globals.notificationChannel -}}
+{{- $pr := contains "api.github.com" $github.api | ternary "https://github.com" $github.api -}}
 
 {{- range $key, $repo := .Values.repos.github }}
 ---
@@ -56,6 +57,7 @@ spec:
         notifications.argoproj.io/subscribe.on-health-degraded.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-running.slack: '{{ $notificationChannel }}'
+        link.argocd.argoproj.io/external-link: "{{ $pr }}/{{or $repo.name $repo.path}}/pulls/{{ $dqf }}number{{ $dqb }}"
     spec:
       source:
         {{- $localRepoUrl := printf "https://github.com/%s/%s.git" $github.owner $repo.name }}
@@ -91,7 +93,7 @@ spec:
           {{- end }}
         path: {{ coalesce $repo.path $github.path }}
         {{- end }}
-      project: {{ $github.project | default "default" }}
+      project: {{ and $.Values.project $.Values.project.enabled | ternary $name "default" }}
       syncPolicy:
         automated:
           allowEmpty: true
@@ -106,7 +108,7 @@ spec:
             duration: {{ $retryBackoffDuration }}
       destination:
         server: {{ $server }}
-        {{- $deployNamespace := printf "%s-%sbranch_slug%s-%snumber%s" $repo.name $dqf $dqb $dqf $dqb }}
-        namespace: {{ coalesce $.Values.globals.deployNamespace $deployNamespace }}
+        {{- $deployToNamespace := printf "%s-%sbranch_slug%s-%snumber%s" $repo.name $dqf $dqb $dqf $dqb }}
+        namespace: {{ coalesce $.Values.globals.deployToNamespace $deployToNamespace }}
 {{- end }}
 {{- end }}

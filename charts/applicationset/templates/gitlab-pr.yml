@@ -56,6 +56,7 @@ spec:
         notifications.argoproj.io/subscribe.on-health-degraded.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-running.slack: '{{ $notificationChannel }}'
+        link.argocd.argoproj.io/external-link: "{{ $gitlab.api }}/{{ $gitlab.group }}/{{or $repo.name $repo.path}}/-/merge_requests/{{ $dqf }}number{{ $dqb }}"
     spec:
       source:
         {{- $localRepoUrl := printf "https://gitlab.com/%s/%s.git" $gitlab.group $repo.name }}
@@ -91,7 +92,7 @@ spec:
           {{- end }}
         path: {{ coalesce $repo.path $gitlab.path }}
         {{- end }}
-      project: {{ $gitlab.project | default "default" }}
+      project: {{ and $.Values.project $.Values.project.enabled | ternary $name "default" }}
       syncPolicy:
         automated:
           allowEmpty: true
@@ -106,7 +107,7 @@ spec:
             duration: {{ $retryBackoffDuration }}
       destination:
         server: {{ $server }}
-        {{- $deployNamespace := printf "%s-%sbranch_slug%s-%snumber%s" $repo.name $dqf $dqb $dqf $dqb }}
-        namespace: {{ coalesce $.Values.globals.deployNamespace $deployNamespace }}
+        {{- $deployToNamespace := printf "%s-%sbranch_slug%s-%snumber%s" $repo.name $dqf $dqb $dqf $dqb }}
+        namespace: {{ coalesce $.Values.globals.deployToNamespace $deployToNamespace }}
 {{- end }}
 {{- end }}
