@@ -30,7 +30,9 @@ project:
   clusterResourceBlacklist: []
   clusterResourceWhitelist: []
   # Only permit applications to deploy to the previews namespace in the same cluster
-  destinations: []
+  destinations:
+  - namespace: *deployToNamespace
+    server: 'https://kubernetes.default.svc'
   # Allow all namespaced-scoped resources to be created, except for AppProject
   namespaceResourceBlacklist:
   - group: 'argoproj.io'
