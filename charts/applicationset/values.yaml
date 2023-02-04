@@ -1,7 +1,7 @@
 # -- ApplicationSet name
 name: 'pr-reviews'
 
-# -- Namespace of ArgoCD controller is deployed
+# -- ArgoCD controller Namespace deployed
 namespace: 'argocd'
 
 # -- Global default variables
@@ -9,7 +9,7 @@ globals:
   # -- GitHub polling rate (seconds)
   requeueAfterSeconds: 500
 
-  # -- Duration is the amount to back off retries of failed syncs
+  # -- The amount to back off retries of failed syncs
   retryBackoffDuration: '10s'
 
   # -- ArgoCD server address
@@ -19,11 +19,36 @@ globals:
   notificationChannel: 'argocd'
 
   # -- Kubernetes namespace to deploy previews
-  deployNamespace: previews
+  deployToNamespace: &deployToNamespace previews
+
+  # -- GitHub label to filter PRs that you want to target
+  label: 'preview'
+
+# -- ArgoCD Project parameters
+project:
+  enabled: false
+  clusterResourceBlacklist: []
+  clusterResourceWhitelist: []
+  # Only permit applications to deploy to the previews namespace in the same cluster
+  destinations:
+  - namespace: *deployToNamespace
+    # server: https://kubernetes.default.svc
+  # Allow all namespaced-scoped resources to be created, except for AppProject
+  namespaceResourceBlacklist:
+  - group: 'argoproj.io'
+    kind: AppProject
+  namespaceResourceWhitelist: []
+  orphanedResources:
+    warn: false
+  roles: []
+  # Allow from all repositories
+  sourceRepos:
+  - '*'
+  syncWindows: []
 
 # -- GitHub repo configuration parameters
 github:
-  api: https://api.github.com/
+  api: https://api.github.com
   label: 'preview'
   owner: 'saidsef'
   path: 'deployment'
@@ -38,9 +63,6 @@ gitlab:
   path: 'deployment'
   secretName: ''
   secretKey: ''
-
-# -- GitHub label to filter PRs that you want to target
-label: 'preview'
 
 # -- List of repo names and override images for preview environment
 # to dynamically pass the branch of the pull request head use '{{branch_slug}}' variable

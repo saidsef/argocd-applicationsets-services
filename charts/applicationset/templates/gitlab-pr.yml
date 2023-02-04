@@ -1,5 +1,6 @@
 {{- if and .Values.repos .Values.repos.gitlab }}
 {{- $gitlab := .Values.gitlab -}}
+{{- $globals := .Values.globals -}}
 {{- $refresh := coalesce .Values.requeueAfterSeconds .Values.globals.requeueAfterSeconds -}}
 {{- $retryBackoffDuration := coalesce .Values.retryBackoffDuration .Values.globals.retryBackoffDuration -}}
 {{- $name := .Values.name -}}
@@ -32,7 +33,7 @@ spec:
         project: '{{ coalesce $repo.project $gitlab.group |  required "A valid repo project / group ID is required" }}'
         pullRequestState: 'opened'
         labels:
-        - '{{ required "A valied label(s) for PRs is required" $gitlab.label }}'
+        - '{{ required "A valied label(s) for PRs is required" (coalesce $gitlab.label $globals.label) }}'
         {{- if and ($gitlab.secretName) ($gitlab.secretKey) }}
         tokenRef:
           secretName: '{{ $gitlab.secretName }}'
@@ -56,6 +57,7 @@ spec:
         notifications.argoproj.io/subscribe.on-health-degraded.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-running.slack: '{{ $notificationChannel }}'
+        link.argocd.argoproj.io/external-link: "{{ $gitlab.api }}/{{ $gitlab.group }}/{{or $repo.name $repo.path}}/-/merge_requests/{{ $dqf }}number{{ $dqb }}"
     spec:
       source:
         {{- $localRepoUrl := printf "https://gitlab.com/%s/%s.git" $gitlab.group $repo.name }}
@@ -81,7 +83,7 @@ spec:
         kustomize:
           commonAnnotations:
             app.kubernetes.io/instance: '{{ $repo.name }}'
-            app.kubernetes.io/part-of: {{ $gitlab.label }}
+            app.kubernetes.io/part-of: {{ coalesce $gitlab.label $globals.label }}
             argocd.argoproj.io/head_short_sha: '{{ $dqf }}head_short_sha{{ $dqb }}'
           {{- range $i, $r := $repo.images }}
           {{- if eq $i 0 }}
@@ -91,7 +93,7 @@ spec:
           {{- end }}
         path: {{ coalesce $repo.path $gitlab.path }}
         {{- end }}
-      project: {{ $gitlab.project | default "default" }}
+      project: {{ and $.Values.project $.Values.project.enabled | ternary $name "default" }}
       syncPolicy:
         automated:
           allowEmpty: true
@@ -106,7 +108,7 @@ spec:
             duration: {{ $retryBackoffDuration }}
       destination:
         server: {{ $server }}
-        {{- $deployNamespace := printf "%s-%sbranch_slug%s-%snumber%s" $repo.name $dqf $dqb $dqf $dqb }}
-        namespace: {{ coalesce $.Values.globals.deployNamespace $deployNamespace }}
+        {{- $deployToNamespace := printf "%s-%sbranch_slug%s-%snumber%s" $repo.name $dqf $dqb $dqf $dqb }}
+        namespace: {{ coalesce $.Values.globals.deployToNamespace $deployToNamespace }}
 {{- end }}
 {{- end }}

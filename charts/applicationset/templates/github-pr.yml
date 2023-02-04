@@ -1,5 +1,6 @@
 {{- if and .Values.repos .Values.repos.github }}
 {{- $github := .Values.github -}}
+{{- $globals := .Values.globals -}}
 {{- $refresh := coalesce .Values.requeueAfterSeconds .Values.globals.requeueAfterSeconds -}}
 {{- $retryBackoffDuration := coalesce .Values.retryBackoffDuration .Values.globals.retryBackoffDuration -}}
 {{- $name := .Values.name -}}
@@ -10,6 +11,7 @@
 {{- $headShortSha := "{{head_short_sha}}" | squote -}}
 {{- $server := coalesce .Values.server .Values.globals.server | squote -}}
 {{- $notificationChannel := coalesce .Values.notificationChannel .Values.globals.notificationChannel -}}
+{{- $pr := contains "api.github.com" $github.api | ternary "https://github.com" $github.api -}}
 
 {{- range $key, $repo := .Values.repos.github }}
 ---
@@ -32,7 +34,7 @@ spec:
         owner: '{{ required "A valid repo organization / owner is required" $github.owner }}'
         repo: '{{ required "A valid repo name is required" $repo.name }}'
         labels:
-        - '{{ required "A valied label(s) for PRs is required" $github.label }}'
+        - '{{ required "A valied label(s) for PRs is required" (coalesce $github.label $globals.label) }}'
         {{- if and ($github.secretName) ($github.secretKey) }}
         tokenRef:
           secretName: '{{ $github.secretName }}'
@@ -56,6 +58,7 @@ spec:
         notifications.argoproj.io/subscribe.on-health-degraded.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-running.slack: '{{ $notificationChannel }}'
+        link.argocd.argoproj.io/external-link: "{{ $pr }}/{{or $repo.name $repo.path}}/pulls/{{ $dqf }}number{{ $dqb }}"
     spec:
       source:
         {{- $localRepoUrl := printf "https://github.com/%s/%s.git" $github.owner $repo.name }}
@@ -81,7 +84,7 @@ spec:
         kustomize:
           commonAnnotations:
             app.kubernetes.io/instance: '{{ $repo.name }}'
-            app.kubernetes.io/part-of: {{ $github.label }}
+            app.kubernetes.io/part-of: {{ coalesce $github.label $globals.label }}
             argocd.argoproj.io/head_short_sha: '{{ $dqf }}head_short_sha{{ $dqb }}'
           {{- range $i, $r := $repo.images }}
           {{- if eq $i 0 }}
@@ -91,7 +94,7 @@ spec:
           {{- end }}
         path: {{ coalesce $repo.path $github.path }}
         {{- end }}
-      project: {{ $github.project | default "default" }}
+      project: {{ and $.Values.project $.Values.project.enabled | ternary $name "default" }}
       syncPolicy:
         automated:
           allowEmpty: true
@@ -106,7 +109,7 @@ spec:
             duration: {{ $retryBackoffDuration }}
       destination:
         server: {{ $server }}
-        {{- $deployNamespace := printf "%s-%sbranch_slug%s-%snumber%s" $repo.name $dqf $dqb $dqf $dqb }}
-        namespace: {{ coalesce $.Values.globals.deployNamespace $deployNamespace }}
+        {{- $deployToNamespace := printf "%s-%sbranch_slug%s-%snumber%s" $repo.name $dqf $dqb $dqf $dqb }}
+        namespace: {{ coalesce $.Values.globals.deployToNamespace $deployToNamespace }}
 {{- end }}
 {{- end }}
