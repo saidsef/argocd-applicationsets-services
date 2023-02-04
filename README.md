@@ -5,7 +5,7 @@ A [Helm chart for ArgoCD ApplicationSet](./charts/applicationset/README.md) serv
 ## What does it do and how does it work?
 [ApplicationSets](https://argocd-applicationset.readthedocs.io/en/stable/) interact with ArgoCD by creating, updating, managing, and deleting ArgoCD Applications. The job is to make sure that the ArgoCD Application remains consistent with the declared ApplicationSet resource(s). This can be thought of as sort of an “Application factory”. It takes an ApplicationSet and outputs one or more ArgoCD Applications.
 
-This helm chart implements Pull Request generator of ApplicationSet, it uses API of an SCMaaS provider (GitHub and/or GitLab) to automatically discover open pull requests within an repository via GitHub and/or GitLab **labels**. This fits well with the style of building a test environment when you create a pull request.
+This helm chart implements Pull Request generator of ApplicationSet, it uses API of an SCMaaS provider (GitHub and/or GitLab) to automatically discover open pull requests within an repository via GitHub / GitLab **labels**. This fits well with the style of building a test environment when you create a pull request.
 
 > Branch name(s) must be [RFC 1123](https://www.rfc-editor.org/rfc/rfc1123) subdomain must consist of lower case alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character
 ## Prerequisite
@@ -13,7 +13,7 @@ This helm chart implements Pull Request generator of ApplicationSet, it uses API
 Services that should already be installed and/or running.
 
 - Kubernetes Cluster >= 1.23
-- ArgoCD ApplicationSet Controller >= v5.8.x
+- [ArgoCD ApplicationSet Controller](https://argo-cd.readthedocs.io/en/stable/user-guide/application-set/) >= v2.5.8
 - [HELM](https://helm.sh/docs/intro/install/) >= v3.9
 
 ## Deployment
