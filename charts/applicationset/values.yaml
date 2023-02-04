@@ -27,16 +27,18 @@ globals:
 # -- ArgoCD Project parameters
 project:
   enabled: false
-  clusterResourceBlacklist: []
-  clusterResourceWhitelist: []
+  clusterResourceBlacklist:
+  - group: 'argoproj.io'
+    kind: AppProject
+  clusterResourceWhitelist:
+  - group: '*'
+  - kind: '*'
   # Only permit applications to deploy to the previews namespace in the same cluster
   destinations:
   - namespace: *deployToNamespace
     server: 'https://kubernetes.default.svc'
   # Allow all namespaced-scoped resources to be created, except for AppProject
-  namespaceResourceBlacklist:
-  - group: 'argoproj.io'
-    kind: AppProject
+  namespaceResourceBlacklist: []
   namespaceResourceWhitelist: []
   orphanedResources:
     warn: false
