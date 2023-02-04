@@ -2,7 +2,7 @@ apiVersion: v2
 name: argocd-applicationsets-services
 description: A HELM Chart for ArgoCD ApplicationSets for Kubernetes
 type: application
-version: &version "0.8.4"
+version: &version "0.8.5"
 appVersion: *version
 kubeVersion: ">= 1.23"
 home: https://github.com/saidsef/argocd-applicationsets-services
@@ -22,23 +22,8 @@ sources:
 annotations:
   artifacthub.io/license: "Apache-2.0"
   artifacthub.io/changes: |
-    - kind: added
-      description: Added ability to deploy ArgoCD Project for all your Applications
-    - kind: changed
-      description: Updated documentation to reflect changes
-    - kind: changed
-      description: Moved label to globals and can be overridden by local repo label
-    - kind: added
-      description: Added external link to PR / MR localtion
-    - kind: removed
-      description: Removed repo project variable as that collided with GitLab project ID
     - kind: fixed
-      description: Fixed Application and AppProject names
-    - kind: security
-      description: Restrict resources in ArgoCD Applications using ArgoCD Project
-      links:
-        - name: ArgoCD Projects
-          url: https://argo-cd.readthedocs.io/en/stable/user-guide/projects/
+      description: Fixed AppSet deploy to AppProj namespace
   artifacthub.io/links: |
     - name: README
       url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
