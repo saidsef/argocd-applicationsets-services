@@ -21,6 +21,9 @@ globals:
   # -- Kubernetes namespace to deploy previews
   deployToNamespace: &deployToNamespace previews
 
+  # -- GitHub label to filter PRs that you want to target
+  label: 'preview'
+
 # -- ArgoCD Project parameters
 project:
   enabled: false
@@ -60,9 +63,6 @@ gitlab:
   path: 'deployment'
   secretName: ''
   secretKey: ''
-
-# -- GitHub label to filter PRs that you want to target
-label: 'preview'
 
 # -- List of repo names and override images for preview environment
 # to dynamically pass the branch of the pull request head use '{{branch_slug}}' variable

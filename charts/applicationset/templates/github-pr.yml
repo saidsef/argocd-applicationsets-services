@@ -1,5 +1,6 @@
 {{- if and .Values.repos .Values.repos.github }}
 {{- $github := .Values.github -}}
+{{- $globals := .Values.globals -}}
 {{- $refresh := coalesce .Values.requeueAfterSeconds .Values.globals.requeueAfterSeconds -}}
 {{- $retryBackoffDuration := coalesce .Values.retryBackoffDuration .Values.globals.retryBackoffDuration -}}
 {{- $name := .Values.name -}}
@@ -33,7 +34,7 @@ spec:
         owner: '{{ required "A valid repo organization / owner is required" $github.owner }}'
         repo: '{{ required "A valid repo name is required" $repo.name }}'
         labels:
-        - '{{ required "A valied label(s) for PRs is required" $github.label }}'
+        - '{{ required "A valied label(s) for PRs is required" (coalesce $github.label $globals.label) }}'
         {{- if and ($github.secretName) ($github.secretKey) }}
         tokenRef:
           secretName: '{{ $github.secretName }}'
@@ -83,7 +84,7 @@ spec:
         kustomize:
           commonAnnotations:
             app.kubernetes.io/instance: '{{ $repo.name }}'
-            app.kubernetes.io/part-of: {{ $github.label }}
+            app.kubernetes.io/part-of: {{ coalesce $github.label $globals.label }}
             argocd.argoproj.io/head_short_sha: '{{ $dqf }}head_short_sha{{ $dqb }}'
           {{- range $i, $r := $repo.images }}
           {{- if eq $i 0 }}

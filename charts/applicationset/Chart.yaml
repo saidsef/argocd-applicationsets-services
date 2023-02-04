@@ -26,6 +26,8 @@ annotations:
       description: Added ability to deploy ArgoCD Project for all your Applications
     - kind: changed
       description: Updated documentation to reflect changes
+    - kind: changed
+      description: Moved label to globals and can be overridden by local repo label
     - kind: added
       description: Added external link to PR / MR localtion
     - kind: removed
