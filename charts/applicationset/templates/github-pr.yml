@@ -58,7 +58,7 @@ spec:
         notifications.argoproj.io/subscribe.on-health-degraded.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-running.slack: '{{ $notificationChannel }}'
-        link.argocd.argoproj.io/external-link: "{{ $pr }}/{{or $repo.name $repo.path}}/pulls/{{ $dqf }}number{{ $dqb }}"
+        link.argocd.argoproj.io/external-link: "{{ $pr }}/{{ $github.owner }}/{{or $repo.name $repo.path}}/pulls/{{ $dqf }}number{{ $dqb }}"
     spec:
       source:
         {{- $localRepoUrl := printf "https://github.com/%s/%s.git" $github.owner $repo.name }}
