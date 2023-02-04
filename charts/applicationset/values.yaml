@@ -32,7 +32,7 @@ project:
     kind: AppProject
   clusterResourceWhitelist:
   - group: '*'
-  - kind: '*'
+    kind: '*'
   # Only permit applications to deploy to the previews namespace in the same cluster
   destinations:
   - namespace: *deployToNamespace
