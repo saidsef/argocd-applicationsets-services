@@ -53,12 +53,13 @@ spec:
         argocd-image-updater.argoproj.io/write-back-method: 'argocd'
         argocd.argoproj.io/application-set-refresh: "true"
         argocd.argoproj.io/head: '{{ $dqf }}head_short_sha{{ $dqb }}'
+        argocd.argoproj.io/tracking-id: '{{$repo.name}}:{{ $dqf }}head_short_sha{{ $dqb }}'
+        link.argocd.argoproj.io/external-link: '{{ $pr }}/{{ $github.owner }}/{{or $repo.name $repo.path}}/pull/{{ $dqf }}number{{ $dqb }}'
         notifications.argoproj.io/subscribe.on-deleted.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-deployed.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-health-degraded.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-running.slack: '{{ $notificationChannel }}'
-        link.argocd.argoproj.io/external-link: "{{ $pr }}/{{ $github.owner }}/{{or $repo.name $repo.path}}/pull/{{ $dqf }}number{{ $dqb }}"
     spec:
       source:
         {{- $localRepoUrl := printf "https://github.com/%s/%s.git" $github.owner $repo.name }}
