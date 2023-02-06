@@ -60,6 +60,7 @@ spec:
         notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
         notifications.argoproj.io/subscribe.on-sync-running.slack: '{{ $notificationChannel }}'
     spec:
+      revisionHistoryLimit: {{ $globals.revisionHistoryLimit }}
       source:
         {{- $localRepoUrl := printf "https://gitlab.com/%s/%s.git" $gitlab.group $repo.name }}
         repoURL: {{ coalesce $repo.repoUrl $localRepoUrl }}
