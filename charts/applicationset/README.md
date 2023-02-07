@@ -1,6 +1,6 @@
 # argocd-applicationsets-services
 
-![Version: 0.8.12](https://img.shields.io/badge/Version-0.8.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.8.12](https://img.shields.io/badge/AppVersion-0.8.12-informational?style=flat-square)
+![Version: 0.8.13](https://img.shields.io/badge/Version-0.8.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.8.13](https://img.shields.io/badge/AppVersion-0.8.13-informational?style=flat-square)
 
 A HELM Chart for ArgoCD ApplicationSets for Kubernetes
 
@@ -36,7 +36,7 @@ Kubernetes: `>= 1.23`
 | globals.server | string | `"https://kubernetes.default.svc"` | ArgoCD server address |
 | name | string | `"pr-reviews"` | ApplicationSet name |
 | namespace | string | `"argocd"` | ArgoCD controller Namespace deployed |
-| project | object | `{"clusterResourceBlacklist":[{"group":"argoproj.io","kind":"AppProject"}],"clusterResourceWhitelist":[{"group":"*","kind":"*"}],"destinations":[{"namespace":"previews","server":"*"}],"enabled":false,"namespaceResourceBlacklist":[{"group":"argoproj.io","kind":"AppProject"}],"namespaceResourceWhitelist":[{"group":"*","kind":"*"}],"orphanedResources":{"warn":false},"permitOnlyProjectScopedClusters":true,"roles":[],"sourceRepos":["*"],"syncWindows":[]}` | ArgoCD Project parameters |
+| project | object | `{"clusterResourceBlacklist":[{"group":"argoproj.io","kind":"AppProject"}],"clusterResourceWhitelist":[{"group":"*","kind":"*"}],"destinations":[{"name":"*","namespace":"previews","server":"*"}],"enabled":false,"namespaceResourceBlacklist":[{"group":"argoproj.io","kind":"AppProject"}],"namespaceResourceWhitelist":[{"group":"*","kind":"*"}],"orphanedResources":{"warn":false},"permitOnlyProjectScopedClusters":true,"roles":[],"sourceRepos":["*"],"syncWindows":[]}` | ArgoCD Project parameters |
 | repos | object | `{"github":[{"images":["docker.io/saidsef/node-webserver:{{branch_slug}}"],"name":"node-webserver"},{"name":"alpine-jenkins-dockerfile","path":"deployment/preview"},{"images":["docker.io/saidsef/aws-kinesis-local:{{branch_slug}}"],"name":"aws-kinesis-local"},{"images":["docker.io/saidsef/aws-dynamodb-local:{{branch_slug}}"],"name":"aws-dynamodb-local"},{"name":"tika-document-to-text","path":"deployment/preview"},{"images":["docker.io/saidsef/k8s-spot-termination-notice:merge"],"name":"k8s-spot-termination-notice"},{"name":"scapy-containerised","path":"charts/scapy","values":{"image":{"tag":"{{branch_slug}}"}}},{"chart":"reverse-geocoding","name":"faas-reverse-geocoding","parameters":[{"name":"image.tag","value":"{{branch_slug}}"},{"name":"ingress.enabled","value":"true"},{"name":"ingress.enabled","value":"true"},{"name":"ingress.hosts[0].host","value":"{{branch_slug}}"}],"repoUrl":"https://saidsef.github.io/faas-reverse-geocoding"}],"gitlab":{}}` | List of repo names and override images for preview environment to dynamically pass the branch of the pull request head use '{{branch_slug}}' variable see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template |
 
 ----------------------------------------------

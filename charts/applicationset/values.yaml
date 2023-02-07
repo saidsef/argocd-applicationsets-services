@@ -41,6 +41,7 @@ project:
   destinations:
   - namespace: *deployToNamespace
     server: '*'
+    name: '*'
   # Allow all namespaced-scoped resources to be created, except for AppProject
   namespaceResourceBlacklist:
   - group: 'argoproj.io'
