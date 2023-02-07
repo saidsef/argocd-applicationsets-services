@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   description: {{ printf "Project for %s" .Values.name }}
-  permitOnlyProjectScopedClusters: {{ .Values.project.permitOnlyProjectScopedClusters | default "true" }}
+  permitOnlyProjectScopedClusters: {{ .Values.project.permitOnlyProjectScopedClusters | default "false" }}
   clusterResourceBlacklist:
     {{- toYaml .Values.project.clusterResourceBlacklist | nindent 4 }}
   clusterResourceWhitelist:

@@ -22,7 +22,7 @@ globals:
   notificationChannel: 'argocd'
 
   # -- Kubernetes namespace to deploy previews
-  deployToNamespace: &deployToNamespace previews
+  deployToNamespace: 'previews'
 
   # -- GitHub label to filter PRs that you want to target
   label: 'preview'
@@ -30,16 +30,16 @@ globals:
 # -- ArgoCD Project parameters
 project:
   enabled: false
-  permitOnlyProjectScopedClusters: true
+  permitOnlyProjectScopedClusters: false
   clusterResourceBlacklist:
-  - group: 'argoproj.io'
-    kind: 'AppProject'
+  - group: 'apiextensions.k8s.io'
+    kind: 'CustomResourceDefinition'
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
   # Only permit applications to deploy to the previews namespace in the same cluster
   destinations:
-  - namespace: *deployToNamespace
+  - namespace: 'previews'
     server: '*'
     name: '*'
   # Allow all namespaced-scoped resources to be created, except for AppProject
