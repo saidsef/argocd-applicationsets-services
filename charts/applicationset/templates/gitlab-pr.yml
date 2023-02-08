@@ -43,7 +43,8 @@ spec:
       requeueAfterSeconds: {{ $refresh | default 500 }}
   template:
     metadata:
-      name: '{{ $repo.name }}-{{ $dqf }}branch_slug{{ $dqb }}-{{ $dqf }}number{{ $dqb }}'
+      {{- $appName := printf "%s-%sbranch_slug%s-%snumber%s" $repo.name $dqf $dqb $dqf $dqb }}
+      name: {{ $appName | trunc 50 | squote }}
       annotations:
         app.kubernetes.io/created-by: 'applicationset'
         app.kubernetes.io/name: '{{ $dqf }}branch_slug{{ $dqb }}'
@@ -112,6 +113,6 @@ spec:
       destination:
         server: {{ $server }}
         {{- $deployToNamespace := printf "%s-%sbranch_slug%s-%snumber%s" $repo.name $dqf $dqb $dqf $dqb }}
-        namespace: {{ coalesce $.Values.globals.deployToNamespace $deployToNamespace }}
+        namespace: {{ coalesce $.Values.globals.deployToNamespace $deployToNamespace | trunc 50 }}
 {{- end }}
 {{- end }}
