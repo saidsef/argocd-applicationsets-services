@@ -111,6 +111,6 @@ spec:
             duration: {{ $retryBackoffDuration }}
       destination:
         server: {{ $server }}
-        namespace: {{ printf "pr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb }}
+        namespace: {{ coalesce $.Values.globals.deployToNamespace (printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb) }}
 {{- end }}
 {{- end }}
