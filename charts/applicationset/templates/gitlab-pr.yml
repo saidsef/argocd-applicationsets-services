@@ -30,37 +30,35 @@ spec:
   generators:
   - pullRequest:
       gitlab:
-        api: '{{ $gitlab.api }}'
-        project: '{{ coalesce $repo.project $gitlab.group |  required "A valid repo project / group ID is required" }}'
+        api: {{ $gitlab.api }}
+        project: {{ coalesce $repo.project $gitlab.group |  required "A valid repo project / group ID is required" }}
         pullRequestState: 'opened'
         labels:
-        - '{{ required "A valied label(s) for PRs is required" (coalesce $gitlab.label $globals.label) }}'
+        - {{ required "A valied label(s) for PRs is required" (coalesce $gitlab.label $globals.label) }}
         {{- if and ($gitlab.secretName) ($gitlab.secretKey) }}
         tokenRef:
-          secretName: '{{ $gitlab.secretName }}'
-          key: '{{ $gitlab.secretKey }}'
+          secretName: {{ $gitlab.secretName }}
+          key: {{ $gitlab.secretKey }}
         {{- end }}
       requeueAfterSeconds: {{ $refresh | default 500 }}
   template:
     metadata:
-      {{- $appName := printf "%s-%sbranch_slug%s-%snumber%s" $repo.name $dqf $dqb $dqf $dqb }}
-      name: {{ $appName | trunc 50 | squote }}
+      name: {{ printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb }}
       annotations:
         app.kubernetes.io/created-by: 'applicationset'
-        app.kubernetes.io/name: '{{ $dqf }}branch_slug{{ $dqb }}'
-        app.kubernetes.io/part-of: '{{ $name }}'
+        app.kubernetes.io/name: {{ $branchSlug }}
+        app.kubernetes.io/part-of: {{ $name }}
         argocd-image-updater.argoproj.io/force-update: 'true'
         argocd-image-updater.argoproj.io/update-strategy: 'latest'
         argocd-image-updater.argoproj.io/write-back-method: 'argocd'
-        argocd.argoproj.io/application-set-refresh: "true"
-        argocd.argoproj.io/head: '{{ $dqf }}head_short_sha{{ $dqb }}'
-        argocd.argoproj.io/tracking-id: '{{$repo.name}}:{{ $dqf }}head_short_sha{{ $dqb }}'
+        argocd.argoproj.io/application-set-refresh: 'true'
+        argocd.argoproj.io/head: {{ $headShortSha }}
         link.argocd.argoproj.io/external-link: '{{ $gitlab.api }}/{{ $gitlab.group }}/{{or $repo.name $repo.path}}/-/merge_requests/{{ $dqf }}number{{ $dqb }}'
-        notifications.argoproj.io/subscribe.on-deleted.slack: '{{ $notificationChannel }}'
-        notifications.argoproj.io/subscribe.on-deployed.slack: '{{ $notificationChannel }}'
-        notifications.argoproj.io/subscribe.on-health-degraded.slack: '{{ $notificationChannel }}'
-        notifications.argoproj.io/subscribe.on-sync-failed.slack: '{{ $notificationChannel }}'
-        notifications.argoproj.io/subscribe.on-sync-running.slack: '{{ $notificationChannel }}'
+        notifications.argoproj.io/subscribe.on-deleted.slack: {{ $notificationChannel }}
+        notifications.argoproj.io/subscribe.on-deployed.slack: {{ $notificationChannel }}
+        notifications.argoproj.io/subscribe.on-health-degraded.slack: {{ $notificationChannel }}
+        notifications.argoproj.io/subscribe.on-sync-failed.slack: {{ $notificationChannel }}
+        notifications.argoproj.io/subscribe.on-sync-running.slack: {{ $notificationChannel }}
     spec:
       revisionHistoryLimit: {{ $globals.revisionHistoryLimit }}
       source:
@@ -112,7 +110,6 @@ spec:
             duration: {{ $retryBackoffDuration }}
       destination:
         server: {{ $server }}
-        {{- $deployToNamespace := printf "%s-%sbranch_slug%s-%snumber%s" $repo.name $dqf $dqb $dqf $dqb }}
-        namespace: {{ coalesce $.Values.globals.deployToNamespace $deployToNamespace | trunc 50 }}
+        namespace: {{ printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb }}
 {{- end }}
 {{- end }}
