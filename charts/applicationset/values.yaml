@@ -6,13 +6,13 @@ namespace: 'argocd'
 
 # -- Global default variables
 globals:
-  # -- GitHub polling rate (seconds)
+  # -- (int) GitHub polling rate (seconds)
   requeueAfterSeconds: 500
 
-  # -- How many old objects should be retained
+  # -- (int) How many old objects should be retained
   revisionHistoryLimit: 2
 
-  # -- The amount to back off retries of failed syncs
+  # -- (string) The amount to back off retries of failed syncs
   retryBackoffDuration: '10s'
 
   # -- ArgoCD server address
@@ -37,12 +37,12 @@ project:
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
-  # Only permit applications to deploy to the previews namespace in the same cluster
+  # -- Only permit applications to deploy to the previews namespace in the same cluster
   destinations:
   - namespace: 'previews'
     server: '*'
     name: '*'
-  # Allow all namespaced-scoped resources to be created, except for AppProject
+  # -- Allow all namespaced-scoped resources to be created, except for AppProject
   namespaceResourceBlacklist:
   - group: 'argoproj.io'
     kind: 'AppProject'
@@ -52,7 +52,7 @@ project:
   orphanedResources:
     warn: false
   roles: []
-  # Allow from all repositories
+  # -- Allow from all repositories
   sourceRepos:
   - '*'
   syncWindows: []
