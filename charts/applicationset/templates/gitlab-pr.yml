@@ -31,7 +31,7 @@ spec:
   - pullRequest:
       gitlab:
         api: {{ $gitlab.api }}
-        project: {{ coalesce $repo.project $gitlab.group |  required "A valid repo project / group ID is required" }}
+        project: {{ coalesce $repo.project $gitlab.group |  required "A valid repo project / group ID is required" | squote}}
         pullRequestState: 'opened'
         labels:
         - {{ required "A valied label(s) for PRs is required" (coalesce $gitlab.label $globals.label) }}
