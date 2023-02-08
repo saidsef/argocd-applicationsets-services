@@ -3,6 +3,45 @@ entries:
   argocd-applicationsets-services:
   - annotations:
       artifacthub.io/changes: |
+        - kind: fixed
+          description: Fixed namespace regression bug
+        - kind: fixed
+          description: Fixed gitlab project id as string regression bug
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+    apiVersion: v2
+    appVersion: 0.8.19
+    created: "2023-02-08T21:23:12.036529799Z"
+    description: A HELM Chart for ArgoCD ApplicationSets for Kubernetes
+    digest: 22b149b01a5388c5a99d3044d6cd8cec6276cec65f4810de2ae201f7665ae335
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - applicationsets
+    - argocd-applicationsets
+    - preview-environment
+    kubeVersion: '>= 1.23'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.8.19/argocd-applicationsets-services-0.8.19.tgz
+    version: 0.8.19
+  - annotations:
+      artifacthub.io/changes: |
         - kind: removed
           description: Removed duplicate variables
         - kind: changed
@@ -661,4 +700,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.7.1/argocd-applicationsets-services-0.7.1.tgz
     version: 0.7.1
-generated: "2023-02-08T20:54:16.692667901Z"
+generated: "2023-02-08T21:23:12.036661904Z"
