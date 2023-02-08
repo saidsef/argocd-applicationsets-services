@@ -4,6 +4,43 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: Updated AppSet targetRevision to branch name
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+    apiVersion: v2
+    appVersion: 0.8.15
+    created: "2023-02-08T11:34:31.452045684Z"
+    description: A HELM Chart for ArgoCD ApplicationSets for Kubernetes
+    digest: dd57fddd0750c72cc0b985065c179f0e8b15114a6daf8f08eeffa30d9ee8225a
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - applicationsets
+    - argocd-applicationsets
+    - preview-environment
+    kubeVersion: '>= 1.23'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.8.15/argocd-applicationsets-services-0.8.15.tgz
+    version: 0.8.15
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: Changed AppProj cluster resources to block CRDs
       artifacthub.io/license: Apache-2.0
       artifacthub.io/links: |
@@ -509,4 +546,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.7.1/argocd-applicationsets-services-0.7.1.tgz
     version: 0.7.1
-generated: "2023-02-07T11:15:17.139930782Z"
+generated: "2023-02-08T11:34:31.452135089Z"
