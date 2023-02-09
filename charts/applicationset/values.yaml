@@ -79,42 +79,42 @@ gitlab:
 # to dynamically pass the branch of the pull request head use '{{branch}}' variable
 # see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template
 repos:
-  gitlab:
-  - name: service-a
+  gitlab: {}
+  # - name: service-a
+  #   path: 'deployment/preview'
+  #   project: 13
+  #   repoUrl: 'https://gitlab.com/project/service-a.git'
+  github:
+  - name: node-webserver
+    images:
+    - 'docker.io/saidsef/node-webserver:{{branch}}'
+  - name: alpine-jenkins-dockerfile
     path: 'deployment/preview'
-    project: 13
-    repoUrl: 'https://gitlab.com/project/service-a.git'
-  github: {}
-  # - name: node-webserver
-  #   images:
-  #   - 'docker.io/saidsef/node-webserver:{{branch}}'
-  # - name: alpine-jenkins-dockerfile
-  #   path: 'deployment/preview'
-  # - name: aws-kinesis-local
-  #   images:
-  #   - 'docker.io/saidsef/aws-kinesis-local:{{branch}}'
-  # - name: aws-dynamodb-local
-  #   images:
-  #   - 'docker.io/saidsef/aws-dynamodb-local:{{branch}}'
-  # - name: tika-document-to-text
-  #   path: 'deployment/preview'
-  # - name: k8s-spot-termination-notice
-  #   images:
-  #   - 'docker.io/saidsef/k8s-spot-termination-notice:merge'
-  # - name: scapy-containerised
-  #   path: 'charts/scapy'
-  #   values:
-  #     image:
-  #       tag: '{{branch}}'
-  # - name: faas-reverse-geocoding
-  #   chart: 'reverse-geocoding'
-  #   repoUrl: 'https://saidsef.github.io/faas-reverse-geocoding'
-  #   parameters:
-  #     - name: "image.tag"
-  #       value: "{{branch}}"
-  #     - name: "ingress.enabled"
-  #       value: "true"
-  #     - name: "ingress.enabled"
-  #       value: "true"
-  #     - name: "ingress.hosts[0].host"
-  #       value: "{{branch}}"
+  - name: aws-kinesis-local
+    images:
+    - 'docker.io/saidsef/aws-kinesis-local:{{branch}}'
+  - name: aws-dynamodb-local
+    images:
+    - 'docker.io/saidsef/aws-dynamodb-local:{{branch}}'
+  - name: tika-document-to-text
+    path: 'deployment/preview'
+  - name: k8s-spot-termination-notice
+    images:
+    - 'docker.io/saidsef/k8s-spot-termination-notice:merge'
+  - name: scapy-containerised
+    path: 'charts/scapy'
+    values:
+      image:
+        tag: '{{branch}}'
+  - name: faas-reverse-geocoding
+    chart: 'reverse-geocoding'
+    repoUrl: 'https://saidsef.github.io/faas-reverse-geocoding'
+    parameters:
+      - name: "image.tag"
+        value: "{{branch}}"
+      - name: "ingress.enabled"
+        value: "true"
+      - name: "ingress.enabled"
+        value: "true"
+      - name: "ingress.hosts[0].host"
+        value: "{{branch}}"
