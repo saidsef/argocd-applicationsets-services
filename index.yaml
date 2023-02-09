@@ -3,6 +3,43 @@ entries:
   argocd-applicationsets-services:
   - annotations:
       artifacthub.io/changes: |
+        - kind: added
+          description: Added labels to ApplicationSets and Applications
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+    apiVersion: v2
+    appVersion: 0.8.20
+    created: "2023-02-09T08:23:11.573943941Z"
+    description: A HELM Chart for ArgoCD ApplicationSets for Kubernetes
+    digest: 2772a097f0ed7ee28f67abbe39dab116cfa20bf02e758f6aacd703222f6366e4
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - applicationsets
+    - argocd-applicationsets
+    - preview-environment
+    kubeVersion: '>= 1.23'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.8.20/argocd-applicationsets-services-0.8.20.tgz
+    version: 0.8.20
+  - annotations:
+      artifacthub.io/changes: |
         - kind: fixed
           description: Fixed namespace regression bug
         - kind: fixed
@@ -700,4 +737,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.7.1/argocd-applicationsets-services-0.7.1.tgz
     version: 0.7.1
-generated: "2023-02-08T21:23:12.036661904Z"
+generated: "2023-02-09T08:23:11.574059152Z"
