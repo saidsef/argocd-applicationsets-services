@@ -20,10 +20,11 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: '{{ required "A valid repo name is required" $repo.name }}-github'
-  namespace: '{{ required "A valied namespace is required" $namespace | replace "." "-" }}'
+  namespace: {{ required "A valied namespace is required" $namespace | replace "." "-" }}
+  labels:
+    app.kubernetes.io/name: {{ $repo.name }}
   annotations:
-    app.kubernetes.io/name: '{{ $repo.name }}'
-    app.kubernetes.io/managed-by: '{{ $.Release.Service }}'
+    app.kubernetes.io/managed-by: {{ $.Release.Service }}
     helm.sh/chart: '{{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_" }}'
 spec:
   syncPolicy:
@@ -45,10 +46,11 @@ spec:
   template:
     metadata:
       name: {{ printf "pr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb }}
-      annotations:
+      labels:
+        app.kubernetes.io/name: {{ $repo.name }}
+        app.kubernetes.io/branch: {{ $branch }}
         app.kubernetes.io/created-by: 'applicationset'
-        app.kubernetes.io/name: {{ $branchSlug }}
-        app.kubernetes.io/part-of: {{ $name }}
+      annotations:
         argocd-image-updater.argoproj.io/force-update: 'true'
         argocd-image-updater.argoproj.io/update-strategy: 'latest'
         argocd-image-updater.argoproj.io/write-back-method: 'argocd'
