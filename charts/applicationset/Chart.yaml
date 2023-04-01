@@ -22,8 +22,8 @@ sources:
 annotations:
   artifacthub.io/license: "Apache-2.0"
   artifacthub.io/changes: |
-    - kind: added
-      description: Added labels to ApplicationSets and Applications
+    - kind: modified
+      description: Moved some of the common variables to helpers
   artifacthub.io/links: |
     - name: README
       url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
