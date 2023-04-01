@@ -3,6 +3,45 @@ entries:
   argocd-applicationsets-services:
   - annotations:
       artifacthub.io/changes: |
+        - kind: changed
+          description: Moved some of the common variables to helpers
+        - kind: changed
+          description: Typo fix for artifacthub change log
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+    apiVersion: v2
+    appVersion: 0.8.22
+    created: "2023-04-01T23:42:03.161163449Z"
+    description: A HELM Chart for ArgoCD ApplicationSets for Kubernetes
+    digest: 49f806068104ed866fe6136e3b1311a476993534241010b74b14b18e37e98735
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - applicationsets
+    - argocd-applicationsets
+    - preview-environment
+    kubeVersion: '>= 1.23'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.8.22/argocd-applicationsets-services-0.8.22.tgz
+    version: 0.8.22
+  - annotations:
+      artifacthub.io/changes: |
         - kind: modified
           description: Moved some of the common variables to helpers
       artifacthub.io/license: Apache-2.0
@@ -774,4 +813,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.7.1/argocd-applicationsets-services-0.7.1.tgz
     version: 0.7.1
-generated: "2023-04-01T23:05:10.427965637Z"
+generated: "2023-04-01T23:42:03.161300345Z"
