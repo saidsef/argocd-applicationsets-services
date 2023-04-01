@@ -2,7 +2,11 @@ apiVersion: v2
 name: argocd-applicationsets-services
 description: A HELM Chart for ArgoCD ApplicationSets for Kubernetes
 type: application
+<<<<<<< HEAD
 version: &version "0.8.23"
+=======
+version: &version "0.8.22"
+>>>>>>> eee7cb1 (Typo fix for artifacthub.io changed type name (#95))
 appVersion: *version
 kubeVersion: ">= 1.23"
 home: https://github.com/saidsef/argocd-applicationsets-services
