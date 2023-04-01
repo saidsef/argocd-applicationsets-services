@@ -1,17 +1,17 @@
 {{- if and .Values.repos .Values.repos.gitlab }}
 {{- $gitlab := .Values.gitlab -}}
 {{- $globals := .Values.globals -}}
-{{- $refresh := coalesce .Values.requeueAfterSeconds .Values.globals.requeueAfterSeconds -}}
-{{- $retryBackoffDuration := coalesce .Values.retryBackoffDuration .Values.globals.retryBackoffDuration -}}
-{{- $name := .Values.name -}}
-{{- $namespace := .Values.namespace | replace "." "-" -}}
+{{- $refresh := include "chart.refresh" . -}}
+{{- $retryBackoffDuration := include "chart.retryBackoffDuration" . -}}
+{{- $name := include "chart.name" . -}}
+{{- $namespace := include "chart.namespace" . -}}
 {{- $dqf := "{{" -}}
 {{- $dqb := "}}" -}}
 {{- $branch := "{{branch}}" | squote -}}
 {{- $branchSlug := "{{branch_slug}}" | squote -}}
 {{- $headShortSha := "{{head_short_sha}}" | squote -}}
-{{- $server := coalesce .Values.server .Values.globals.server | squote -}}
-{{- $notificationChannel := coalesce .Values.notificationChannel .Values.globals.notificationChannel -}}
+{{- $server := include "chart.server" . -}}
+{{- $notificationChannel := include "chart.notificationChannel" . -}}
 
 {{- range $key, $repo := .Values.repos.gitlab }}
 ---

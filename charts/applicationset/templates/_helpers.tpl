@@ -3,7 +3,19 @@ Copyright (c) 2018 Said Sef
 Expand the name of the chart.
 */}}
 {{- define "chart.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- default .Values.name .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{- define "chart.namespace" -}}
+{{- default .Values.namespace | replace "." "-" }}
+{{- end }}
+
+{{- define "chart.notificationChannel" -}}
+{{- coalesce .Values.notificationChannel .Values.globals.notificationChannel }}
+{{- end }}
+
+{{- define "chart.server" -}}
+{{- coalesce .Values.server .Values.globals.server | squote }}
 {{- end }}
 
 {{/*
@@ -49,4 +61,16 @@ Selector labels
 {{- define "chart.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "chart.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{- define "chart.refresh" -}}
+{{- coalesce .Values.requeueAfterSeconds .Values.globals.requeueAfterSeconds -}}
+{{- end }}
+
+{{- define "chart.retryBackoffDuration" -}}
+{{- coalesce .Values.retryBackoffDuration .Values.globals.retryBackoffDuration -}}
+{{- end }}
+
+{{- define "chart.globals" -}}
+{{ .Values.globals }}
 {{- end }}
