@@ -18,10 +18,6 @@ Expand the name of the chart.
 {{- coalesce .Values.server .Values.globals.server | squote }}
 {{- end }}
 
-{{- define "chart.namespace" -}}
-{{- default .Values.namespace | replace "." "-" }}
-{{- end }}
-
 {{- define "chart.notificationChannel" -}}
 {{- coalesce .Values.notificationChannel .Values.globals.notificationChannel }}
 {{- end }}
@@ -81,14 +77,6 @@ Selector labels
 {{- define "chart.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "chart.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-
-{{- define "chart.refresh" -}}
-{{- coalesce .Values.requeueAfterSeconds .Values.globals.requeueAfterSeconds -}}
-{{- end }}
-
-{{- define "chart.retryBackoffDuration" -}}
-{{- coalesce .Values.retryBackoffDuration .Values.globals.retryBackoffDuration -}}
 {{- end }}
 
 {{- define "chart.globals" -}}
