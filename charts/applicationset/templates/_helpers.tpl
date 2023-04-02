@@ -3,7 +3,7 @@ Copyright (c) 2018 Said Sef
 Expand the name of the chart.
 */}}
 {{- define "chart.name" -}}
-{{- default .Values.name .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{- define "chart.namespace" -}}
@@ -24,18 +24,6 @@ Expand the name of the chart.
 
 {{- define "chart.retryBackoffDuration" -}}
 {{- coalesce .Values.retryBackoffDuration .Values.globals.retryBackoffDuration -}}
-{{- end }}
-
-{{- define "chart.namespace" -}}
-{{- default .Values.namespace | replace "." "-" }}
-{{- end }}
-
-{{- define "chart.notificationChannel" -}}
-{{- coalesce .Values.notificationChannel .Values.globals.notificationChannel }}
-{{- end }}
-
-{{- define "chart.server" -}}
-{{- coalesce .Values.server .Values.globals.server | squote }}
 {{- end }}
 
 {{/*
