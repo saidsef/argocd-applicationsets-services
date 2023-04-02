@@ -3,7 +3,19 @@ Copyright (c) 2018 Said Sef
 Expand the name of the chart.
 */}}
 {{- define "chart.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- default .Values.name .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{- define "chart.namespace" -}}
+{{- default .Values.namespace | replace "." "-" }}
+{{- end }}
+
+{{- define "chart.notificationChannel" -}}
+{{- coalesce .Values.notificationChannel .Values.globals.notificationChannel }}
+{{- end }}
+
+{{- define "chart.server" -}}
+{{- coalesce .Values.server .Values.globals.server | squote }}
 {{- end }}
 
 {{- define "chart.namespace" -}}
