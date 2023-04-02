@@ -3,7 +3,7 @@
 {{- $globals := .Values.globals -}}
 {{- $refresh := include "chart.refresh" . -}}
 {{- $retryBackoffDuration := include "chart.retryBackoffDuration" . -}}
-{{- $name := include "chart.name" . -}}
+{{- $name := .Values.name -}}
 {{- $namespace := include "chart.namespace" . -}}
 {{- $dqf := "{{" -}}
 {{- $dqb := "}}" -}}

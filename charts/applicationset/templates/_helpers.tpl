@@ -18,6 +18,14 @@ Expand the name of the chart.
 {{- coalesce .Values.server .Values.globals.server | squote }}
 {{- end }}
 
+{{- define "chart.refresh" -}}
+{{- coalesce .Values.requeueAfterSeconds .Values.globals.requeueAfterSeconds -}}
+{{- end }}
+
+{{- define "chart.retryBackoffDuration" -}}
+{{- coalesce .Values.retryBackoffDuration .Values.globals.retryBackoffDuration -}}
+{{- end }}
+
 {{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
@@ -61,14 +69,6 @@ Selector labels
 {{- define "chart.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "chart.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-
-{{- define "chart.refresh" -}}
-{{- coalesce .Values.requeueAfterSeconds .Values.globals.requeueAfterSeconds -}}
-{{- end }}
-
-{{- define "chart.retryBackoffDuration" -}}
-{{- coalesce .Values.retryBackoffDuration .Values.globals.retryBackoffDuration -}}
 {{- end }}
 
 {{- define "chart.globals" -}}
