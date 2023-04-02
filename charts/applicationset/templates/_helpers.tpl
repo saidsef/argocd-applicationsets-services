@@ -18,14 +18,6 @@ Expand the name of the chart.
 {{- coalesce .Values.server .Values.globals.server | squote }}
 {{- end }}
 
-{{- define "chart.notificationChannel" -}}
-{{- coalesce .Values.notificationChannel .Values.globals.notificationChannel }}
-{{- end }}
-
-{{- define "chart.server" -}}
-{{- coalesce .Values.server .Values.globals.server | squote }}
-{{- end }}
-
 {{- define "chart.refresh" -}}
 {{- coalesce .Values.requeueAfterSeconds .Values.globals.requeueAfterSeconds -}}
 {{- end }}
