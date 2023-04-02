@@ -1,17 +1,17 @@
 {{- if and .Values.repos .Values.repos.github }}
 {{- $github := .Values.github -}}
 {{- $globals := .Values.globals -}}
-{{- $refresh := coalesce .Values.requeueAfterSeconds .Values.globals.requeueAfterSeconds -}}
-{{- $retryBackoffDuration := coalesce .Values.retryBackoffDuration .Values.globals.retryBackoffDuration -}}
+{{- $refresh := include "chart.refresh" . -}}
+{{- $retryBackoffDuration := include "chart.retryBackoffDuration" . -}}
 {{- $name := .Values.name -}}
-{{- $namespace := .Values.namespace | replace "." "-" -}}
+{{- $namespace := include "chart.namespace" . -}}
 {{- $dqf := "{{" -}}
 {{- $dqb := "}}" -}}
 {{- $branch := "{{branch}}" | squote -}}
 {{- $branchSlug := "{{branch_slug}}" | squote -}}
 {{- $headShortSha := "{{head_short_sha}}" | squote -}}
-{{- $server := coalesce .Values.server .Values.globals.server | squote -}}
-{{- $notificationChannel := coalesce .Values.notificationChannel .Values.globals.notificationChannel -}}
+{{- $server := include "chart.server" . -}}
+{{- $notificationChannel := include "chart.notificationChannel" . -}}
 {{- $pr := contains "api.github.com" $github.api | ternary "https://github.com" $github.api -}}
 
 {{- range $key, $repo := .Values.repos.github }}

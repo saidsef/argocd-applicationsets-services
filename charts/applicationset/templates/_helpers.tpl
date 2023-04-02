@@ -6,6 +6,26 @@ Expand the name of the chart.
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
+{{- define "chart.refresh" -}}
+{{- coalesce .Values.requeueAfterSeconds .Values.globals.requeueAfterSeconds -}}
+{{- end }}
+
+{{- define "chart.retryBackoffDuration" -}}
+{{- coalesce .Values.retryBackoffDuration .Values.globals.retryBackoffDuration -}}
+{{- end }}
+
+{{- define "chart.namespace" -}}
+{{- default .Values.namespace | replace "." "-" }}
+{{- end }}
+
+{{- define "chart.notificationChannel" -}}
+{{- coalesce .Values.notificationChannel .Values.globals.notificationChannel }}
+{{- end }}
+
+{{- define "chart.server" -}}
+{{- coalesce .Values.server .Values.globals.server | squote }}
+{{- end }}
+
 {{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
