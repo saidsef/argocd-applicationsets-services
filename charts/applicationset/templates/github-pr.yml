@@ -1,9 +1,9 @@
 {{- if and .Values.repos .Values.repos.github }}
 {{- $github := .Values.github -}}
 {{- $globals := .Values.globals -}}
+{{- $name := .Values.name -}}
 {{- $refresh := include "chart.refresh" . -}}
 {{- $retryBackoffDuration := include "chart.retryBackoffDuration" . -}}
-{{- $name := .Values.name -}}
 {{- $namespace := include "chart.namespace" . -}}
 {{- $dqf := "{{" -}}
 {{- $dqb := "}}" -}}

@@ -1,0 +1,4 @@
+*.txt
+.git
+.helmignore
+*/te?mp*
