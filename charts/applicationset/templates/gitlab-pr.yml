@@ -64,7 +64,7 @@ spec:
     spec:
       revisionHistoryLimit: {{ $globals.revisionHistoryLimit }}
       source:
-        {{- $localRepoUrl := printf "https://gitlab.com/%s/%s.git" $gitlab.group $repo.name }}
+        {{- $localRepoUrl := printf "%s/%s/%s.git" $gitlab.api $gitlab.group $repo.name }}
         repoURL: {{ coalesce $repo.repoUrl $localRepoUrl }}
         {{- if and $repo $repo.parameters }}
         helm:
