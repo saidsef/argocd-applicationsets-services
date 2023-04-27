@@ -1,6 +1,6 @@
 # argocd-applicationsets-services
 
-![Version: 0.8.20](https://img.shields.io/badge/Version-0.8.20-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.8.20](https://img.shields.io/badge/AppVersion-0.8.20-informational?style=flat-square)
+![Version: 0.10.1](https://img.shields.io/badge/Version-0.10.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.10.1](https://img.shields.io/badge/AppVersion-0.10.1-informational?style=flat-square)
 
 A HELM Chart for ArgoCD ApplicationSets for Kubernetes
 
@@ -24,8 +24,8 @@ Kubernetes: `>= 1.23`
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| github | object | `{"api":"https://api.github.com","label":"preview","owner":"saidsef","path":"deployment","secretKey":"","secretName":""}` | GitHub repo configuration parameters |
-| gitlab | object | `{"api":"https://gitlab.com","group":"saidsef","label":"preview","path":"deployment","secretKey":"","secretName":""}` | GitLab repo configuration parameters |
+| github | object | `{"api":"https://api.github.com","enabled":true,"label":"preview","owner":"saidsef","path":"deployment","secretKey":"","secretName":""}` | GitHub repo configuration parameters |
+| gitlab | object | `{"api":"https://gitlab.com","enabled":true,"group":"saidsef","label":"preview","path":"deployment","secretKey":"","secretName":""}` | GitLab repo configuration parameters |
 | globals | object | `{"deployToNamespace":"previews","label":"preview","notificationChannel":"argocd","requeueAfterSeconds":500,"retryBackoffDuration":"10s","revisionHistoryLimit":2,"server":"https://kubernetes.default.svc"}` | Global default variables |
 | globals.deployToNamespace | string | `"previews"` | Kubernetes namespace to deploy previews |
 | globals.label | string | `"preview"` | GitHub label to filter PRs that you want to target |

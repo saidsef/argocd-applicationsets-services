@@ -83,6 +83,7 @@ repos:
   # - name: service-a
   #   path: 'deployment/preview'
   #   project: 13
+  #   namespace: preview
   #   repoUrl: 'https://gitlab.com/project/service-a.git'
   github:
   - name: node-webserver
