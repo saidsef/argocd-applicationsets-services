@@ -23,6 +23,7 @@ metadata:
   namespace: {{ required "A valied namespace is required" $namespace | replace "." "-" }}
   labels:
     app.kubernetes.io/name: {{ $repo.name }}
+    app.kubernetes.io/platform: 'github'
   annotations:
     app.kubernetes.io/managed-by: {{ $.Release.Service }}
     helm.sh/chart: '{{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_" }}'
@@ -45,7 +46,7 @@ spec:
       requeueAfterSeconds: {{ $refresh | default 500 }}
   template:
     metadata:
-      name: {{ printf "pr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb }}
+      name: {{ printf "pr-%sbranch_slug%s-%snumber%s-%s" $dqf $dqb $dqf $dqb $name }}
       labels:
         app.kubernetes.io/name: {{ $repo.name }}
         app.kubernetes.io/branch: {{ $branch }}
@@ -113,6 +114,6 @@ spec:
             duration: {{ $retryBackoffDuration }}
       destination:
         server: {{ $server }}
-        namespace: {{ coalesce $.Values.globals.deployToNamespace (printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb) }}
+        namespace: {{ coalesce $repo.namespace $.Values.globals.deployToNamespace (printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb) }}
 {{- end }}
 {{- end }}

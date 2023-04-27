@@ -2,7 +2,7 @@ apiVersion: v2
 name: argocd-applicationsets-services
 description: A HELM Chart for ArgoCD ApplicationSets for Kubernetes
 type: application
-version: &version "0.9.1"
+version: &version "0.10.1"
 appVersion: *version
 kubeVersion: ">= 1.23"
 home: https://github.com/saidsef/argocd-applicationsets-services
@@ -11,9 +11,10 @@ keywords:
   - argoproj
   - argocd
   - gitops
+  - continuous deployment
   - applicationsets
-  - argocd-applicationsets
-  - preview-environment
+  - preview
+  - canary
 maintainers:
   - name: saidsef
     url: https://saidsef.github.io/argocd-applicationsets-services
@@ -23,9 +24,11 @@ annotations:
   artifacthub.io/license: "Apache-2.0"
   artifacthub.io/changes: |
     - kind: changed
-      description: Updated to add AppSet name as suffix to GitHub and GitLab App names
+      description: change ability to deploy services to different namespaces
     - kind: changed
-      description: Renamed GitLab file from pr to mr as suffix
+      description: change AppSet name to be included in service name - this allows multi-labeling
+    - kind: added
+      description: added artifacthub link to HELM documentation
   artifacthub.io/links: |
     - name: README
       url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
@@ -33,3 +36,5 @@ annotations:
       url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
     - name: CONTRIBUTING
       url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+    - name: HELM
+      url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/charts/applicationset/README.md
