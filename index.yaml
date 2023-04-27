@@ -4,6 +4,50 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: change ability to deploy services to different namespaces
+        - kind: changed
+          description: change AppSet name to be included in service name - this allows multi-labeling
+        - kind: added
+          description: added artifacthub link to HELM documentation
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+        - name: HELM
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/charts/applicationset/README.md
+    apiVersion: v2
+    appVersion: 0.10.1
+    created: "2023-04-27T23:34:28.232462445Z"
+    description: A HELM Chart for ArgoCD ApplicationSets for Kubernetes
+    digest: bfbc448bafef5fb4f9422c09bc86178d6694a6d5733af7bdd3bd3abd45a64233
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - continuous deployment
+    - applicationsets
+    - preview
+    - canary
+    kubeVersion: '>= 1.23'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.10.1/argocd-applicationsets-services-0.10.1.tgz
+    version: 0.10.1
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: Updated to add AppSet name as suffix to GitHub and GitLab App names
         - kind: changed
           description: Renamed GitLab file from pr to mr as suffix
@@ -963,4 +1007,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.7.1/argocd-applicationsets-services-0.7.1.tgz
     version: 0.7.1
-generated: "2023-04-21T12:02:30.068573039Z"
+generated: "2023-04-27T23:34:28.232787251Z"
