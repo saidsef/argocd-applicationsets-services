@@ -2,11 +2,15 @@ name: pre-commit
 
 on: [push, pull_request, workflow_dispatch]
 
+permissions: read-all
+
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      with:
+        persist-credentials: false
     - uses: actions/setup-python@v4
     - uses: terraform-linters/setup-tflint@v3
     - uses: pre-commit/action@v3.0.0
