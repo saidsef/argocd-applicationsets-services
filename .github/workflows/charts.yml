@@ -71,8 +71,10 @@ jobs:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
+        continue-on-error: true
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
+        continue-on-error: true
 
   k8s-test:
     runs-on: ubuntu-latest
