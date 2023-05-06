@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ $.Release.Service }}
     helm.sh/chart: '{{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_" }}'
 spec:
-  description: {{ printf "Project for %s" .Values.name }}
+  description: {{ printf "Project %s" .Values.name }}
   permitOnlyProjectScopedClusters: {{ .Values.project.permitOnlyProjectScopedClusters | default "false" }}
   clusterResourceBlacklist:
     {{- toYaml .Values.project.clusterResourceBlacklist | nindent 4 }}
