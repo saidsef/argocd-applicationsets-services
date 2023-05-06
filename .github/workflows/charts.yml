@@ -26,6 +26,7 @@ jobs:
       id-token: write
       pages: write
       security-events: write
+      contents: write
     if: ${{ github.event_name == 'pull_request' || contains(github.ref, 'main') }}
     steps:
       - name: Checkout source code
