@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+      pages: write
+      security-events: write
     if: ${{ github.event_name == 'pull_request' || contains(github.ref, 'main') }}
     steps:
       - name: Checkout source code
