@@ -46,7 +46,7 @@ spec:
   template:
     metadata:
       {{- $localName := printf "mr-%sbranch_slug%s-%snumber%s-%s" $dqf $dqb $dqf $dqb $name }}
-      name: {{ trunc 63 $localName | trimSuffix "-" }}
+      name: {{ trunc 53 $localName | trimSuffix "-" }}
       labels:
         app.kubernetes.io/name: {{ $repo.name }}
         app.kubernetes.io/branch: {{ trunc 63 $branch | trimSuffix "-" }}
