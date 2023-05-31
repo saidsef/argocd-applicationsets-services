@@ -1,6 +1,6 @@
 # argocd-applicationsets-services
 
-![Version: 0.11.6](https://img.shields.io/badge/Version-0.11.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.11.6](https://img.shields.io/badge/AppVersion-0.11.6-informational?style=flat-square)
+![Version: 0.11.7](https://img.shields.io/badge/Version-0.11.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.11.7](https://img.shields.io/badge/AppVersion-0.11.7-informational?style=flat-square)
 
 A HELM Chart for ArgoCD ApplicationSets for Kubernetes
 
