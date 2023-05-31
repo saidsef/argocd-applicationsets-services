@@ -4,6 +4,46 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: trim again argocd application name to 53 chars
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+        - name: HELM
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/charts/applicationset/README.md
+    apiVersion: v2
+    appVersion: 0.11.7
+    created: "2023-05-31T07:49:21.812337991Z"
+    description: A HELM Chart for ArgoCD ApplicationSets for Kubernetes
+    digest: b33c892839516905d5b50666083dd18448d1deb5b0e8fd1864883d973533eb12
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - continuous deployment
+    - applicationsets
+    - preview
+    - canary
+    kubeVersion: '>= 1.23'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.11.7/argocd-applicationsets-services-0.11.7.tgz
+    version: 0.11.7
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: trim argocd application name to 53 chars
       artifacthub.io/license: Apache-2.0
       artifacthub.io/links: |
@@ -1327,4 +1367,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.7.1/argocd-applicationsets-services-0.7.1.tgz
     version: 0.7.1
-generated: "2023-05-31T07:22:45.003925425Z"
+generated: "2023-05-31T07:49:21.812785996Z"
