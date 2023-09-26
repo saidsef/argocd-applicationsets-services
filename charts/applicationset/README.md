@@ -1,6 +1,6 @@
 # argocd-applicationsets-services
 
-![Version: 0.11.9](https://img.shields.io/badge/Version-0.11.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.11.9](https://img.shields.io/badge/AppVersion-0.11.9-informational?style=flat-square)
+![Version: 0.12.0](https://img.shields.io/badge/Version-0.12.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.12.0](https://img.shields.io/badge/AppVersion-0.12.0-informational?style=flat-square)
 
 A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous delivery tool for Kubernetes
 
@@ -33,7 +33,7 @@ Kubernetes: `>= 1.23`
 | globals.requeueAfterSeconds | int | `500` | GitHub polling rate (seconds) |
 | globals.retryBackoffDuration | string | `"10s"` | The amount to back off retries of failed syncs |
 | globals.revisionHistoryLimit | int | `2` | How many old objects should be retained |
-| globals.server | string | `"https://kubernetes.default.svc"` | ArgoCD server address |
+| globals.server | string | `"https://kubernetes.default.svc"` | ArgoCD server address, use 'all' to use cluster generator |
 | name | string | `"pr-reviews"` | ApplicationSet name |
 | namespace | string | `"argocd"` | ArgoCD controller Namespace deployed |
 | project | object | `{"clusterResourceBlacklist":[{"group":"apiextensions.k8s.io","kind":"CustomResourceDefinition"}],"clusterResourceWhitelist":[{"group":"*","kind":"*"}],"destinations":[{"name":"*","namespace":"previews","server":"*"}],"enabled":false,"namespaceResourceBlacklist":[{"group":"argoproj.io","kind":"AppProject"}],"namespaceResourceWhitelist":[{"group":"*","kind":"*"}],"orphanedResources":{"warn":false},"permitOnlyProjectScopedClusters":false,"roles":[],"sourceRepos":["*"],"syncWindows":[]}` | ArgoCD Project parameters |

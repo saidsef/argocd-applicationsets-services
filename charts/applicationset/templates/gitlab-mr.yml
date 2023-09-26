@@ -30,6 +30,9 @@ spec:
   syncPolicy:
     preserveResourcesOnDeletion: false
   generators:
+  {{- if eq $server "all" }}
+  - clusters: {}
+  {{- end }}
   - pullRequest:
       gitlab:
         api: {{ $gitlab.api }}
@@ -113,7 +116,11 @@ spec:
           backoff:
             duration: {{ $retryBackoffDuration }}
       destination:
+        {{- if eq $server "all" }}
+        server: '{{ $dqf }}server{{ $dqb }}'
+        {{- else }}
         server: {{ $server }}
+        {{- end }}
         namespace: {{ coalesce $repo.namespace $.Values.globals.deployToNamespace (printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb) }}
 {{- end }}
 {{- end }}
