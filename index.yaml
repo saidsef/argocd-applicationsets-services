@@ -4,6 +4,47 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: Truncate application name to 40 chars and trim suffix
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+        - name: HELM
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/charts/applicationset/README.md
+    apiVersion: v2
+    appVersion: 0.12.2
+    created: "2023-11-30T10:11:45.286622207Z"
+    description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous
+      delivery tool for Kubernetes
+    digest: f3052f1a4053df6fea6d6427126145697840a3bc455ba692b115371e0b06f988
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - continuous deployment
+    - applicationsets
+    - preview
+    - canary
+    kubeVersion: '>= 1.23'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.12.2/argocd-applicationsets-services-0.12.2.tgz
+    version: 0.12.2
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: Truncate application name to 50 chars and trim suffix
       artifacthub.io/license: Apache-2.0
       artifacthub.io/links: |
@@ -1531,4 +1572,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.7.1/argocd-applicationsets-services-0.7.1.tgz
     version: 0.7.1
-generated: "2023-11-30T09:37:55.759046177Z"
+generated: "2023-11-30T10:11:45.286997506Z"
