@@ -18,7 +18,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: '{{ required "A valid repo name is required" $repo.name | trunc 45 | trimSuffix "-" }}-gitlab-{{ $name }}'
+  name: '{{ required "A valid repo name is required" $repo.name | trunc 40 | trimSuffix "-" }}-gitlab-{{ $name }}'
   namespace: {{ required "A valied namespace is required" $namespace | replace "." "-" }}
   labels:
     app.kubernetes.io/name: {{ $repo.name }}
@@ -49,7 +49,7 @@ spec:
   template:
     metadata:
       {{- $localName := printf "mr-%sbranch_slug%s-%snumber%s-%s" $dqf $dqb $dqf $dqb $name }}
-      name: {{ trunc 47 $localName | trimSuffix "-" }}
+      name: {{ trunc 45 $localName | trimSuffix "-" }}
       labels:
         app.kubernetes.io/name: {{ $repo.name }}
         app.kubernetes.io/branch: {{ trunc 63 $branch | trimSuffix "-" }}
