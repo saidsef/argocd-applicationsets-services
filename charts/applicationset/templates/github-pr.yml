@@ -49,7 +49,7 @@ spec:
       requeueAfterSeconds: {{ $refresh | default 500 }}
   template:
     metadata:
-      name: {{ printf "pr-%sbranch_slug%s-%snumber%s-%s" $dqf $dqb $dqf $dqb $name | trunc 50 | trimSuffix "-" }}
+      name: {{ printf "pr-%shead_short_sha_7%s-%snumber%s-%s" $dqf $dqb $dqf $dqb $name }}
       labels:
         app.kubernetes.io/name: {{ $repo.name }}
         app.kubernetes.io/branch: {{ trunc 63 $branch | trimSuffix "-" }}
