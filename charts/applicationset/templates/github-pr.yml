@@ -19,7 +19,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: '{{ required "A valid repo name is required" $repo.name }}-github-{{ $name }}'
+  name: '{{ required "A valid repo name is required" $repo.name | trunc 45 | trimSuffix "-" }}-github-{{ $name }}'
   namespace: {{ required "A valied namespace is required" $namespace | replace "." "-" }}
   labels:
     app.kubernetes.io/name: {{ $repo.name }}
