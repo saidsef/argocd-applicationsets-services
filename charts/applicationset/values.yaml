@@ -15,7 +15,7 @@ globals:
   # -- (string) The amount to back off retries of failed syncs
   retryBackoffDuration: '10s'
 
-  # -- ArgoCD server address
+  # -- ArgoCD server address, use 'all' to use cluster generator
   server: 'https://kubernetes.default.svc'
 
   # -- ArgoCD Slack notification channel
