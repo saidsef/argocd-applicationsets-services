@@ -27,6 +27,15 @@ globals:
   # -- GitHub label to filter PRs that you want to target
   label: 'preview'
 
+  # -- syncOptions how it syncs the desired state in the target cluster
+  syncOptions:
+    - ApplyOutOfSyncOnly=true
+    - CreateNamespace=true
+    - PruneLast=true
+    - PrunePropagationPolicy=foreground
+    - RespectIgnoreDifferences=true
+    - Validate=false
+
 # -- ArgoCD Project parameters
 project:
   enabled: false

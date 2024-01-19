@@ -108,9 +108,9 @@ spec:
           prune: true
           selfHeal: true
         syncOptions:
-          - CreateNamespace=true
-          - Prune=true
-          - PruneLast=true
+        {{- range $s := $globals.syncOptions }}
+          - {{ $s }}
+        {{- end }}
         retry:
           backoff:
             duration: {{ $retryBackoffDuration }}
