@@ -108,10 +108,13 @@ spec:
           allowEmpty: true
           prune: true
           selfHeal: true
+        managedNamespaceMetadata:
+          labels:
+            app.kubernetes.io/created-by: {{ $repo.name }}
         syncOptions:
-          - CreateNamespace=true
-          - Prune=true
-          - PruneLast=true
+        {{- range $s := $globals.syncOptions }}
+          - {{ $s }}
+        {{- end }}
         retry:
           backoff:
             duration: {{ $retryBackoffDuration }}

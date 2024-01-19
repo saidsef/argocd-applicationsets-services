@@ -1,6 +1,6 @@
 # argocd-applicationsets-services
 
-![Version: 0.12.5](https://img.shields.io/badge/Version-0.12.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.12.5](https://img.shields.io/badge/AppVersion-0.12.5-informational?style=flat-square)
+![Version: 0.13.0](https://img.shields.io/badge/Version-0.13.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.13.0](https://img.shields.io/badge/AppVersion-0.13.0-informational?style=flat-square)
 
 A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous delivery tool for Kubernetes
 
@@ -18,7 +18,7 @@ A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous delive
 
 ## Requirements
 
-Kubernetes: `>= 1.23`
+Kubernetes: `>= 1.26`
 
 ## Values
 
@@ -26,7 +26,7 @@ Kubernetes: `>= 1.23`
 |-----|------|---------|-------------|
 | github | object | `{"api":"https://api.github.com","label":"preview","owner":"saidsef","path":"deployment","secretKey":"","secretName":""}` | GitHub repo configuration parameters |
 | gitlab | object | `{"api":"https://gitlab.com","group":"saidsef","label":"preview","path":"deployment","secretKey":"","secretName":""}` | GitLab repo configuration parameters |
-| globals | object | `{"deployToNamespace":"previews","label":"preview","notificationChannel":"argocd","requeueAfterSeconds":500,"retryBackoffDuration":"10s","revisionHistoryLimit":2,"server":"https://kubernetes.default.svc"}` | Global default variables |
+| globals | object | `{"deployToNamespace":"previews","label":"preview","notificationChannel":"argocd","requeueAfterSeconds":500,"retryBackoffDuration":"10s","revisionHistoryLimit":2,"server":"https://kubernetes.default.svc","syncOptions":["ApplyOutOfSyncOnly=true","CreateNamespace=true","PruneLast=true","PrunePropagationPolicy=foreground","RespectIgnoreDifferences=true","Validate=false"]}` | Global default variables |
 | globals.deployToNamespace | string | `"previews"` | Kubernetes namespace to deploy previews |
 | globals.label | string | `"preview"` | GitHub label to filter PRs that you want to target |
 | globals.notificationChannel | string | `"argocd"` | ArgoCD Slack notification channel |
@@ -34,6 +34,7 @@ Kubernetes: `>= 1.23`
 | globals.retryBackoffDuration | string | `"10s"` | The amount to back off retries of failed syncs |
 | globals.revisionHistoryLimit | int | `2` | How many old objects should be retained |
 | globals.server | string | `"https://kubernetes.default.svc"` | ArgoCD server address, use 'all' to use cluster generator |
+| globals.syncOptions | list | `["ApplyOutOfSyncOnly=true","CreateNamespace=true","PruneLast=true","PrunePropagationPolicy=foreground","RespectIgnoreDifferences=true","Validate=false"]` | syncOptions how it syncs the desired state in the target cluster |
 | name | string | `"pr-reviews"` | ApplicationSet name |
 | namespace | string | `"argocd"` | ArgoCD controller Namespace deployed |
 | project | object | `{"clusterResourceBlacklist":[{"group":"apiextensions.k8s.io","kind":"CustomResourceDefinition"}],"clusterResourceWhitelist":[{"group":"*","kind":"*"}],"destinations":[{"name":"*","namespace":"previews","server":"*"}],"enabled":false,"namespaceResourceBlacklist":[{"group":"argoproj.io","kind":"AppProject"}],"namespaceResourceWhitelist":[{"group":"*","kind":"*"}],"orphanedResources":{"warn":false},"permitOnlyProjectScopedClusters":false,"roles":[],"sourceRepos":["*"],"syncWindows":[]}` | ArgoCD Project parameters |
