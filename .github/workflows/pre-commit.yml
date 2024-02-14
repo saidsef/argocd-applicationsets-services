@@ -13,6 +13,6 @@ jobs:
         persist-credentials: false
     - uses: actions/setup-python@v5
     - uses: terraform-linters/setup-tflint@v4
-    - uses: pre-commit/action@v3.0.0
+    - uses: pre-commit/action@v3.0.1
       with:
         extra_args: "-a"
