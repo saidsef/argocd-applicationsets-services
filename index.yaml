@@ -4,6 +4,49 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: added
+          description: "Kubernetes minimum version >= 1.28"
+        - kind: changed
+          description: Update dependencies ci tools
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+        - name: HELM
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/charts/applicationset/README.md
+    apiVersion: v2
+    appVersion: 0.13.1
+    created: "2024-04-28T06:58:11.211685946Z"
+    description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous
+      delivery tool for Kubernetes
+    digest: 0d78165967588b6c0cd46d5bde0613bc52e6e1188ba55422466f07db6b561f11
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - continuous deployment
+    - applicationsets
+    - preview
+    - canary
+    kubeVersion: '>= 1.28'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.13.1/argocd-applicationsets-services-0.13.1.tgz
+    version: 0.13.1
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
           description: Added syncOptions and variable
         - kind: changed
           description: Updated minimum Kubernetes version to v1.26
@@ -1738,4 +1781,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.7.1/argocd-applicationsets-services-0.7.1.tgz
     version: 0.7.1
-generated: "2024-01-19T06:19:27.954157749Z"
+generated: "2024-04-28T06:58:11.212085686Z"
