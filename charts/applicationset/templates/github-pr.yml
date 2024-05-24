@@ -52,7 +52,7 @@ spec:
       name: {{ printf "%s-%shead_short_sha_7%s-%snumber%s-%s" $repo.name $dqf $dqb $dqf $dqb $name }}
       labels:
         app.kubernetes.io/name: {{ $repo.name }}
-        app.kubernetes.io/branch: {{ trunc 63 $branch | trimSuffix "-" }}
+        app.kubernetes.io/branch: {{ trunc 63 $branchSlug | trimSuffix "-" }}
         app.kubernetes.io/created-by: 'applicationset'
       annotations:
         argocd-image-updater.argoproj.io/force-update: 'true'

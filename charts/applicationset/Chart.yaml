@@ -2,7 +2,7 @@ apiVersion: v2
 name: argocd-applicationsets-services
 description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous delivery tool for Kubernetes
 type: application
-version: &version "0.13.1"
+version: &version "0.13.2"
 appVersion: *version
 kubeVersion: ">= 1.28"
 home: https://github.com/saidsef/argocd-applicationsets-services
@@ -23,10 +23,8 @@ sources:
 annotations:
   artifacthub.io/license: "Apache-2.0"
   artifacthub.io/changes: |
-    - kind: added
-      description: "Kubernetes minimum version >= 1.28"
     - kind: changed
-      description: Update dependencies ci tools
+      description: Update labels branch name to appset branch slug
   artifacthub.io/links: |
     - name: README
       url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
