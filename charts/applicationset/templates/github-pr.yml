@@ -20,7 +20,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: '{{ required "A valid repo name is required" $repo.name | trunc 40 | trimSuffix "-" }}-github-{{ $name }}'
-  namespace: {{ required "A valied namespace is required" $namespace | replace "." "-" }}
+  namespace: {{ required "A valid namespace is required" $namespace | replace "." "-" }}
   labels:
     app.kubernetes.io/name: {{ $repo.name }}
     app.kubernetes.io/platform: 'github'
@@ -40,7 +40,7 @@ spec:
         owner: {{ required "A valid repo organization / owner is required" $github.owner }}
         repo: {{ required "A valid repo name is required" $repo.name }}
         labels:
-        - {{ required "A valied label(s) for PRs is required" (coalesce $github.label $globals.label) }}
+        - {{ required "A valid label(s) for PRs is required" (coalesce $github.label $globals.label) }}
         {{- if and ($github.secretName) ($github.secretKey) }}
         tokenRef:
           secretName: {{ $github.secretName }}
