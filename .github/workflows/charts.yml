@@ -27,6 +27,7 @@ jobs:
       pages: write
       security-events: write
       contents: write
+      pull-requests: write
     if: ${{ github.event_name == 'pull_request' || contains(github.ref, 'main') }}
     steps:
       - name: Checkout source code
@@ -35,6 +36,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: 'Dependency Review'
+        if: ${{ github.event_name == 'pull_request' }}
         uses: actions/dependency-review-action@v4
         with:
           allow-ghsas: true
