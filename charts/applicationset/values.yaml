@@ -124,7 +124,5 @@ repos:
         value: "{{branch}}"
       - name: "ingress.enabled"
         value: "true"
-      - name: "ingress.enabled"
-        value: "true"
       - name: "ingress.hosts[0].host"
         value: "{{branch}}"
