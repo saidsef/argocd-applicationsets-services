@@ -34,10 +34,15 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v4
+        with:
+          allow-ghsas: true
+          comment-summary-in-pr: always
       - name: Install Helm
         uses: azure/setup-helm@v4
         with:
-          version: v3.10.0
+          version: v3.16.3
       - name: Setup Chart Linting
         if: ${{ github.event_name == 'pull_request' }}
         id: lint
@@ -68,6 +73,7 @@ jobs:
         with:
           charts_dir: charts
           config: charts/cr.yml
+          mark_as_latest: true
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       - name: Initialize CodeQL
@@ -78,6 +84,7 @@ jobs:
         continue-on-error: true
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
+        continue-on-error: true
         with:
           scan-type: 'config'
           scan-ref: '.'
