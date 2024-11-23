@@ -6,6 +6,15 @@ namespace: 'argocd'
 
 # -- Global default variables
 globals:
+  # -- applications annotations
+  # @schema-pattern: ^[a-zA-Z0-9_-]+$
+  annotations:
+    notifications.argoproj.io/subscribe.on-deleted.slack: argocd
+    notifications.argoproj.io/subscribe.on-deployed.slack: argocd
+    notifications.argoproj.io/subscribe.on-health-degraded.slack: argocd
+    notifications.argoproj.io/subscribe.on-sync-failed.slack: argocd
+    notifications.argoproj.io/subscribe.on-sync-running.slack: argocd
+
   # -- (int) GitHub polling rate (seconds)
   requeueAfterSeconds: 500
 
@@ -17,9 +26,6 @@ globals:
 
   # -- ArgoCD server address, use 'all' to use cluster generator
   server: 'https://kubernetes.default.svc'
-
-  # -- ArgoCD Slack notification channel
-  notificationChannel: 'argocd'
 
   # -- Kubernetes namespace to deploy previews
   deployToNamespace: 'previews'

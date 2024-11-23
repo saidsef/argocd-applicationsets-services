@@ -60,11 +60,9 @@ spec:
         argocd.argoproj.io/application-set-refresh: 'true'
         argocd.argoproj.io/head: {{ $headShortSha }}
         link.argocd.argoproj.io/external-link: '{{ $gitlab.api }}/{{ $gitlab.group }}/{{or $repo.name $repo.path}}/-/merge_requests/{{ $dqf }}number{{ $dqb }}'
-        notifications.argoproj.io/subscribe.on-deleted.slack: {{ $notificationChannel }}
-        notifications.argoproj.io/subscribe.on-deployed.slack: {{ $notificationChannel }}
-        notifications.argoproj.io/subscribe.on-health-degraded.slack: {{ $notificationChannel }}
-        notifications.argoproj.io/subscribe.on-sync-failed.slack: {{ $notificationChannel }}
-        notifications.argoproj.io/subscribe.on-sync-running.slack: {{ $notificationChannel }}
+        {{- with $globals.annotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       revisionHistoryLimit: {{ $globals.revisionHistoryLimit }}
       source:
