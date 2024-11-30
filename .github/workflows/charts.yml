@@ -23,7 +23,6 @@ jobs:
   chart:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       pages: write
       security-events: write
       contents: write
@@ -96,6 +95,11 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3.27.5
         with:
           sarif_file: 'trivy-results.sarif'
+
+  dependency-review:
+    uses: saidsef/saidsef/.github/workflows/dependency-review.yaml@main
+    if: ${{ github.event_name == 'pull_request' }}
+    needs: [chart]
 
   k8s-test:
     runs-on: ubuntu-latest
