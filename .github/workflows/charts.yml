@@ -100,6 +100,8 @@ jobs:
     uses: saidsef/saidsef/.github/workflows/dependency-review.yaml@main
     if: ${{ github.event_name == 'pull_request' }}
     needs: [chart]
+    permissions:
+      pull-requests: write
 
   k8s-test:
     runs-on: ubuntu-latest
@@ -109,8 +111,8 @@ jobs:
       - name: Create k8s Kind Cluster
         uses: helm/kind-action@v1.12.0
         with:
-          kubectl_version: v1.29.3 # Ensure compatibility with the latest APIs
-          node_image: kindest/node:v1.29.2 # Match node version with kubectl for consistency
+          kubectl_version: v1.30.4 # Ensure compatibility with the latest APIs
+          node_image: kindest/node:v1.30.4 # Match node version with kubectl for consistency
       - name: Checkout
         uses: actions/checkout@v4
       - name: Run K8s test

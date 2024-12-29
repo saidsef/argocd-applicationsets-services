@@ -119,5 +119,14 @@ spec:
         server: {{ $server }}
         {{- end }}
         namespace: {{ coalesce $repo.namespace $.Values.globals.deployToNamespace (printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb) }}
+      info:
+        - name: author
+          value: '{{ $dqf }}author{{ $dqb }}'
+        - name: branch
+          value: '{{ $dqf }}branch{{ $dqb }}'
+        - name: target_branch
+          value: '{{ $dqf }}target_branch_slug{{ $dqb }}'
+        - name: merge_request
+          value: '{{ $dqf }}number{{ $dqb }}'
 {{- end }}
 {{- end }}
