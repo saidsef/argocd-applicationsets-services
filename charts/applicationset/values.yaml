@@ -80,6 +80,7 @@ github:
   path: 'deployment'
   secretName: ''
   secretKey: ''
+  appSecretName: ''
 
 # -- GitLab repo configuration parameters
 gitlab:

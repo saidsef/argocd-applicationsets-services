@@ -1,0 +1,49 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+	"name": "Dev",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/base:focal",
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+			"version": "1.26",
+			"minikube": "none"
+		}
+	},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "uname -a",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	"remoteUser": "vscode",
+	"settings": {
+		"git.autofetch": "all",
+		"git.countBadge": "all",
+		"git.enableSmartCommit": true,
+		"git.suggestSmartCommit": true,
+		"gitlens.graph.dimMergeCommits": true,
+		"keyboard.touchbar.enabled": true,
+		"merge-conflict.autoNavigateNextConflict.enabled": true,
+		"merge-conflict.codeLens.enabled": true,
+		"merge-conflict.decorators.enabled": true,
+		"vscode-kubernetes.helm-path": "/usr/local/bin/helm",
+		"vscode-kubernetes.helm-path.linux": "/usr/local/bin/helm",
+		"vscode-kubernetes.kubectl-path": "/usr/local/bin/kubectl",
+		"vscode-kubernetes.kubectl-path.linux": "/usr/local/bin/kubectl"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-kubernetes-tools.vscode-kubernetes-tools",
+				"eamodio.gitlens"
+			]
+		}
+	}
+}
