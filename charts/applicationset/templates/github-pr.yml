@@ -46,6 +46,9 @@ spec:
           secretName: {{ $github.secretName }}
           key: {{ $github.secretKey }}
         {{- end }}
+        {{- if $github.appSecretName }}
+        appSecretName: {{ $github.appSecretName }}
+        {{- end }}
       requeueAfterSeconds: {{ $refresh | default 500 }}
   template:
     metadata:
