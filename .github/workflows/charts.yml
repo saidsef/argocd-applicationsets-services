@@ -111,8 +111,8 @@ jobs:
       - name: Create k8s Kind Cluster
         uses: helm/kind-action@v1.13.0
         with:
-          kubectl_version: v1.30.4 # Ensure compatibility with the latest APIs
-          node_image: kindest/node:v1.30.4 # Match node version with kubectl for consistency
+          kubectl_version: v1.33.7 # Ensure compatibility with the latest APIs
+          node_image: kindest/node:v1.33.7 # Match node version with kubectl for consistency
       - name: Checkout
         uses: actions/checkout@v6
       - name: Run K8s test
