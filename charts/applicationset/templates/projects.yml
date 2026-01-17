@@ -16,6 +16,8 @@ spec:
     {{- toYaml .Values.project.clusterResourceBlacklist | nindent 4 }}
   clusterResourceWhitelist:
    {{- toYaml .Values.project.clusterResourceWhitelist | nindent 4 }}
+  destinationServiceAccounts:
+    {{- toYaml .Values.project.destinationServiceAccounts | nindent 4 }}
   destinations:
     {{- toYaml .Values.project.destinations | nindent 4 }}
   namespaceResourceBlacklist:
