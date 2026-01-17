@@ -57,6 +57,8 @@ project:
   - namespace: 'previews'
     server: '*'
     name: '*'
+  # -- No destination service accounts by default
+  destinationServiceAccounts: []
   # -- Allow all namespaced-scoped resources to be created, except for AppProject
   namespaceResourceBlacklist:
   - group: 'argoproj.io'

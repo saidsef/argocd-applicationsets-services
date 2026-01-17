@@ -58,10 +58,6 @@ spec:
         app.kubernetes.io/branch: {{ trunc 63 $branchSlug | trimSuffix "-" }}
         app.kubernetes.io/created-by: 'applicationset'
       annotations:
-        argocd-image-updater.argoproj.io/force-update: 'true'
-        argocd-image-updater.argoproj.io/update-strategy: 'latest'
-        argocd-image-updater.argoproj.io/write-back-method: 'argocd'
-        argocd.argoproj.io/application-set-refresh: 'true'
         argocd.argoproj.io/head: {{ $headShortSha }}
         link.argocd.argoproj.io/external-link: '{{ $pr }}/{{ $github.owner }}/{{or $repo.name $repo.path}}/pull/{{ $dqf }}number{{ $dqb }}'
         {{- with $globals.annotations }}
