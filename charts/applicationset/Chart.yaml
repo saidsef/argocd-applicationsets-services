@@ -2,9 +2,9 @@ apiVersion: v2
 name: argocd-applicationsets-services
 description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous delivery tool for Kubernetes
 type: application
-version: &version "0.16.1"
+version: &version "0.17.1"
 appVersion: *version
-kubeVersion: ">= 1.28"
+kubeVersion: ">= 1.31"
 home: https://github.com/saidsef/argocd-applicationsets-services
 icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
 keywords:
@@ -24,7 +24,11 @@ annotations:
   artifacthub.io/license: "Apache-2.0"
   artifacthub.io/changes: |
     - kind: added
-      description: Added github appSecretName field to support GitHub App authentication.
+      description: A§dd destinationServiceAccounts to project values.
+    - kind: changed
+      description: Moved annotations related references to chart values global annotations.
+    - kind: changed
+      description: Updated readme to note minimum requirements for Kubernetes and ArgoCD versions.
   artifacthub.io/links: |
     - name: README
       url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
