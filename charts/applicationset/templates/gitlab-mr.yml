@@ -122,6 +122,8 @@ spec:
           value: '{{ $dqf }}branch{{ $dqb }}'
         - name: target_branch
           value: '{{ $dqf }}target_branch_slug{{ $dqb }}'
+        - name: branch_slug
+          value: '{{ $dqf }}branch_slug{{ $dqb }}'
         - name: merge_request
           value: '{{ $dqf }}number{{ $dqb }}'
 {{- end }}
