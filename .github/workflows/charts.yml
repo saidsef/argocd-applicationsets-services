@@ -118,7 +118,7 @@ jobs:
       - name: Run K8s test
         run: |
           kubectl create ns argocd
-          kubectl apply -k https://github.com/argoproj/argo-cd/manifests/crds\?ref\=stable -n argocd
+          kubectl apply --server-side -k https://github.com/argoproj/argo-cd/manifests/crds\?ref\=stable -n argocd
           helm upgrade -i appsets charts/applicationset --namespace argocd --create-namespace
           helm list -A
           kubectl get all -A
