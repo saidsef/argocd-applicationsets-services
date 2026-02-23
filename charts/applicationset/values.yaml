@@ -94,7 +94,7 @@ gitlab:
   secretKey: ''
 
 # -- List of repo names and override images for preview environment
-# to dynamically pass the branch of the pull request head use '{{branch}}' variable
+# to dynamically pass the branch of the pull request head use '{{branch_slug}}' variable
 # see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template
 repos:
   gitlab: {}
@@ -106,15 +106,15 @@ repos:
   github:
   - name: node-webserver
     images:
-    - 'docker.io/saidsef/node-webserver:{{branch}}'
+    - 'docker.io/saidsef/node-webserver:{{branch_slug}}'
   - name: alpine-jenkins-dockerfile
     path: 'deployment/preview'
   - name: aws-kinesis-local
     images:
-    - 'docker.io/saidsef/aws-kinesis-local:{{branch}}'
+    - 'docker.io/saidsef/aws-kinesis-local:{{branch_slug}}'
   - name: aws-dynamodb-local
     images:
-    - 'docker.io/saidsef/aws-dynamodb-local:{{branch}}'
+    - 'docker.io/saidsef/aws-dynamodb-local:{{branch_slug}}'
   - name: tika-document-to-text
     path: 'deployment/preview'
   - name: k8s-spot-termination-notice
@@ -124,14 +124,14 @@ repos:
     path: 'charts/scapy'
     values:
       image:
-        tag: '{{branch}}'
+        tag: '{{branch_slug}}'
   - name: faas-reverse-geocoding
     chart: 'reverse-geocoding'
     repoUrl: 'https://saidsef.github.io/faas-reverse-geocoding'
     parameters:
       - name: "image.tag"
-        value: "{{branch}}"
+        value: "{{branch_slug}}"
       - name: "ingress.enabled"
         value: "true"
       - name: "ingress.hosts[0].host"
-        value: "{{branch}}"
+        value: "{{branch_slug}}"

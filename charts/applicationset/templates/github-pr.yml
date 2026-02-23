@@ -129,6 +129,10 @@ spec:
           value: '{{ $dqf }}branch{{ $dqb }}'
         - name: target_branch
           value: '{{ $dqf }}target_branch_slug{{ $dqb }}'
+        - name: branch_slug
+          value: '{{ $dqf }}branch_slug{{ $dqb }}'
+        - name: head_short_sha
+          value: '{{ $dqf }}head_short_sha{{ $dqb }}'
         - name: pull_request
           value: '{{ $dqf }}number{{ $dqb }}'
 {{- end }}
