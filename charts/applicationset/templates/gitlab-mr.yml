@@ -83,6 +83,7 @@ spec:
         {{- else }}
         targetRevision: {{ or $repo.targetRevision $branch $headShortSha "HEAD" }}
         kustomize:
+          namespace: {{ coalesce $repo.namespace $.Values.globals.deployToNamespace (printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb) }}
           commonAnnotations:
             app.kubernetes.io/instance: '{{ $repo.name }}'
             app.kubernetes.io/part-of: {{ coalesce $gitlab.label $globals.label }}
