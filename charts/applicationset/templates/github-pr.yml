@@ -87,7 +87,7 @@ spec:
         {{- else }}
         targetRevision: {{ or $repo.targetRevision $branch $headShortSha "HEAD" }}
         kustomize:
-          namespace: {{ coalesce $repo.namespace $.Values.globals.deployToNamespace (printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb) }}
+          namespace: {{ coalesce $repo.namespace $.Values.globals.deployToNamespace (printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb) | quote }}
           commonAnnotations:
             app.kubernetes.io/instance: '{{ $repo.name }}'
             app.kubernetes.io/part-of: {{ coalesce $github.label $globals.label }}
@@ -122,7 +122,7 @@ spec:
         {{- else }}
         server: {{ $server }}
         {{- end }}
-        namespace: {{ coalesce $repo.namespace $.Values.globals.deployToNamespace (printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb) }}
+        namespace: {{ coalesce $repo.namespace $.Values.globals.deployToNamespace (printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb) | quote }}
       info:
         - name: author
           value: '{{ $dqf }}author{{ $dqb }}'
