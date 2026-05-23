@@ -3,6 +3,47 @@ entries:
   argocd-applicationsets-services:
   - annotations:
       artifacthub.io/changes: |
+        - kind: fixed
+          description: Quote namespace values in GitHub PR and GitLab MR templates to handle special characters
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+        - name: HELM
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/charts/applicationset/README.md
+    apiVersion: v2
+    appVersion: 0.18.1
+    created: "2026-05-23T08:44:20.336509921Z"
+    description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous
+      delivery tool for Kubernetes
+    digest: 71d011a839527fabfaaa3b5d6dfe60a36f8e9ead37cc67b07e08e255a699f26e
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - continuous deployment
+    - applicationsets
+    - preview
+    - canary
+    kubeVersion: '>= 1.31'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.18.1/argocd-applicationsets-services-0.18.1.tgz
+    version: 0.18.1
+  - annotations:
+      artifacthub.io/changes: |
         - kind: added
           description: Add kustomize namespace to GitHub PR and GitLab MR templates with coalesce fallback to mr-branch_slug-number
       artifacthub.io/license: Apache-2.0
@@ -42,4 +83,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.18.0/argocd-applicationsets-services-0.18.0.tgz
     version: 0.18.0
-generated: "2026-05-22T13:58:29.249726793Z"
+generated: "2026-05-23T08:44:20.336521934Z"
