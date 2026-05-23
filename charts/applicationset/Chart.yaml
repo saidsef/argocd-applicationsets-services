@@ -2,7 +2,7 @@ apiVersion: v2
 name: argocd-applicationsets-services
 description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous delivery tool for Kubernetes
 type: application
-version: &version "0.18.0"
+version: &version "0.18.1"
 appVersion: *version
 kubeVersion: ">= 1.31"
 home: https://github.com/saidsef/argocd-applicationsets-services
@@ -23,8 +23,8 @@ sources:
 annotations:
   artifacthub.io/license: "Apache-2.0"
   artifacthub.io/changes: |
-    - kind: added
-      description: Add kustomize namespace to GitHub PR and GitLab MR templates with coalesce fallback to mr-branch_slug-number
+    - kind: fixed
+      description: Quote namespace values in GitHub PR and GitLab MR templates to handle special characters
   artifacthub.io/links: |
     - name: README
       url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
