@@ -7,11 +7,7 @@
 {{- $namespace := include "chart.namespace" . -}}
 {{- $dqf := "{{" -}}
 {{- $dqb := "}}" -}}
-{{- $branch := "{{branch}}" | squote -}}
-{{- $branchSlug := "{{branch_slug}}" | squote -}}
-{{- $headShortSha := "{{head_short_sha}}" | squote -}}
 {{- $server := include "chart.server" . -}}
-{{- $notificationChannel := include "chart.notificationChannel" . -}}
 {{- $pr := contains "api.github.com" $github.api | ternary "https://github.com" $github.api -}}
 
 {{- range $key, $repo := .Values.repos.github }}
@@ -28,113 +24,28 @@ metadata:
     app.kubernetes.io/managed-by: {{ $.Release.Service }}
     helm.sh/chart: '{{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_" }}'
 spec:
+  goTemplate: true
+  {{- with $globals.goTemplateOptions }}
+  goTemplateOptions:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   syncPolicy:
-    preserveResourcesOnDeletion: false
+    preserveResourcesOnDeletion: {{ $globals.preserveResourcesOnDeletion | default false }}
   generators:
   {{- if eq $server "all" }}
-  - clusters: {}
+  - matrix:
+      generators:
+      - clusters: {}
+      - {{ include "chart.githubGenerator" (dict "github" $github "globals" $globals "repo" $repo "refresh" $refresh) | nindent 8 | trim }}
+  {{- else }}
+  - {{ include "chart.githubGenerator" (dict "github" $github "globals" $globals "repo" $repo "refresh" $refresh) | nindent 4 | trim }}
   {{- end }}
-  - pullRequest:
-      github:
-        api: {{ $github.api }}
-        owner: {{ required "A valid repo organization / owner is required" $github.owner }}
-        repo: {{ required "A valid repo name is required" $repo.name }}
-        labels:
-        - {{ required "A valid label(s) for PRs is required" (coalesce $github.label $globals.label) }}
-        {{- if and ($github.secretName) ($github.secretKey) }}
-        tokenRef:
-          secretName: {{ $github.secretName }}
-          key: {{ $github.secretKey }}
-        {{- end }}
-        {{- if $github.appSecretName }}
-        appSecretName: {{ $github.appSecretName }}
-        {{- end }}
-      requeueAfterSeconds: {{ $refresh | default 500 }}
-  template:
-    metadata:
-      name: {{ printf "%s-%shead_short_sha_7%s-%snumber%s-%s" $repo.name $dqf $dqb $dqf $dqb $name }}
-      labels:
-        app.kubernetes.io/name: {{ $repo.name }}
-        app.kubernetes.io/branch: {{ trunc 63 $branchSlug | trimSuffix "-" }}
-        app.kubernetes.io/created-by: 'applicationset'
-      annotations:
-        argocd.argoproj.io/head: {{ $headShortSha }}
-        link.argocd.argoproj.io/external-link: '{{ $pr }}/{{ $github.owner }}/{{or $repo.name $repo.path}}/pull/{{ $dqf }}number{{ $dqb }}'
-        {{- with $globals.annotations }}
-          {{- toYaml . | nindent 8 }}
-        {{- end }}
-    spec:
-      revisionHistoryLimit: {{ $globals.revisionHistoryLimit }}
-      source:
-        {{- $localRepoUrl := printf "https://github.com/%s/%s.git" $github.owner $repo.name }}
-        repoURL: {{ coalesce $repo.repoUrl $localRepoUrl }}
-        {{- if and $repo $repo.parameters }}
-        helm:
-          parameters:
-            {{ toJson $repo.parameters | indent 0 }}
-        chart: {{ or $repo.chart $repo.name }}
-        targetRevision: {{ or $repo.targetRevision ">= 0" | quote }}
-        {{- else if and $repo $repo.values }}
-        helm:
-          values: |
-            {{ toJson $repo.values | indent 0 }}
-        {{- if and $repo $repo.chart }}
-        chart: {{ or $repo.chart $repo.name }}
-        {{- else if and $repo $repo.path }}
-        path: {{ $repo.path }}
-        {{- end }}
-        targetRevision: {{ or $repo.targetRevision $branch $headShortSha "HEAD" }}
-        {{- else }}
-        targetRevision: {{ or $repo.targetRevision $branch $headShortSha "HEAD" }}
-        kustomize:
-          namespace: {{ coalesce $repo.namespace $.Values.globals.deployToNamespace (printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb) | quote }}
-          commonAnnotations:
-            app.kubernetes.io/instance: '{{ $repo.name }}'
-            app.kubernetes.io/part-of: {{ coalesce $github.label $globals.label }}
-            argocd.argoproj.io/head_short_sha: '{{ $dqf }}head_short_sha{{ $dqb }}'
-          {{- range $i, $r := $repo.images }}
-          {{- if eq $i 0 }}
-          images:
-          {{- end }}
-          - {{ $r | indent 0 | squote }}
-          {{- end }}
-        path: {{ coalesce $repo.path $github.path }}
-        {{- end }}
-      project: {{ and $.Values.project $.Values.project.enabled | ternary $name "default" }}
-      syncPolicy:
-        automated:
-          allowEmpty: true
-          prune: true
-          selfHeal: true
-        managedNamespaceMetadata:
-          labels:
-            app.kubernetes.io/created-by: {{ $repo.name }}
-        syncOptions:
-        {{- range $s := $globals.syncOptions }}
-          - {{ $s }}
-        {{- end }}
-        retry:
-          backoff:
-            duration: {{ $retryBackoffDuration }}
-      destination:
-        {{- if eq $server "all" }}
-        server: '{{ $dqf }}server{{ $dqb }}'
-        {{- else }}
-        server: {{ $server }}
-        {{- end }}
-        namespace: {{ coalesce $repo.namespace $.Values.globals.deployToNamespace (printf "mr-%sbranch_slug%s-%snumber%s" $dqf $dqb $dqf $dqb) | quote }}
-      info:
-        - name: author
-          value: '{{ $dqf }}author{{ $dqb }}'
-        - name: branch
-          value: '{{ $dqf }}branch{{ $dqb }}'
-        - name: target_branch
-          value: '{{ $dqf }}target_branch_slug{{ $dqb }}'
-        - name: branch_slug
-          value: '{{ $dqf }}branch_slug{{ $dqb }}'
-        - name: head_short_sha
-          value: '{{ $dqf }}head_short_sha{{ $dqb }}'
-        - name: pull_request
-          value: '{{ $dqf }}number{{ $dqb }}'
+  {{- $localRepoUrl := printf "https://github.com/%s/%s.git" $github.owner $repo.name -}}
+  {{- $repoURL := coalesce $repo.repoUrl $localRepoUrl -}}
+  {{- $externalLink := printf "%s/%s/%s/pull/%s .number %s" $pr $github.owner (or $repo.name $repo.path) $dqf $dqb -}}
+  {{- $nameFormat := printf "%s-%s .head_short_sha_7 %s-%s .number %s-%s" $repo.name $dqf $dqb $dqf $dqb $name -}}
+  {{- $label := coalesce $github.label $globals.label -}}
+  {{- $project := and $.Values.project $.Values.project.enabled | ternary $name "default" -}}
+{{- include "chart.applicationTemplate" (dict "repo" $repo "globals" $globals "server" $server "retryBackoffDuration" $retryBackoffDuration "project" $project "repoURL" $repoURL "label" $label "path" $github.path "nameFormat" $nameFormat "externalLink" $externalLink "infoKey" "pull_request") }}
 {{- end }}
 {{- end }}

@@ -1,21 +1,13 @@
 {{/*
 Copyright (c) 2018 Said Sef
-Expand the name of the chart.
 */}}
-{{- define "chart.name" -}}
-{{- default .Values.name .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
-{{- end }}
 
 {{- define "chart.namespace" -}}
 {{- default .Values.namespace | replace "." "-" }}
 {{- end }}
 
-{{- define "chart.notificationChannel" -}}
-{{- coalesce .Values.notificationChannel .Values.globals.notificationChannel }}
-{{- end }}
-
 {{- define "chart.server" -}}
-{{- coalesce .Values.server .Values.globals.server | squote }}
+{{- coalesce .Values.server .Values.globals.server }}
 {{- end }}
 
 {{- define "chart.refresh" -}}
@@ -27,50 +19,183 @@ Expand the name of the chart.
 {{- end }}
 
 {{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
+GitHub pull request generator body (emitted from column 0; the caller places it
+with `- {{ include ... | nindent N | trim }}` so it reads standalone or nested
+inside a matrix generator). Expected dict keys: github, globals, repo, refresh.
 */}}
-{{- define "chart.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-{{- end }}
+{{- define "chart.githubGenerator" -}}
+{{- $github := .github -}}
+{{- $globals := .globals -}}
+{{- $repo := .repo -}}
+{{- $refresh := .refresh -}}
+pullRequest:
+  github:
+    api: {{ $github.api }}
+    owner: {{ required "A valid repo organization / owner is required" $github.owner }}
+    repo: {{ required "A valid repo name is required" $repo.name }}
+    {{- $labels := $github.labels }}
+    {{- if not $labels }}{{- $labels = list (required "A valid label(s) for PRs is required" (coalesce $github.label $globals.label)) }}{{- end }}
+    labels:
+    {{- range $l := $labels }}
+    - {{ $l }}
+    {{- end }}
+    {{- if and ($github.secretName) ($github.secretKey) }}
+    tokenRef:
+      secretName: {{ $github.secretName }}
+      key: {{ $github.secretKey }}
+    {{- end }}
+    {{- if $github.appSecretName }}
+    appSecretName: {{ $github.appSecretName }}
+    {{- end }}
+  requeueAfterSeconds: {{ $refresh | default 500 }}
+{{- end -}}
 
 {{/*
-Create chart name and version as used by the chart label.
+GitLab merge request generator body. Expected dict keys: gitlab, globals, repo, refresh.
 */}}
-{{- define "chart.chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
-{{- end }}
+{{- define "chart.gitlabGenerator" -}}
+{{- $gitlab := .gitlab -}}
+{{- $globals := .globals -}}
+{{- $repo := .repo -}}
+{{- $refresh := .refresh -}}
+pullRequest:
+  gitlab:
+    api: {{ $gitlab.api }}
+    project: {{ coalesce $repo.project $gitlab.group |  required "A valid repo project / group ID is required" | squote}}
+    pullRequestState: {{ $gitlab.pullRequestState | default "opened" | squote }}
+    {{- $labels := $gitlab.labels }}
+    {{- if not $labels }}{{- $labels = list (required "A valid label(s) for PRs is required" (coalesce $gitlab.label $globals.label)) }}{{- end }}
+    labels:
+    {{- range $l := $labels }}
+    - {{ $l }}
+    {{- end }}
+    {{- if and ($gitlab.secretName) ($gitlab.secretKey) }}
+    tokenRef:
+      secretName: {{ $gitlab.secretName }}
+      key: {{ $gitlab.secretKey }}
+    {{- end }}
+    {{- if $gitlab.insecure }}
+    insecure: true
+    {{- end }}
+    {{- with $gitlab.caRef }}
+    caRef:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+  requeueAfterSeconds: {{ $refresh | default 500 }}
+{{- end -}}
 
 {{/*
-Common labels
-*/}}
-{{- define "chart.labels" -}}
-helm.sh/chart: {{ include "chart.chart" . }}
-{{ include "chart.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end }}
+Shared ArgoCD Application template body for the GitHub PR and GitLab MR
+ApplicationSets. The two generators are ~90% identical; the provider-specific
+values are pre-computed by each caller and passed via a dict so this template
+stays platform-agnostic and there is a single source of truth for the payload.
 
-{{/*
-Selector labels
+Expected dict keys:
+  repo                  the per-repo entry ($repo)
+  globals               .Values.globals (revisionHistoryLimit/annotations/syncOptions/deployToNamespace)
+  server                squoted ArgoCD server (include "chart.server")
+  retryBackoffDuration  sync retry backoff
+  project               pre-computed AppProject name or "default"
+  repoURL               pre-computed source repoURL
+  label                 pre-computed part-of label
+  path                  provider default source path
+  nameFormat            pre-computed Application metadata.name
+  externalLink          pre-computed external-link annotation value
+  infoKey               "pull_request" or "merge_request"
 */}}
-{{- define "chart.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "chart.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-
-{{- define "chart.globals" -}}
-{{ .Values.globals }}
-{{- end }}
+{{- define "chart.applicationTemplate" -}}
+{{- $dqf := "{{" -}}
+{{- $dqb := "}}" -}}
+{{- $branch := "{{ .branch }}" | squote -}}
+{{- $branchSlug := "{{ .branch_slug }}" | squote -}}
+{{- $headShortSha := "{{ .head_short_sha }}" | squote -}}
+{{- $repo := .repo -}}
+{{- $globals := .globals -}}
+{{- $server := .server -}}
+{{- $retryBackoffDuration := .retryBackoffDuration }}
+  template:
+    metadata:
+      name: {{ .nameFormat }}
+      labels:
+        app.kubernetes.io/name: {{ $repo.name }}
+        app.kubernetes.io/branch: {{ trunc 63 $branchSlug | trimSuffix "-" }}
+        app.kubernetes.io/created-by: 'applicationset'
+      annotations:
+        argocd.argoproj.io/head: {{ $headShortSha }}
+        link.argocd.argoproj.io/external-link: '{{ .externalLink }}'
+        {{- with $globals.annotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      revisionHistoryLimit: {{ $globals.revisionHistoryLimit }}
+      source:
+        repoURL: {{ .repoURL }}
+        {{- if and $repo $repo.parameters }}
+        helm:
+          parameters:
+            {{ toJson $repo.parameters | indent 0 }}
+        chart: {{ or $repo.chart $repo.name }}
+        targetRevision: {{ or $repo.targetRevision ">= 0" | quote }}
+        {{- else if and $repo $repo.values }}
+        helm:
+          values: |
+            {{ toJson $repo.values | indent 0 }}
+        {{- if and $repo $repo.chart }}
+        chart: {{ or $repo.chart $repo.name }}
+        {{- else if and $repo $repo.path }}
+        path: {{ $repo.path }}
+        {{- end }}
+        targetRevision: {{ or $repo.targetRevision $branch $headShortSha "HEAD" }}
+        {{- else }}
+        targetRevision: {{ or $repo.targetRevision $branch $headShortSha "HEAD" }}
+        kustomize:
+          namespace: {{ coalesce $repo.namespace $globals.deployToNamespace (printf "mr-%s .branch_slug %s-%s .number %s" $dqf $dqb $dqf $dqb) | quote }}
+          commonAnnotations:
+            app.kubernetes.io/instance: '{{ $repo.name }}'
+            app.kubernetes.io/part-of: {{ .label }}
+            argocd.argoproj.io/head_short_sha: '{{ $dqf }} .head_short_sha {{ $dqb }}'
+          {{- range $i, $r := $repo.images }}
+          {{- if eq $i 0 }}
+          images:
+          {{- end }}
+          - {{ $r | indent 0 | squote }}
+          {{- end }}
+        path: {{ coalesce $repo.path .path }}
+        {{- end }}
+      project: {{ .project }}
+      syncPolicy:
+        automated:
+          allowEmpty: true
+          prune: true
+          selfHeal: true
+        managedNamespaceMetadata:
+          labels:
+            app.kubernetes.io/created-by: {{ $repo.name }}
+        syncOptions:
+        {{- range $s := $globals.syncOptions }}
+          - {{ $s }}
+        {{- end }}
+        retry:
+          backoff:
+            duration: {{ $retryBackoffDuration }}
+      destination:
+        {{- if eq $server "all" }}
+        server: '{{ $dqf }} .server {{ $dqb }}'
+        {{- else }}
+        server: {{ $server | squote }}
+        {{- end }}
+        namespace: {{ coalesce $repo.namespace $globals.deployToNamespace (printf "mr-%s .branch_slug %s-%s .number %s" $dqf $dqb $dqf $dqb) | quote }}
+      info:
+        - name: author
+          value: '{{ $dqf }} .author {{ $dqb }}'
+        - name: branch
+          value: '{{ $dqf }} .branch {{ $dqb }}'
+        - name: target_branch
+          value: '{{ $dqf }} .target_branch_slug {{ $dqb }}'
+        - name: branch_slug
+          value: '{{ $dqf }} .branch_slug {{ $dqb }}'
+        - name: head_short_sha
+          value: '{{ $dqf }} .head_short_sha {{ $dqb }}'
+        - name: {{ .infoKey }}
+          value: '{{ $dqf }} .number {{ $dqb }}'
+{{- end -}}
