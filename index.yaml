@@ -3,6 +3,57 @@ entries:
   argocd-applicationsets-services:
   - annotations:
       artifacthub.io/changes: |
+        - kind: changed
+          description: "Migrate ApplicationSet templates to Go Template (goTemplate: true), replacing the deprecating fasttemplate syntax"
+        - kind: changed
+          description: "BREAKING - update template tokens in your repo image tags, values and parameters from {{branch_slug}} to {{ .branch_slug }} (and likewise .number, .head_short_sha etc.)"
+        - kind: added
+          description: Configurable goTemplateOptions and preserveResourcesOnDeletion, GitLab pullRequestState, insecure and caRef, and multi-label PR/MR filtering
+        - kind: fixed
+          description: "server=all now works - render a matrix generator (clusters x pullRequest) so each preview deploys to every registered cluster; previously it emitted an invalid 'server: all' destination"
+        - kind: added
+          description: GitLab MR ApplicationSets now set managedNamespaceMetadata for parity with GitHub
+        - kind: changed
+          description: "Internal - deduplicate the GitHub and GitLab generators into shared named templates and remove unused chart helpers"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+        - name: HELM
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/charts/applicationset/README.md
+    apiVersion: v2
+    appVersion: 0.20.0
+    created: "2026-07-16T19:26:28.529061834Z"
+    description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous
+      delivery tool for Kubernetes
+    digest: f39b40e609b2c588afa1bb7c5e712c9815c16f81f419ab746ee5ff7b1f52d44b
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - continuous deployment
+    - applicationsets
+    - preview
+    - canary
+    kubeVersion: '>= 1.31'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.20.0/argocd-applicationsets-services-0.20.0.tgz
+    version: 0.20.0
+  - annotations:
+      artifacthub.io/changes: |
         - kind: fixed
           description: Quote namespace values in GitHub PR and GitLab MR templates to handle special characters
       artifacthub.io/license: Apache-2.0
@@ -83,4 +134,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.18.0/argocd-applicationsets-services-0.18.0.tgz
     version: 0.18.0
-generated: "2026-05-23T08:44:20.336521934Z"
+generated: "2026-07-16T19:26:28.529072244Z"
