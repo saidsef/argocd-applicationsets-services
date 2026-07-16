@@ -120,8 +120,7 @@ jobs:
           kubectl cluster-info
           kubectl create ns argocd
           kubectl apply --server-side -k https://github.com/argoproj/argo-cd/manifests/crds\?ref\=stable -n argocd
-          helm upgrade -i appsets charts/applicationset --namespace argocd --create-namespace
-          helm list -A
+          helm template appsets charts/applicationset --namespace argocd | kubectl apply --server-side --force-conflicts -n argocd -f -
           kubectl get all -A
           kubectl get applications -A -o wide
           kubectl get applicationsets -A -o wide

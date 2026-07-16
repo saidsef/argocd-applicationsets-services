@@ -2,7 +2,7 @@ apiVersion: v2
 name: argocd-applicationsets-services
 description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous delivery tool for Kubernetes
 type: application
-version: &version "0.18.1"
+version: &version "0.20.0"
 appVersion: *version
 kubeVersion: ">= 1.31"
 home: https://github.com/saidsef/argocd-applicationsets-services
@@ -23,8 +23,18 @@ sources:
 annotations:
   artifacthub.io/license: "Apache-2.0"
   artifacthub.io/changes: |
+    - kind: changed
+      description: "Migrate ApplicationSet templates to Go Template (goTemplate: true), replacing the deprecating fasttemplate syntax"
+    - kind: changed
+      description: "BREAKING - update template tokens in your repo image tags, values and parameters from {{branch_slug}} to {{ .branch_slug }} (and likewise .number, .head_short_sha etc.)"
+    - kind: added
+      description: Configurable goTemplateOptions and preserveResourcesOnDeletion, GitLab pullRequestState, insecure and caRef, and multi-label PR/MR filtering
     - kind: fixed
-      description: Quote namespace values in GitHub PR and GitLab MR templates to handle special characters
+      description: "server=all now works - render a matrix generator (clusters x pullRequest) so each preview deploys to every registered cluster; previously it emitted an invalid 'server: all' destination"
+    - kind: added
+      description: GitLab MR ApplicationSets now set managedNamespaceMetadata for parity with GitHub
+    - kind: changed
+      description: "Internal - deduplicate the GitHub and GitLab generators into shared named templates and remove unused chart helpers"
   artifacthub.io/links: |
     - name: README
       url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
