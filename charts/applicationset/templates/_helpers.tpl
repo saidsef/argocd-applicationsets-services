@@ -115,7 +115,10 @@ Expected dict keys:
 {{- $retryBackoffDuration := .retryBackoffDuration }}
   template:
     metadata:
-      name: {{ .nameFormat }}
+      {{- /* server=all fans out over a clusters x pullRequest matrix; without the
+             cluster name the Application name collides across clusters and only one
+             is created. nameNormalized is the RFC-1123 safe cluster name. */}}
+      name: {{ .nameFormat }}{{ if eq $server "all" }}-{{ $dqf }} .nameNormalized {{ $dqb }}{{ end }}
       labels:
         app.kubernetes.io/name: {{ $repo.name }}
         app.kubernetes.io/branch: {{ trunc 63 $branchSlug | trimSuffix "-" }}
