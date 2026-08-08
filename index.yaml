@@ -4,6 +4,49 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: "Document the ArgoCD version floors for Go template tokens - goTemplate requires >= v2.5.0 and goTemplateOptions >= v2.8.0"
+        - kind: changed
+          description: "Correct the repos documentation to show the dot-prefixed token form ({{ .branch_slug }}) and link to the current pull request generator page"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+        - name: HELM
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/charts/applicationset/README.md
+    apiVersion: v2
+    appVersion: 0.20.1
+    created: "2026-08-08T19:29:45.177108501Z"
+    description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous
+      delivery tool for Kubernetes
+    digest: ddb07d93a84f50cd27ae5cd2486b70a2921464bb211829e62853e66d240af2ab
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - continuous deployment
+    - applicationsets
+    - preview
+    - canary
+    kubeVersion: '>= 1.31'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.20.1/argocd-applicationsets-services-0.20.1.tgz
+    version: 0.20.1
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: "Migrate ApplicationSet templates to Go Template (goTemplate: true), replacing the deprecating fasttemplate syntax"
         - kind: changed
           description: "BREAKING - update template tokens in your repo image tags, values and parameters from {{branch_slug}} to {{ .branch_slug }} (and likewise .number, .head_short_sha etc.)"
@@ -134,4 +177,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.18.0/argocd-applicationsets-services-0.18.0.tgz
     version: 0.18.0
-generated: "2026-07-16T19:26:28.529072244Z"
+generated: "2026-08-08T19:29:45.177124355Z"
