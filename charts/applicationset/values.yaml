@@ -25,7 +25,7 @@ globals:
   retryBackoffDuration: '10s'
 
   # -- (list) Go template options for the ApplicationSet controller. 'missingkey=error'
-  # fails rendering on any unresolved template key - see ArgoCD ApplicationSet docs.
+  # fails rendering on any unresolved template key. Requires ArgoCD >= v2.8.0.
   goTemplateOptions:
     - missingkey=error
 
@@ -117,9 +117,9 @@ gitlab:
   secretName: ''
   secretKey: ''
 
-# -- List of repo names and override images for preview environment
-# to dynamically pass the branch of the pull request head use '{{ .branch_slug }}' variable
-# see: https://argocd-applicationset.readthedocs.io/en/stable/Generators-Pull-Request/#template
+# -- List of repo names and override images for preview environment. Generator tokens are
+# Go template, so they need the leading dot - '{{ .branch_slug }}', not '{{branch_slug}}'.
+# Requires ArgoCD >= v2.5.0. See: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Pull-Request/
 repos:
   gitlab: {}
   # - name: service-a
