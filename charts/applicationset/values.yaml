@@ -91,7 +91,8 @@ github:
   # labels:
   #   - preview
   #   - ready
-  owner: 'saidsef'
+  # -- (string) GitHub organisation / owner. Required when `repos.github` is populated.
+  owner: ''
   path: 'deployment'
   secretName: ''
   secretKey: ''
@@ -100,7 +101,8 @@ github:
 # -- GitLab repo configuration parameters
 gitlab:
   api: https://gitlab.com
-  group: 'saidsef'
+  # -- (string) GitLab group. Required when `repos.gitlab` is populated.
+  group: ''
   label: 'preview'
   # -- (list) Filter MRs by multiple labels (an MR must carry ALL of them). Overrides `label` when set.
   # labels:
@@ -117,45 +119,14 @@ gitlab:
   secretName: ''
   secretKey: ''
 
-# -- List of repo names and override images for preview environment. Generator tokens are
-# Go template, so they need the leading dot - '{{ .branch_slug }}', not '{{branch_slug}}'.
-# Requires ArgoCD >= v2.5.0. See: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Pull-Request/
+# -- List of repo names and override images for preview environment. Both providers are
+# empty by default; each renders only when you populate it, so declaring one never pulls
+# in the other. Generator tokens are Go template, so they need the leading dot -
+# '{{ .branch_slug }}', not '{{branch_slug}}'. Requires ArgoCD >= v2.5.0.
+# Worked examples: values-example.yaml
+# See: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Pull-Request/
 repos:
-  gitlab: {}
-  # - name: service-a
-  #   path: 'deployment/preview'
-  #   project: 13
-  #   namespace: preview
-  #   repoUrl: 'https://gitlab.com/project/service-a.git'
-  github:
-  - name: node-webserver
-    images:
-    - 'docker.io/saidsef/node-webserver:{{ .branch_slug }}'
-  - name: alpine-jenkins-dockerfile
-    path: 'deployment/preview'
-  - name: aws-kinesis-local
-    images:
-    - 'docker.io/saidsef/aws-kinesis-local:{{ .branch_slug }}'
-  - name: aws-dynamodb-local
-    images:
-    - 'docker.io/saidsef/aws-dynamodb-local:{{ .branch_slug }}'
-  - name: tika-document-to-text
-    path: 'deployment/preview'
-  - name: k8s-spot-termination-notice
-    images:
-    - 'docker.io/saidsef/k8s-spot-termination-notice:merge'
-  - name: scapy-containerised
-    path: 'charts/scapy'
-    values:
-      image:
-        tag: '{{ .branch_slug }}'
-  - name: faas-reverse-geocoding
-    chart: 'reverse-geocoding'
-    repoUrl: 'https://saidsef.github.io/faas-reverse-geocoding'
-    parameters:
-      - name: "image.tag"
-        value: "{{ .branch_slug }}"
-      - name: "ingress.enabled"
-        value: "true"
-      - name: "ingress.hosts[0].host"
-        value: "{{ .branch_slug }}"
+  # -- (list) GitHub repos to build previews for. Requires `github.owner`.
+  github: []
+  # -- (list) GitLab repos to build previews for. Requires `gitlab.group`.
+  gitlab: []

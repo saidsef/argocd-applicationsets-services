@@ -1,0 +1,59 @@
+# Worked examples for `repos`, covering each supported source shape. Not loaded by
+# default - pass it explicitly: `helm install ... -f values-example.yaml`.
+#
+# Both providers are empty in values.yaml, so populating one here never renders the
+# other. Generator tokens are Go template and need the leading dot - '{{ .branch_slug }}',
+# not '{{branch_slug}}'.
+
+github:
+  owner: 'saidsef'
+
+gitlab:
+  group: 'saidsef'
+
+repos:
+  github:
+  # kustomize source, image overridden per branch
+  - name: node-webserver
+    images:
+    - 'docker.io/saidsef/node-webserver:{{ .branch_slug }}'
+  # kustomize source at a non-default path
+  - name: alpine-jenkins-dockerfile
+    path: 'deployment/preview'
+  - name: aws-kinesis-local
+    images:
+    - 'docker.io/saidsef/aws-kinesis-local:{{ .branch_slug }}'
+  - name: aws-dynamodb-local
+    images:
+    - 'docker.io/saidsef/aws-dynamodb-local:{{ .branch_slug }}'
+  - name: tika-document-to-text
+    path: 'deployment/preview'
+  # pinned image, same tag for every preview
+  - name: k8s-spot-termination-notice
+    images:
+    - 'docker.io/saidsef/k8s-spot-termination-notice:merge'
+  # in-repo Helm chart, overridden with inline values
+  - name: scapy-containerised
+    path: 'charts/scapy'
+    values:
+      image:
+        tag: '{{ .branch_slug }}'
+  # published Helm chart from a repository, overridden with --set style parameters
+  - name: faas-reverse-geocoding
+    chart: 'reverse-geocoding'
+    repoUrl: 'https://saidsef.github.io/faas-reverse-geocoding'
+    parameters:
+      - name: "image.tag"
+        value: "{{ .branch_slug }}"
+      - name: "ingress.enabled"
+        value: "true"
+      - name: "ingress.hosts[0].host"
+        value: "{{ .branch_slug }}"
+
+  gitlab:
+  # `project` is the numeric GitLab project ID; it overrides `gitlab.group` for the generator
+  - name: service-a
+    path: 'deployment/preview'
+    project: 13
+    namespace: preview
+    repoUrl: 'https://gitlab.com/project/service-a.git'

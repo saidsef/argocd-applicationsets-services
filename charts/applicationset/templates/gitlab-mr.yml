@@ -39,9 +39,12 @@ spec:
   {{- else }}
   - {{ include "chart.gitlabGenerator" (dict "gitlab" $gitlab "globals" $globals "repo" $repo "refresh" $refresh) | nindent 4 | trim }}
   {{- end }}
-  {{- $localRepoUrl := printf "%s/%s/%s.git" $gitlab.api $gitlab.group $repo.name -}}
+  {{- /* the generator accepts a per-repo project ID instead, but the source and merge
+         request URLs below are built from the group, so demand it explicitly. */}}
+  {{- $group := required "A valid gitlab.group is required" $gitlab.group -}}
+  {{- $localRepoUrl := printf "%s/%s/%s.git" $gitlab.api $group $repo.name -}}
   {{- $repoURL := coalesce $repo.repoUrl $localRepoUrl -}}
-  {{- $externalLink := printf "%s/%s/%s/-/merge_requests/%s .number %s" $gitlab.api $gitlab.group (or $repo.name $repo.path) $dqf $dqb -}}
+  {{- $externalLink := printf "%s/%s/%s/-/merge_requests/%s .number %s" $gitlab.api $group (or $repo.name $repo.path) $dqf $dqb -}}
   {{- $nameFormat := printf "%s-%s .branch_slug %s-%s .number %s-%s" $repo.name $dqf $dqb $dqf $dqb $name -}}
   {{- $label := coalesce $gitlab.label $globals.label -}}
   {{- $project := and $.Values.project $.Values.project.enabled | ternary $name "default" -}}
