@@ -120,7 +120,17 @@ jobs:
           kubectl cluster-info
           kubectl create ns argocd
           kubectl apply --server-side -k https://github.com/argoproj/argo-cd/manifests/crds\?ref\=stable -n argocd
-          helm template appsets charts/applicationset --namespace argocd | kubectl apply --server-side --force-conflicts -n argocd -f -
+          # Server-side apply returns before the CRDs are established, and the chart is applied
+          # on the next line, so without this the ApplicationSet kind is intermittently unknown.
+          kubectl wait --for=condition=Established --timeout=60s \
+            crd/applications.argoproj.io crd/applicationsets.argoproj.io crd/appprojects.argoproj.io
+          # Both repos lists default to empty, so an install that names no repo is a no-op
+          # rather than one that adopts the chart's own.
+          if [[ -n "$(helm template appsets charts/applicationset --namespace argocd)" ]]; then
+            echo "::error::chart defaults rendered objects; repos.github and repos.gitlab must default to empty"
+            exit 1
+          fi
+          helm template appsets charts/applicationset --namespace argocd -f charts/applicationset/values-example.yaml | kubectl apply --server-side --force-conflicts -n argocd -f -
           kubectl get all -A
           kubectl get applications -A -o wide
           kubectl get applicationsets -A -o wide
