@@ -3,6 +3,51 @@ entries:
   argocd-applicationsets-services:
   - annotations:
       artifacthub.io/changes: |
+        - kind: fixed
+          description: "repos.github and repos.gitlab now default to empty, so declaring one provider no longer renders the chart's example repos for the other"
+        - kind: changed
+          description: "github.owner and gitlab.group default to empty and are now required when the matching repos list is populated"
+        - kind: added
+          description: "Worked repos examples moved out of values.yaml into values-example.yaml"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+        - name: HELM
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/charts/applicationset/README.md
+    apiVersion: v2
+    appVersion: 0.21.0
+    created: "2026-08-17T21:57:31.958532125Z"
+    description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous
+      delivery tool for Kubernetes
+    digest: 41af46b50018091be0aed95a0432b0a1fa4b9c16cfde1738982d4dcd9eccfd32
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - continuous deployment
+    - applicationsets
+    - preview
+    - canary
+    kubeVersion: '>= 1.31'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.21.0/argocd-applicationsets-services-0.21.0.tgz
+    version: 0.21.0
+  - annotations:
+      artifacthub.io/changes: |
         - kind: changed
           description: "Document the ArgoCD version floors for Go template tokens - goTemplate requires >= v2.5.0 and goTemplateOptions >= v2.8.0"
         - kind: changed
@@ -177,4 +222,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.18.0/argocd-applicationsets-services-0.18.0.tgz
     version: 0.18.0
-generated: "2026-08-08T19:29:45.177124355Z"
+generated: "2026-08-17T21:57:31.958551902Z"
