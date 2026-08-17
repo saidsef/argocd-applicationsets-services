@@ -2,3 +2,4 @@
 .git
 .helmignore
 */te?mp*
+*.gotmpl
