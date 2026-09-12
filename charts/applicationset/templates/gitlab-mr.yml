@@ -3,7 +3,6 @@
 {{- $globals := .Values.globals -}}
 {{- $name := .Values.name -}}
 {{- $refresh := include "chart.refresh" . -}}
-{{- $retryBackoffDuration := include "chart.retryBackoffDuration" . -}}
 {{- $namespace := include "chart.namespace" . -}}
 {{- $dqf := "{{" -}}
 {{- $dqb := "}}" -}}
@@ -48,6 +47,6 @@ spec:
   {{- $nameFormat := printf "%s-%s .branch_slug %s-%s .number %s-%s" $repo.name $dqf $dqb $dqf $dqb $name -}}
   {{- $label := coalesce $gitlab.label $globals.label -}}
   {{- $project := and $.Values.project $.Values.project.enabled | ternary $name "default" -}}
-{{- include "chart.applicationTemplate" (dict "repo" $repo "globals" $globals "server" $server "retryBackoffDuration" $retryBackoffDuration "project" $project "repoURL" $repoURL "label" $label "path" $gitlab.path "nameFormat" $nameFormat "externalLink" $externalLink "infoKey" "merge_request") }}
+{{- include "chart.applicationTemplate" (dict "repo" $repo "globals" $globals "server" $server "project" $project "repoURL" $repoURL "label" $label "path" $gitlab.path "nameFormat" $nameFormat "externalLink" $externalLink "infoKey" "merge_request") }}
 {{- end }}
 {{- end }}

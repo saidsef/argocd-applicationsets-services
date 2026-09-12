@@ -21,8 +21,11 @@ globals:
   # -- (int) How many old objects should be retained
   revisionHistoryLimit: 2
 
-  # -- (string) The amount to back off retries of failed syncs
-  retryBackoffDuration: '10s'
+  # -- Failed sync retry, passed through to the Application syncPolicy. A limit of 0 performs no retries.
+  retry:
+    limit: 5
+    backoff:
+      duration: '10s'
 
   # -- (list) Go template options for the ApplicationSet controller. 'missingkey=error'
   # fails rendering on any unresolved template key. Requires ArgoCD >= v2.8.0.
@@ -61,11 +64,8 @@ project:
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
-  # -- Only permit applications to deploy to the previews namespace in the same cluster
-  destinations:
-  - namespace: 'previews'
-    server: '*'
-    name: '*'
+  # -- (list) Destinations the project permits. Derived from `globals.deployToNamespace` and any per-repo `namespace` when left empty.
+  destinations: []
   # -- No destination service accounts by default
   destinationServiceAccounts: []
   # -- Allow all namespaced-scoped resources to be created, except for AppProject
