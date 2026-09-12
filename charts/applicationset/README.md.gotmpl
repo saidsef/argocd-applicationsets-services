@@ -25,6 +25,12 @@ when its list is populated - declaring one never pulls in the other. Populating 
 requires `github.owner`; populating `repos.gitlab` requires `gitlab.group`. See
 [values-example.yaml](./values-example.yaml) for worked examples of every supported source shape.
 
+Each populated provider also requires a credential, and rendering fails without one. GitHub takes
+`secretName` with `secretKey`, or `appSecretName`; GitLab takes `secretName` with `secretKey`. An
+anonymous GitHub caller gets 60 requests an hour per IP, which one ApplicationSet polling every 500
+seconds spends at 7.2 an hour, and a private repository returns no pull requests rather than an
+authentication error.
+
 {{ template "chart.valuesTable" . }}
 
 ----------------------------------------------

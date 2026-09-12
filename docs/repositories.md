@@ -5,6 +5,8 @@
 ```yaml
 github:
   owner: 'saidsef'
+  secretName: 'github-pr-token'
+  secretKey: 'token'
 
 repos:
   github:
@@ -13,7 +15,7 @@ repos:
     - 'docker.io/saidsef/node-webserver:{{ .branch_slug }}'
 ```
 
-`github.owner` is required once `repos.github` is populated, and `gitlab.group` once `repos.gitlab` is. Rendering fails with a message naming the missing value rather than producing an incomplete `ApplicationSet`.
+`github.owner` is required once `repos.github` is populated, and `gitlab.group` once `repos.gitlab` is. Each populated provider needs a credential as well. Rendering fails with a message naming the missing value rather than producing an incomplete `ApplicationSet`.
 
 ## Entry keys
 
@@ -109,6 +111,8 @@ A tag no build produced leaves the pod in `ImagePullBackOff`, and the `Applicati
 ```yaml
 gitlab:
   group: 'saidsef'
+  secretName: 'gitlab-mr-token'
+  secretKey: 'token'
 
 repos:
   gitlab:

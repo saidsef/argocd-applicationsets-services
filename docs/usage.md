@@ -55,11 +55,11 @@ Neither override is present in `values.yaml`. Set one only to keep an older valu
 | `github.label` | string | `preview` | Single label filter |
 | `github.labels` | list | unset | Multiple label filter. A request must carry every one, and this overrides `github.label` |
 | `github.path` | string | `deployment` | Default source path inside the repository |
-| `github.secretName` | string | `''` | Secret holding a personal access token |
-| `github.secretKey` | string | `''` | Key within that secret |
-| `github.appSecretName` | string | `''` | Secret holding GitHub App credentials |
+| `github.secretName` | string | `''` | Secret holding a personal access token. Required with `secretKey`, unless `appSecretName` is set |
+| `github.secretKey` | string | `''` | Key within that secret. Required with `secretName`, unless `appSecretName` is set |
+| `github.appSecretName` | string | `''` | Secret holding GitHub App credentials, an alternative to the two above |
 
-`tokenRef` renders only when both `secretName` and `secretKey` are set. With neither, the generator calls the API unauthenticated, which works for public repositories against a shared rate limit. [Deployment](deployment.md#api-credentials) covers creating the secret.
+A credential is required once `repos.github` is populated. Rendering fails without one, naming the values to set, and it fails on a half-configured pair as well, since `secretName` without `secretKey` produces no `tokenRef`. [Deployment](deployment.md#api-credentials) covers creating the secret.
 
 ## GitLab
 
@@ -73,8 +73,10 @@ Neither override is present in `values.yaml`. Set one only to keep an older valu
 | `gitlab.insecure` | bool | `false` | Skip GitLab TLS certificate validation |
 | `gitlab.caRef` | object | `{}` | ConfigMap holding the CA bundle for a self-signed certificate |
 | `gitlab.path` | string | `deployment` | Default source path inside the repository |
-| `gitlab.secretName` | string | `''` | Secret holding a personal or group access token |
-| `gitlab.secretKey` | string | `''` | Key within that secret |
+| `gitlab.secretName` | string | `''` | Secret holding a personal or group access token. Required with `secretKey` |
+| `gitlab.secretKey` | string | `''` | Key within that secret. Required with `secretName` |
+
+GitLab has no App equivalent, so a token is the only credential, and it is required once `repos.gitlab` is populated.
 
 `gitlab.group` is required even where every entry sets its own numeric `project`, because the source `repoURL` and the merge request link are built from the group.
 

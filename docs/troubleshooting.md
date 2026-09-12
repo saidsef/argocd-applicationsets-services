@@ -20,6 +20,10 @@ Both `repos` lists are empty by default, so an install passing no values creates
 | `A valid gitlab.group is required` | `repos.gitlab` is populated and `gitlab.group` is empty |
 | `A valid label(s) for PRs is required` | `labels`, `<provider>.label` and `globals.label` are all empty |
 | `A valid namespace is required` | `namespace` is empty |
+| `A GitHub credential is required` | `repos.github` is populated and neither `github.secretName` with `github.secretKey` nor `github.appSecretName` is set |
+| `A GitLab credential is required` | `repos.gitlab` is populated and `gitlab.secretName` with `gitlab.secretKey` is not set |
+
+A credential message on an install that worked before points at the upgrade rather than at the values. The guard arrived in `0.23.0`, and it fails a half-configured pair too, since `secretName` without `secretKey` renders no `tokenRef`. [Deployment](deployment.md#api-credentials) covers creating the secret.
 
 ## No Application appears for a pull request
 
@@ -28,8 +32,8 @@ Both `repos` lists are empty by default, so an install passing no values creates
 | Label missing | The labels on the request | Apply the label named by `labels`, `<provider>.label` or `globals.label` |
 | Multiple labels configured | Whether the request carries every entry of `labels` | A request must carry all of them, not any of them |
 | Not polled yet | Time since the request was labelled | Wait up to `globals.requeueAfterSeconds`, default 500, or configure a webhook |
-| API unauthorised | Controller logs for 401 or 404 | Set `secretName` and `secretKey`, since a private repository returns 404 unauthenticated |
-| Rate limited | Controller logs for 403 with a rate limit message | Use a token or a GitHub App, and raise `requeueAfterSeconds` |
+| Token lacks access | Controller logs for 401 or 404 | Check the token reaches the repository, since a repository it cannot see returns 404 rather than 403 |
+| Rate limited | Controller logs for 403 with a rate limit message | Raise `requeueAfterSeconds`, or move from a personal token to a GitHub App |
 | Merge request state filtered | `gitlab.pullRequestState` | The default `opened` excludes closed, merged and locked requests. Set `""` to disable the filter |
 
 ## The ApplicationSet generates nothing after an upgrade

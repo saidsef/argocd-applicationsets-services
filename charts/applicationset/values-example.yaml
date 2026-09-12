@@ -5,11 +5,17 @@
 # other. Generator tokens are Go template and need the leading dot - '{{ .branch_slug }}',
 # not '{{branch_slug}}'.
 
+# Each provider you populate needs a credential, so these name the secret and the key
+# holding the token. The secret itself is created separately, in the ArgoCD namespace.
 github:
   owner: 'saidsef'
+  secretName: 'github-pr-token'
+  secretKey: 'token'
 
 gitlab:
   group: 'saidsef'
+  secretName: 'gitlab-mr-token'
+  secretKey: 'token'
 
 repos:
   github:

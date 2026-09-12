@@ -39,6 +39,11 @@ inside a matrix generator). Expected dict keys: github, globals, repo, refresh.
 {{- $globals := .globals -}}
 {{- $repo := .repo -}}
 {{- $refresh := .refresh -}}
+{{- /* An anonymous caller gets 60 requests an hour and sees public repositories only,
+       which the controller reports as no pull requests rather than as a refusal. */}}
+{{- if not (or (and $github.secretName $github.secretKey) $github.appSecretName) }}
+{{- fail "A GitHub credential is required: set github.secretName with github.secretKey, or github.appSecretName" }}
+{{- end }}
 pullRequest:
   github:
     api: {{ $github.api }}
@@ -69,6 +74,10 @@ GitLab merge request generator body. Expected dict keys: gitlab, globals, repo, 
 {{- $globals := .globals -}}
 {{- $repo := .repo -}}
 {{- $refresh := .refresh -}}
+{{- /* GitLab has no App equivalent, so a token is the only credential. */}}
+{{- if not (and $gitlab.secretName $gitlab.secretKey) }}
+{{- fail "A GitLab credential is required: set gitlab.secretName with gitlab.secretKey" }}
+{{- end }}
 pullRequest:
   gitlab:
     api: {{ $gitlab.api }}

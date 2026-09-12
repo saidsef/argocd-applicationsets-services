@@ -35,7 +35,9 @@ An install that names no repository is valid and renders nothing, so the first i
 
 ## API credentials
 
-The generator polls the SCM API. Without credentials it polls anonymously, which reaches public repositories under a shared rate limit and no private ones. The secret lives in the same namespace as the `ApplicationSet`.
+The generator polls the SCM API, and each provider you populate requires a credential. Rendering fails without one, so this is configured before the first install rather than after the first rate limit. The secret lives in the same namespace as the `ApplicationSet`.
+
+An anonymous caller is what the requirement exists to prevent. GitHub allows it 60 requests an hour per IP, which a single `ApplicationSet` polling every 500 seconds spends at 7.2 an hour, and a private repository returns no pull requests rather than an authentication error, so the failure reads as a label that matches nothing.
 
 ### GitHub token
 
@@ -54,7 +56,7 @@ github:
   secretKey: 'token'
 ```
 
-Both keys are needed. Setting one alone renders no `tokenRef`, and the generator falls back to anonymous polling.
+Both keys are needed. Setting one alone renders no `tokenRef`, so the guard treats a half-configured pair as no credential at all and fails.
 
 ### GitHub App
 
