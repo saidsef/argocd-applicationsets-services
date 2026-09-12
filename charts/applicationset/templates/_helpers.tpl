@@ -14,8 +14,19 @@ Copyright (c) 2018 Said Sef
 {{- coalesce .Values.requeueAfterSeconds .Values.globals.requeueAfterSeconds -}}
 {{- end }}
 
-{{- define "chart.retryBackoffDuration" -}}
-{{- coalesce .Values.retryBackoffDuration .Values.globals.retryBackoffDuration -}}
+{{- define "chart.previewNamespaces" -}}
+{{- $repos := default dict .Values.repos -}}
+{{- $ns := list .Values.globals.deployToNamespace -}}
+{{- range $provider := list (default list $repos.github) (default list $repos.gitlab) -}}
+{{- range $r := $provider -}}
+{{- with $r.namespace }}{{- $ns = append $ns . }}{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- range $n := uniq (compact $ns) }}
+- namespace: {{ $n | squote }}
+  server: '*'
+  name: '*'
+{{- end }}
 {{- end }}
 
 {{/*
@@ -61,7 +72,7 @@ GitLab merge request generator body. Expected dict keys: gitlab, globals, repo, 
 pullRequest:
   gitlab:
     api: {{ $gitlab.api }}
-    project: {{ coalesce $repo.project $gitlab.group |  required "A valid repo project / group ID is required" | squote}}
+    project: {{ coalesce $repo.project (printf "%s/%s" (required "A valid gitlab.group is required" $gitlab.group) (required "A valid repo name is required" $repo.name)) | squote }}
     pullRequestState: {{ $gitlab.pullRequestState | default "opened" | squote }}
     {{- $labels := $gitlab.labels }}
     {{- if not $labels }}{{- $labels = list (required "A valid label(s) for PRs is required" (coalesce $gitlab.label $globals.label)) }}{{- end }}
@@ -94,7 +105,6 @@ Expected dict keys:
   repo                  the per-repo entry ($repo)
   globals               .Values.globals (revisionHistoryLimit/annotations/syncOptions/deployToNamespace)
   server                squoted ArgoCD server (include "chart.server")
-  retryBackoffDuration  sync retry backoff
   project               pre-computed AppProject name or "default"
   repoURL               pre-computed source repoURL
   label                 pre-computed part-of label
@@ -111,8 +121,7 @@ Expected dict keys:
 {{- $headShortSha := "{{ .head_short_sha }}" | squote -}}
 {{- $repo := .repo -}}
 {{- $globals := .globals -}}
-{{- $server := .server -}}
-{{- $retryBackoffDuration := .retryBackoffDuration }}
+{{- $server := .server }}
   template:
     metadata:
       {{- /* server=all fans out over a clusters x pullRequest matrix; without the
@@ -178,9 +187,10 @@ Expected dict keys:
         {{- range $s := $globals.syncOptions }}
           - {{ $s }}
         {{- end }}
+        {{- with $globals.retry }}
         retry:
-          backoff:
-            duration: {{ $retryBackoffDuration }}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
       destination:
         {{- if eq $server "all" }}
         server: '{{ $dqf }} .server {{ $dqb }}'

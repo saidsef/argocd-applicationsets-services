@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: {{ .Values.name }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ include "chart.namespace" . }}
   labels:
     app.kubernetes.io/name: {{ .Values.name }}
   annotations:
@@ -19,7 +19,11 @@ spec:
   destinationServiceAccounts:
     {{- toYaml .Values.project.destinationServiceAccounts | nindent 4 }}
   destinations:
+    {{- if .Values.project.destinations }}
     {{- toYaml .Values.project.destinations | nindent 4 }}
+    {{- else }}
+    {{- include "chart.previewNamespaces" . | trim | nindent 4 }}
+    {{- end }}
   namespaceResourceBlacklist:
     {{- toYaml .Values.project.namespaceResourceBlacklist | nindent 4 }}
   namespaceResourceWhitelist:

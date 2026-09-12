@@ -2,7 +2,7 @@ apiVersion: v2
 name: argocd-applicationsets-services
 description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous delivery tool for Kubernetes
 type: application
-version: &version "0.21.0"
+version: &version "0.22.0"
 appVersion: *version
 kubeVersion: ">= 1.31"
 home: https://github.com/saidsef/argocd-applicationsets-services
@@ -24,11 +24,15 @@ annotations:
   artifacthub.io/license: "Apache-2.0"
   artifacthub.io/changes: |
     - kind: fixed
-      description: "repos.github and repos.gitlab now default to empty, so declaring one provider no longer renders the chart's example repos for the other"
+      description: "Sync retry renders a limit, so the configured backoff now applies. ArgoCD performs no retries while the limit is 0"
+    - kind: fixed
+      description: "gitlab.group no longer stands in for a missing per-repo project; the generator receives group/name"
+    - kind: fixed
+      description: "The AppProject namespace is normalised the same way as the ApplicationSet namespace"
     - kind: changed
-      description: "github.owner and gitlab.group default to empty and are now required when the matching repos list is populated"
-    - kind: added
-      description: "Worked repos examples moved out of values.yaml into values-example.yaml"
+      description: "globals.retryBackoffDuration is replaced by globals.retry, passed straight through to the Application sync policy"
+    - kind: changed
+      description: "project.destinations defaults to empty and is derived from globals.deployToNamespace and any per-repo namespace"
   artifacthub.io/links: |
     - name: README
       url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md

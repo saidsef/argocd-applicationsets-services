@@ -51,9 +51,12 @@ repos:
         value: "{{ .branch_slug }}"
 
   gitlab:
-  # `project` is the numeric GitLab project ID; it overrides `gitlab.group` for the generator
+  # `project` is the numeric GitLab project ID; it overrides the derived `group/name` path
   - name: service-a
     path: 'deployment/preview'
     project: 13
     namespace: preview
     repoUrl: 'https://gitlab.com/project/service-a.git'
+  # no `project`, so the generator gets the `gitlab.group`/`name` path
+  - name: service-b
+    path: 'deployment/preview'
