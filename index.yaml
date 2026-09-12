@@ -4,6 +4,55 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: fixed
+          description: "Sync retry renders a limit, so the configured backoff now applies. ArgoCD performs no retries while the limit is 0"
+        - kind: fixed
+          description: "gitlab.group no longer stands in for a missing per-repo project; the generator receives group/name"
+        - kind: fixed
+          description: "The AppProject namespace is normalised the same way as the ApplicationSet namespace"
+        - kind: changed
+          description: "globals.retryBackoffDuration is replaced by globals.retry, passed straight through to the Application sync policy"
+        - kind: changed
+          description: "project.destinations defaults to empty and is derived from globals.deployToNamespace and any per-repo namespace"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+        - name: HELM
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/charts/applicationset/README.md
+    apiVersion: v2
+    appVersion: 0.22.0
+    created: "2026-09-12T19:12:56.857207206Z"
+    description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous
+      delivery tool for Kubernetes
+    digest: ec3e960b462510c0a3e9f047f386236eded925aa12c7f6ea8605a75245259382
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - continuous deployment
+    - applicationsets
+    - preview
+    - canary
+    kubeVersion: '>= 1.31'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.22.0/argocd-applicationsets-services-0.22.0.tgz
+    version: 0.22.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
           description: "repos.github and repos.gitlab now default to empty, so declaring one provider no longer renders the chart's example repos for the other"
         - kind: changed
           description: "github.owner and gitlab.group default to empty and are now required when the matching repos list is populated"
@@ -222,4 +271,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.18.0/argocd-applicationsets-services-0.18.0.tgz
     version: 0.18.0
-generated: "2026-08-17T21:57:31.958551902Z"
+generated: "2026-09-12T19:12:56.857239973Z"
