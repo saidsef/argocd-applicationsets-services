@@ -3,6 +3,51 @@ entries:
   argocd-applicationsets-services:
   - annotations:
       artifacthub.io/changes: |
+        - kind: changed
+          description: "Each populated provider requires a credential. Rendering fails without github.secretName and github.secretKey, or github.appSecretName, or gitlab.secretName and gitlab.secretKey"
+        - kind: changed
+          description: "An anonymous generator saw public repositories only and spent a 60 request hourly budget, reported as no matching pull requests rather than as a refusal"
+        - kind: changed
+          description: "values-example.yaml names a token secret for both providers"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+        - name: HELM
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/charts/applicationset/README.md
+    apiVersion: v2
+    appVersion: 0.23.0
+    created: "2026-09-12T21:14:05.175962037Z"
+    description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous
+      delivery tool for Kubernetes
+    digest: 895ea505e6064f465910f304601013f859ed85b57f182a6fe64d6bd1499f331c
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - continuous deployment
+    - applicationsets
+    - preview
+    - canary
+    kubeVersion: '>= 1.31'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.23.0/argocd-applicationsets-services-0.23.0.tgz
+    version: 0.23.0
+  - annotations:
+      artifacthub.io/changes: |
         - kind: fixed
           description: "Sync retry renders a limit, so the configured backoff now applies. ArgoCD performs no retries while the limit is 0"
         - kind: fixed
@@ -271,4 +316,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.18.0/argocd-applicationsets-services-0.18.0.tgz
     version: 0.18.0
-generated: "2026-09-12T19:12:56.857239973Z"
+generated: "2026-09-12T21:14:05.175993416Z"
