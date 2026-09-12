@@ -37,10 +37,9 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-          cache: 'pip'
-          cache-dependency-path: docs/requirements.txt
+      # Keep these pins in step with the ones .readthedocs.yaml installs.
       - name: Install MkDocs
-        run: python -m pip install -r docs/requirements.txt
+        run: python -m pip install 'mkdocs~=1.6' 'mkdocs-material~=9.7.7' 'pymdown-extensions~=11.0.2' 'pygments~=2.21'
       # Read the Docs builds the published site from the same pins, so a broken link
       # or an unlisted page fails the pull request before it reaches the site.
       - name: Build documentation

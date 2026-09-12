@@ -1,6 +1,0 @@
-# Pins shared by the Read the Docs build and the docs workflow, so a bump reaches both.
-# Trivy reads a `~=` floor as the installed version, so the floor has to be a fixed release.
-mkdocs~=1.6
-mkdocs-material~=9.7.7
-pymdown-extensions~=11.0.2
-pygments~=2.21
