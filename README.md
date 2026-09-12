@@ -1,9 +1,11 @@
 # ArgoCD ApplicationSet Services
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE.md) [![Chart](https://github.com/saidsef/argocd-applicationsets-services/actions/workflows/charts.yml/badge.svg)](#deployment) [![Documentation](https://readthedocs.org/projects/argocd-applicationsets-services/badge/?version=latest)](https://argocd-applicationsets-services.readthedocs.io/en/latest/) [![Artifact HUB](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/argocd-applicationsets-services)](https://artifacthub.io/packages/search?repo=argocd-applicationsets-services) [![Commits](https://img.shields.io/github/commits-since/saidsef/argocd-applicationsets-services/latest.svg)](#Source)
+
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE.md) [![Chart](https://github.com/saidsef/argocd-applicationsets-services/actions/workflows/charts.yml/badge.svg)](#deployment) [![Documentation](https://readthedocs.org/projects/argocd-applicationsets-services/badge/?version=latest)](https://argocd-applicationsets-services.readthedocs.io/en/latest/) [![Artifact HUB](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/argocd-applicationsets-services)](https://artifacthub.io/packages/search?repo=argocd-applicationsets-services) [![Commits](https://img.shields.io/github/commits-since/saidsef/argocd-applicationsets-services/latest.svg)](#source)
 
 A [Helm chart for ArgoCD ApplicationSet](./charts/applicationset/README.md) services that uses pull request generator to automatically discover open pull requests within a repository with the **label** `preview`.
 
 ## What does it do and how does it work?
+
 [ApplicationSets](https://argocd-applicationset.readthedocs.io/en/stable/) interact with ArgoCD by creating, updating, managing, and deleting ArgoCD Applications. The job is to make sure that the ArgoCD Application remains consistent with the declared ApplicationSet resource(s). This can be thought of as sort of an “Application factory”. It takes an ApplicationSet and outputs one or more ArgoCD Applications.
 
 This helm chart implements Pull Request generator of ApplicationSet, it uses API of an SCMaaS provider (GitHub and/or GitLab) to automatically discover open pull requests within an repository via GitHub / GitLab **labels**. This fits well with the style of building a test environment when you create a pull request.
@@ -23,6 +25,7 @@ Services that should already be installed and/or running.
 ## Deployment
 
 > Use `repo:` in values to inject or override values in `kustomize` or `helm`
+
 ### HELM
 
 ```shell
