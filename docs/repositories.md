@@ -36,58 +36,58 @@ The derived `repoUrl` is `https://github.com/<owner>/<name>.git` for GitHub, and
 
 Three source shapes are available, and the keys present on the entry select between them.
 
-=== "Kustomize"
+### Kustomize
 
-    Neither `values` nor `parameters` is set. This is the default shape, and the only one that applies `images` and the preview namespace.
+Neither `values` nor `parameters` is set. This is the default shape, and the only one that applies `images` and the preview namespace.
 
-    ```yaml
-    repos:
-      github:
-      - name: node-webserver
-        images:
-        - 'docker.io/saidsef/node-webserver:{{ .branch_slug }}'
-      - name: alpine-jenkins-dockerfile
-        path: 'deployment/preview'
-    ```
+```yaml
+repos:
+  github:
+  - name: node-webserver
+    images:
+    - 'docker.io/saidsef/node-webserver:{{ .branch_slug }}'
+  - name: alpine-jenkins-dockerfile
+    path: 'deployment/preview'
+```
 
-    The `Application` gets a `kustomize` block carrying the namespace, the image overrides and three common annotations: `app.kubernetes.io/instance`, `app.kubernetes.io/part-of` and `argocd.argoproj.io/head_short_sha`. The source path is the entry's `path`, or the provider default of `deployment`.
+The `Application` gets a `kustomize` block carrying the namespace, the image overrides and three common annotations: `app.kubernetes.io/instance`, `app.kubernetes.io/part-of` and `argocd.argoproj.io/head_short_sha`. The source path is the entry's `path`, or the provider default of `deployment`.
 
-=== "In-repo Helm chart"
+### In-repo Helm chart
 
-    `values` is set alongside `path`. The chart is read from the pull request branch, so a chart change and an application change ship in the same preview.
+`values` is set alongside `path`. The chart is read from the pull request branch, so a chart change and an application change ship in the same preview.
 
-    ```yaml
-    repos:
-      github:
-      - name: scapy-containerised
-        path: 'charts/scapy'
-        values:
-          image:
-            tag: '{{ .branch_slug }}'
-    ```
+```yaml
+repos:
+  github:
+  - name: scapy-containerised
+    path: 'charts/scapy'
+    values:
+      image:
+        tag: '{{ .branch_slug }}'
+```
 
-    `values` is serialised into the `Application` as a single JSON document, which YAML accepts as chart values.
+`values` is serialised into the `Application` as a single JSON document, which YAML accepts as chart values.
 
-=== "Published Helm chart"
+### Published Helm chart
 
-    `parameters` is set alongside `repoUrl`. The chart comes from a chart repository rather than from the branch, so `targetRevision` is a chart version constraint and defaults to `>= 0`.
+`parameters` is set alongside `repoUrl`. The chart comes from a chart repository rather than from the branch, so `targetRevision` is a chart version constraint and defaults to `>= 0`.
 
-    ```yaml
-    repos:
-      github:
-      - name: faas-reverse-geocoding
-        chart: 'reverse-geocoding'
-        repoUrl: 'https://saidsef.github.io/faas-reverse-geocoding'
-        parameters:
-          - name: "image.tag"
-            value: "{{ .branch_slug }}"
-          - name: "ingress.enabled"
-            value: "true"
-          - name: "ingress.hosts[0].host"
-            value: "{{ .branch_slug }}"
-    ```
+```yaml
+repos:
+  github:
+  - name: faas-reverse-geocoding
+    chart: 'reverse-geocoding'
+    repoUrl: 'https://saidsef.github.io/faas-reverse-geocoding'
+    parameters:
+      - name: "image.tag"
+        value: "{{ .branch_slug }}"
+      - name: "ingress.enabled"
+        value: "true"
+      - name: "ingress.hosts[0].host"
+        value: "{{ .branch_slug }}"
+```
 
-    `chart` defaults to `name`, so it is needed only where the chart is named differently from the repository.
+`chart` defaults to `name`, so it is needed only where the chart is named differently from the repository.
 
 !!! warning "The shapes are exclusive"
     `parameters` wins over `values`, and either suppresses the Kustomize block. An entry setting `images` alongside `values` deploys the chart and drops the image overrides silently, so put the image tag in the chart values instead. An entry setting `values` without `chart` or `path` renders an `Application` with no source location and fails to sync.

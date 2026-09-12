@@ -37,53 +37,53 @@ An install that names no repository is valid and renders nothing, so the first i
 
 The generator polls the SCM API. Without credentials it polls anonymously, which reaches public repositories under a shared rate limit and no private ones. The secret lives in the same namespace as the `ApplicationSet`.
 
-=== "GitHub token"
+### GitHub token
 
-    A personal access token with `repo` scope, or a fine-grained token with read access to pull requests on the repositories concerned.
+A personal access token with `repo` scope, or a fine-grained token with read access to pull requests on the repositories concerned.
 
-    ```shell
-    kubectl create secret generic github-pr-token \
-      --namespace argocd \
-      --from-literal=token=ghp_xxxxxxxxxxxx
-    ```
+```shell
+kubectl create secret generic github-pr-token \
+  --namespace argocd \
+  --from-literal=token=ghp_xxxxxxxxxxxx
+```
 
-    ```yaml
-    github:
-      owner: 'saidsef'
-      secretName: 'github-pr-token'
-      secretKey: 'token'
-    ```
+```yaml
+github:
+  owner: 'saidsef'
+  secretName: 'github-pr-token'
+  secretKey: 'token'
+```
 
-    Both keys are needed. Setting one alone renders no `tokenRef`, and the generator falls back to anonymous polling.
+Both keys are needed. Setting one alone renders no `tokenRef`, and the generator falls back to anonymous polling.
 
-=== "GitHub App"
+### GitHub App
 
-    `appSecretName` names an ArgoCD repository credentials secret holding `githubAppID`, `githubAppInstallationID` and `githubAppPrivateKey`. An App raises the rate limit and scopes access per installation rather than per user.
+`appSecretName` names an ArgoCD repository credentials secret holding `githubAppID`, `githubAppInstallationID` and `githubAppPrivateKey`. An App raises the rate limit and scopes access per installation rather than per user.
 
-    ```yaml
-    github:
-      owner: 'saidsef'
-      appSecretName: 'github-app-repo-creds'
-    ```
+```yaml
+github:
+  owner: 'saidsef'
+  appSecretName: 'github-app-repo-creds'
+```
 
-    `secretName` and `secretKey` are unnecessary alongside it.
+`secretName` and `secretKey` are unnecessary alongside it.
 
-=== "GitLab token"
+### GitLab token
 
-    A personal, group or project access token with `read_api` scope.
+A personal, group or project access token with `read_api` scope.
 
-    ```shell
-    kubectl create secret generic gitlab-mr-token \
-      --namespace argocd \
-      --from-literal=token=glpat-xxxxxxxxxxxx
-    ```
+```shell
+kubectl create secret generic gitlab-mr-token \
+  --namespace argocd \
+  --from-literal=token=glpat-xxxxxxxxxxxx
+```
 
-    ```yaml
-    gitlab:
-      group: 'saidsef'
-      secretName: 'gitlab-mr-token'
-      secretKey: 'token'
-    ```
+```yaml
+gitlab:
+  group: 'saidsef'
+  secretName: 'gitlab-mr-token'
+  secretKey: 'token'
+```
 
 `globals.requeueAfterSeconds` sets the polling interval, and every repository is polled on it. Lowering it across many repositories multiplies the API calls, which is what exhausts a rate limit. Prefer a [webhook](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Pull-Request/#webhook-configuration) for faster feedback, and leave the interval as the fallback.
 
