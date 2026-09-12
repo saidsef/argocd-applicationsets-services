@@ -27,6 +27,7 @@ The chart covers GitHub and GitLab. Both provider lists are empty by default and
 | ArgoCD ApplicationSet controller | >= v2.13 |
 | Helm | >= v3.10 |
 | SCM provider | GitHub or GitLab, reachable from the controller |
+| SCM credential | A token or GitHub App secret per populated provider, required from `0.23.0` |
 
 Branch names become Kubernetes object names, so they have to be [RFC 1123](https://www.rfc-editor.org/rfc/rfc1123) subdomains: lower case alphanumeric characters, `-` or `.`, starting and ending with an alphanumeric character.
 
@@ -44,6 +45,8 @@ helm upgrade --install pr-services applicationsets-services/argocd-applicationse
 # values.yaml
 github:
   owner: 'saidsef'
+  secretName: 'github-pr-token'
+  secretKey: 'token'
 
 repos:
   github:
@@ -51,6 +54,8 @@ repos:
     images:
     - 'docker.io/saidsef/node-webserver:{{ .branch_slug }}'
 ```
+
+`secretName` and `secretKey` name a secret holding a GitHub token, which the chart requires before it renders.
 
 The chart is published to Artifact Hub as [argocd-applicationsets-services](https://artifacthub.io/packages/search?repo=argocd-applicationsets-services). [Deployment](deployment.md) covers the API tokens the generator needs, and [Configuration](usage.md) covers the full value set.
 

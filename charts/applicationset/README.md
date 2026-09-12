@@ -1,6 +1,6 @@
 # argocd-applicationsets-services
 
-![Version: 0.22.0](https://img.shields.io/badge/Version-0.22.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.22.0](https://img.shields.io/badge/AppVersion-0.22.0-informational?style=flat-square)
+![Version: 0.23.0](https://img.shields.io/badge/Version-0.23.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.23.0](https://img.shields.io/badge/AppVersion-0.23.0-informational?style=flat-square)
 
 A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous delivery tool for Kubernetes
 
@@ -31,15 +31,26 @@ when its list is populated - declaring one never pulls in the other. Populating 
 requires `github.owner`; populating `repos.gitlab` requires `gitlab.group`. See
 [values-example.yaml](./values-example.yaml) for worked examples of every supported source shape.
 
+Each populated provider also requires a credential, and rendering fails without one. GitHub takes
+`secretName` with `secretKey`, or `appSecretName`; GitLab takes `secretName` with `secretKey`. An
+anonymous GitHub caller gets 60 requests an hour per IP, which one ApplicationSet polling every 500
+seconds spends at 7.2 an hour, and a private repository returns no pull requests rather than an
+authentication error.
+
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | github | object | `{"api":"https://api.github.com","appSecretName":"","label":"preview","owner":"","path":"deployment","secretKey":"","secretName":""}` | GitHub repo configuration parameters |
+| github.appSecretName | string | `""` | Secret holding GitHub App credentials, an alternative to `secretName` and `secretKey`. |
 | github.owner | string | `""` | GitHub organisation / owner. Required when `repos.github` is populated. |
+| github.secretKey | string | `""` | Key within `secretName`. Required with `secretName`, unless `appSecretName` is set. |
+| github.secretName | string | `""` | Secret holding a GitHub token. Required with `secretKey`, unless `appSecretName` is set. |
 | gitlab | object | `{"api":"https://gitlab.com","caRef":{},"group":"","insecure":false,"label":"preview","path":"deployment","pullRequestState":"opened","secretKey":"","secretName":""}` | GitLab repo configuration parameters |
 | gitlab.caRef | object | `{}` | ConfigMap holding trusted CA certs for self-signed GitLab TLS (leave empty to disable) |
 | gitlab.group | string | `""` | GitLab group. Required when `repos.gitlab` is populated. |
 | gitlab.insecure | bool | `false` | Skip validating the GitLab TLS certificate (useful for self-signed certificates) |
 | gitlab.pullRequestState | string | `"opened"` | MR state filter, one of: "", opened, closed, merged or locked |
+| gitlab.secretKey | string | `""` | Key within `secretName`. Required with `secretName`. |
+| gitlab.secretName | string | `""` | Secret holding a GitLab token. Required with `secretKey`. |
 | globals | object | `{"annotations":{"notifications.argoproj.io/subscribe.on-deleted.slack":"argocd","notifications.argoproj.io/subscribe.on-deployed.slack":"argocd","notifications.argoproj.io/subscribe.on-health-degraded.slack":"argocd","notifications.argoproj.io/subscribe.on-sync-failed.slack":"argocd","notifications.argoproj.io/subscribe.on-sync-running.slack":"argocd"},"deployToNamespace":"previews","goTemplateOptions":["missingkey=error"],"label":"preview","preserveResourcesOnDeletion":false,"requeueAfterSeconds":500,"retry":{"backoff":{"duration":"10s"},"limit":5},"revisionHistoryLimit":2,"server":"https://kubernetes.default.svc","syncOptions":["ApplyOutOfSyncOnly=true","CreateNamespace=true","PruneLast=true","PrunePropagationPolicy=foreground","RespectIgnoreDifferences=true","Validate=false"]}` | Global default variables |
 | globals.annotations | object | `{"notifications.argoproj.io/subscribe.on-deleted.slack":"argocd","notifications.argoproj.io/subscribe.on-deployed.slack":"argocd","notifications.argoproj.io/subscribe.on-health-degraded.slack":"argocd","notifications.argoproj.io/subscribe.on-sync-failed.slack":"argocd","notifications.argoproj.io/subscribe.on-sync-running.slack":"argocd"}` | applications annotations @schema-pattern: ^[a-zA-Z0-9_-]+$ |
 | globals.deployToNamespace | string | `"previews"` | Kubernetes namespace to deploy previews |
@@ -58,7 +69,7 @@ requires `github.owner`; populating `repos.gitlab` requires `gitlab.group`. See
 | project.destinations | list | `[]` | Destinations the project permits. Derived from `globals.deployToNamespace` and any per-repo `namespace` when left empty. |
 | project.namespaceResourceBlacklist | list | `[{"group":"argoproj.io","kind":"AppProject"}]` | Allow all namespaced-scoped resources to be created, except for AppProject |
 | project.sourceRepos | list | `["*"]` | Allow from all repositories |
-| repos | object | `{"github":[],"gitlab":[]}` | List of repo names and override images for preview environment. Both providers are empty by default; each renders only when you populate it, so declaring one never pulls in the other. Generator tokens are Go template, so they need the leading dot - '{{ .branch_slug }}', not '{{branch_slug}}'. Requires ArgoCD >= v2.5.0. Worked examples: values-example.yaml See: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Pull-Request/ |
+| repos | object | `{"github":[],"gitlab":[]}` | List of repo names and override images for preview environment. Both providers are empty by default; each renders only when you populate it, so declaring one never pulls in the other. Generator tokens are Go template, so they need the leading dot - '{{ .branch_slug }}', not '{{branch_slug}}'. Requires ArgoCD >= v2.5.0. Worked examples: values-example.yaml See: <https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Pull-Request/> |
 | repos.github | list | `[]` | GitHub repos to build previews for. Requires `github.owner`. |
 | repos.gitlab | list | `[]` | GitLab repos to build previews for. Requires `gitlab.group`. |
 

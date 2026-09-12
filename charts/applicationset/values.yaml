@@ -94,8 +94,11 @@ github:
   # -- (string) GitHub organisation / owner. Required when `repos.github` is populated.
   owner: ''
   path: 'deployment'
+  # -- (string) Secret holding a GitHub token. Required with `secretKey`, unless `appSecretName` is set.
   secretName: ''
+  # -- (string) Key within `secretName`. Required with `secretName`, unless `appSecretName` is set.
   secretKey: ''
+  # -- (string) Secret holding GitHub App credentials, an alternative to `secretName` and `secretKey`.
   appSecretName: ''
 
 # -- GitLab repo configuration parameters
@@ -116,7 +119,9 @@ gitlab:
   #  configMapName: argocd-tls-certs-cm
   #  key: gitlab-ca
   path: 'deployment'
+  # -- (string) Secret holding a GitLab token. Required with `secretKey`.
   secretName: ''
+  # -- (string) Key within `secretName`. Required with `secretName`.
   secretKey: ''
 
 # -- List of repo names and override images for preview environment. Both providers are
@@ -124,7 +129,7 @@ gitlab:
 # in the other. Generator tokens are Go template, so they need the leading dot -
 # '{{ .branch_slug }}', not '{{branch_slug}}'. Requires ArgoCD >= v2.5.0.
 # Worked examples: values-example.yaml
-# See: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Pull-Request/
+# See: <https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Pull-Request/>
 repos:
   # -- (list) GitHub repos to build previews for. Requires `github.owner`.
   github: []
