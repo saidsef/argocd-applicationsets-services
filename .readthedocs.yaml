@@ -6,9 +6,8 @@ build:
     python: "3.12"
   jobs:
     # Read the Docs tokenises each job command, so quotes and `$( )` do not survive.
-    # `~=` caps the major version without the `<` a shell would read as a redirect.
     post_install:
-      - python -m pip install mkdocs~=1.6 mkdocs-material~=9.5 pymdown-extensions~=10.7 pygments~=2.18
+      - python -m pip install -r docs/requirements.txt
 
 mkdocs:
   configuration: mkdocs.yml

@@ -1,6 +1,8 @@
 site_name: argocd-applicationsets-services
 repo_url: https://github.com/saidsef/argocd-applicationsets-services
 strict: true
+exclude_docs: |
+  requirements.txt
 theme:
   name: material
   palette:
