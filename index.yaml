@@ -3,6 +3,49 @@ entries:
   argocd-applicationsets-services:
   - annotations:
       artifacthub.io/changes: |
+        - kind: added
+          description: "Kustomize entries accept patches, rendered into the Application source, which set a field the overlay cannot know such as a per-branch ingress host. Requires ArgoCD >= v2.7.0"
+        - kind: added
+          description: "values-example.yaml carries a kustomize entry building an ingress host from branch_slug and the pull request number"
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: README
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md
+        - name: LICENSE
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/LICENSE.md
+        - name: CONTRIBUTING
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/CONTRIBUTING.md
+        - name: HELM
+          url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/charts/applicationset/README.md
+    apiVersion: v2
+    appVersion: 0.24.0
+    created: "2026-09-22T18:55:55.338146568Z"
+    description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous
+      delivery tool for Kubernetes
+    digest: 8e3330fa865adf9040ae0fc0bcc66a0b43ba0cf1b174dca909ba093f21cf020e
+    home: https://github.com/saidsef/argocd-applicationsets-services
+    icon: https://raw.githubusercontent.com/argoproj/argo/master/docs/assets/argo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    - continuous deployment
+    - applicationsets
+    - preview
+    - canary
+    kubeVersion: '>= 1.31'
+    maintainers:
+    - name: saidsef
+      url: https://saidsef.github.io/argocd-applicationsets-services
+    name: argocd-applicationsets-services
+    sources:
+    - https://github.com/saidsef/argocd-applicationsets-services.git
+    type: application
+    urls:
+    - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.24.0/argocd-applicationsets-services-0.24.0.tgz
+    version: 0.24.0
+  - annotations:
+      artifacthub.io/changes: |
         - kind: changed
           description: "Each populated provider requires a credential. Rendering fails without github.secretName and github.secretKey, or github.appSecretName, or gitlab.secretName and gitlab.secretKey"
         - kind: changed
@@ -316,4 +359,4 @@ entries:
     urls:
     - https://github.com/saidsef/argocd-applicationsets-services/releases/download/argocd-applicationsets-services-0.18.0/argocd-applicationsets-services-0.18.0.tgz
     version: 0.18.0
-generated: "2026-09-12T21:14:05.175993416Z"
+generated: "2026-09-22T18:55:55.338203133Z"
