@@ -26,6 +26,19 @@ repos:
   # kustomize source at a non-default path
   - name: alpine-jenkins-dockerfile
     path: 'deployment/preview'
+  # kustomize source given a per-branch ingress host, which the overlay cannot know
+  - name: ml-classifier
+    path: 'deployment/ingress-nginx'
+    images:
+    - 'docker.io/saidsef/ml-classifier:merge'
+    patches:
+    - target:
+        kind: Ingress
+        name: classifier
+      patch: |-
+        - op: replace
+          path: /spec/rules/0/host
+          value: '{{ .branch_slug }}-{{ .number }}.saidsef.co.uk'
   - name: aws-kinesis-local
     images:
     - 'docker.io/saidsef/aws-kinesis-local:{{ .branch_slug }}'

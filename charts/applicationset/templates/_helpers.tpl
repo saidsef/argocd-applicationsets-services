@@ -181,6 +181,10 @@ Expected dict keys:
           {{- end }}
           - {{ $r | indent 0 | squote }}
           {{- end }}
+          {{- with $repo.patches }}
+          patches:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
         path: {{ coalesce $repo.path .path }}
         {{- end }}
       project: {{ .project }}
