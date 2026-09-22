@@ -24,6 +24,7 @@ repos:
 | `name` | string | Both | Repository name. Required |
 | `path` | string | Kustomize and Helm | Source path inside the repository, defaulting to `<provider>.path` |
 | `images` | list | Kustomize only | Image overrides, one per line, in Kustomize `name=newName:newTag` or `name:newTag` form |
+| `patches` | list | Kustomize only | Kustomize patches, each an `op`/`path`/`value` patch against a `target`. Requires ArgoCD >= v2.7.0 |
 | `values` | object | Helm | Inline chart values, selecting the Helm source |
 | `parameters` | list | Helm | `--set` style parameters, selecting the Helm source from a chart repository |
 | `chart` | string | Helm | Chart name, defaulting to `name` |
@@ -53,6 +54,27 @@ repos:
 ```
 
 The `Application` gets a `kustomize` block carrying the namespace, the image overrides and three common annotations: `app.kubernetes.io/instance`, `app.kubernetes.io/part-of` and `argocd.argoproj.io/head_short_sha`. The source path is the entry's `path`, or the provider default of `deployment`.
+
+`patches` sets a field the overlay in the repository cannot know, because the branch name and the pull request number reach the source only as generator tokens. A per-branch ingress host is the usual case.
+
+```yaml
+repos:
+  github:
+  - name: ml-classifier
+    path: 'deployment/ingress-nginx'
+    patches:
+    - target:
+        kind: Ingress
+        name: classifier
+      patch: |-
+        - op: replace
+          path: /spec/rules/0/host
+          value: '{{ .branch_slug }}-{{ .number }}.saidsef.co.uk'
+```
+
+A host built from `branch_slug` alone is not unique across repositories, since the same branch name in two repositories slugs identically. Appending the pull request number separates them. `branch_slug` is truncated to 50 characters and a DNS label caps at 63, so a prefix long enough to overflow that budget is rejected by the API server rather than shortened.
+
+Patches the entry declares are applied alongside any the overlay already declares. Where both target the same field, the entry wins.
 
 ### In-repo Helm chart
 

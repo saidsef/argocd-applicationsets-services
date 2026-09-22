@@ -2,7 +2,7 @@ apiVersion: v2
 name: argocd-applicationsets-services
 description: A Helm chart for ArgoCD ApplicationSets, a declarative, GitOps continuous delivery tool for Kubernetes
 type: application
-version: &version "0.23.0"
+version: &version "0.24.0"
 appVersion: *version
 kubeVersion: ">= 1.31"
 home: https://github.com/saidsef/argocd-applicationsets-services
@@ -23,12 +23,10 @@ sources:
 annotations:
   artifacthub.io/license: "Apache-2.0"
   artifacthub.io/changes: |
-    - kind: changed
-      description: "Each populated provider requires a credential. Rendering fails without github.secretName and github.secretKey, or github.appSecretName, or gitlab.secretName and gitlab.secretKey"
-    - kind: changed
-      description: "An anonymous generator saw public repositories only and spent a 60 request hourly budget, reported as no matching pull requests rather than as a refusal"
-    - kind: changed
-      description: "values-example.yaml names a token secret for both providers"
+    - kind: added
+      description: "Kustomize entries accept patches, rendered into the Application source, which set a field the overlay cannot know such as a per-branch ingress host. Requires ArgoCD >= v2.7.0"
+    - kind: added
+      description: "values-example.yaml carries a kustomize entry building an ingress host from branch_slug and the pull request number"
   artifacthub.io/links: |
     - name: README
       url: https://raw.githubusercontent.com/saidsef/argocd-applicationsets-services/main/README.md

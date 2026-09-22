@@ -181,6 +181,12 @@ Expected dict keys:
           {{- end }}
           - {{ $r | indent 0 | squote }}
           {{- end }}
+          {{- /* Kustomize patches are the only hook a kustomize source has for a value the
+                 overlay cannot know, such as a per-branch ingress host. Requires ArgoCD >= v2.7.0. */}}
+          {{- with $repo.patches }}
+          patches:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
         path: {{ coalesce $repo.path .path }}
         {{- end }}
       project: {{ .project }}
